@@ -7,6 +7,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy static site files
 COPY index.html /usr/share/nginx/html/
 COPY about.html /usr/share/nginx/html/
+COPY blog.html /usr/share/nginx/html/
 COPY contact.html /usr/share/nginx/html/
 COPY services.html /usr/share/nginx/html/
 COPY css/ /usr/share/nginx/html/css/
