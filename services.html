@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services & Pricing | No.1 Bright Smile and Skin Solutions, Eccleshall</title>
+  <meta name="description" content="View all treatments and pricing — teeth whitening £120, fat dissolving from £70, facials from £30, vitamin injections from £35. Book your appointment in Eccleshall, Staffordshire.">
+  <meta name="keywords" content="teeth whitening price Eccleshall, fat dissolving cost, facial treatments Staffordshire, vitamin B12 injection price, microneedling Eccleshall">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="header__logo">
+        <span class="header__logo-icon">✦</span>
+        Bright Smile & Skin
+      </a>
+      <nav class="header__nav" id="nav">
+        <ul class="header__links">
+          <li><a href="index.html" class="header__link">Home</a></li>
+          <li><a href="services.html" class="header__link header__link--active">Services</a></li>
+          <li><a href="about.html" class="header__link">About</a></li>
+          <li><a href="contact.html" class="header__link">Contact</a></li>
+        </ul>
+        <a href="contact.html" class="btn btn--primary">Book Now</a>
+      </nav>
+      <button class="header__toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header__bg">
+        <img src="images/services-hero.png" alt="Treatment room at Bright Smile clinic">
+      </div>
+      <div class="page-header__overlay"></div>
+      <div class="page-header__content container">
+        <span class="page-header__label fade-up">Our Treatments</span>
+        <h1 class="page-header__title fade-up">Services & Pricing</h1>
+        <p class="page-header__desc fade-up">Every treatment is a single-session booking with transparent pricing. No hidden fees, no package pressure.</p>
+      </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <section class="section" style="padding-bottom: 0;">
+      <div class="container">
+        <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap; justify-content: center;" class="fade-up">
+          <button class="btn btn--primary btn--small" data-filter="all">All Services</button>
+          <button class="btn btn--outline btn--small" data-filter="whitening">Teeth Whitening</button>
+          <button class="btn btn--outline btn--small" data-filter="fat-dissolving">Fat Dissolving</button>
+          <button class="btn btn--outline btn--small" data-filter="facials">Facials</button>
+          <button class="btn btn--outline btn--small" data-filter="vitamins">Vitamin Injections</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Teeth Whitening -->
+    <section class="section" id="whitening" data-category="whitening">
+      <div class="container">
+        <div class="service-category">
+          <div class="service-category__header fade-up">
+            <div class="service-category__icon"><span class="material-symbols-rounded">dentistry</span></div>
+            <div>
+              <h2 class="service-category__title">Teeth Whitening</h2>
+              <p class="service-category__subtitle">Professional in-clinic treatment</p>
+            </div>
+          </div>
+          <div class="grid grid--2 stagger">
+            <div class="card card--featured card--img fade-up">
+              <img class="card__image" src="images/teeth-whitening.png" alt="Professional teeth whitening treatment">
+              <div class="card__body">
+                <h3 class="card__title">Professional Teeth Whitening</h3>
+                <p class="card__desc">Expert in-clinic whitening treatment for a brilliant, natural-looking smile. Safe, enamel-preserving formula for results that last.</p>
+                <div class="card__meta">
+                  <span class="card__price">£120</span>
+                  <span class="card__duration">1 hour 30 mins</span>
+                </div>
+                <a href="contact.html" class="btn btn--primary" style="margin-top: var(--space-md); width: 100%;">Book Now</a>
+              </div>
+            </div>
+            <div class="card fade-up" style="display: flex; flex-direction: column; justify-content: center;">
+              <h3 class="card__title" style="font-size: var(--fs-h3);">Why Our Whitening?</h3>
+              <ul style="margin-top: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-md);">
+                <li style="display: flex; gap: var(--space-sm); align-items: flex-start;">
+                  <span class="material-symbols-rounded" style="color: var(--color-primary-dark); font-size: 1.2rem;">check_circle</span>
+                  <span>Enamel-safe, professional-grade formula</span>
+                </li>
+                <li style="display: flex; gap: var(--space-sm); align-items: flex-start;">
+                  <span class="material-symbols-rounded" style="color: var(--color-primary-dark); font-size: 1.2rem;">check_circle</span>
+                  <span>Visible results in a single session</span>
+                </li>
+                <li style="display: flex; gap: var(--space-sm); align-items: flex-start;">
+                  <span class="material-symbols-rounded" style="color: var(--color-primary-dark); font-size: 1.2rem;">check_circle</span>
+                  <span>Suitable for sensitive teeth</span>
+                </li>
+                <li style="display: flex; gap: var(--space-sm); align-items: flex-start;">
+                  <span class="material-symbols-rounded" style="color: var(--color-primary-dark); font-size: 1.2rem;">check_circle</span>
+                  <span>Perfect for weddings, proms, and events</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fat Dissolving -->
+    <section class="section section--bg" id="fat-dissolving" data-category="fat-dissolving">
+      <div class="container">
+        <div class="service-category">
+          <div class="service-category__header fade-up">
+            <div class="service-category__icon"><span class="material-symbols-rounded">body_fat</span></div>
+            <div>
+              <h2 class="service-category__title">Fat Dissolving</h2>
+              <p class="service-category__subtitle">Targeted body contouring — all sessions 30 minutes</p>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: var(--space-md);" class="stagger">
+            <div class="service-card fade-up">
+              <div class="service-card__info">
+                <span class="service-card__name">Stomach</span>
+                <span class="service-card__duration">30 minutes</span>
+              </div>
+              <div class="service-card__right">
+                <span class="service-card__price">£175</span>
+                <a href="contact.html" class="btn btn--primary btn--small">Book</a>
+              </div>
+            </div>
+            <div class="service-card fade-up">
+              <div class="service-card__info">
+                <span class="service-card__name">Love Handles</span>
+                <span class="service-card__duration">30 minutes</span>
+              </div>
+              <div class="service-card__right">
+                <span class="service-card__price">£150</span>
+                <a href="contact.html" class="btn btn--primary btn--small">Book</a>
+              </div>
+            </div>
+            <div class="service-card fade-up">
+              <div class="service-card__info">
+                <span class="service-card__name">Outer or Inner Thighs</span>
+                <span class="service-card__duration">30 minutes</span>
+              </div>
+              <div class="service-card__right">
+                <span class="service-card__price">£150</span>
+                <a href="contact.html" class="btn btn--primary btn--small">Book</a>
+              </div>
+            </div>
+            <div class="service-card fade-up">
+              <div class="service-card__info">
+                <span class="service-card__name">Jaw</span>
+                <span class="service-card__duration">30 minutes</span>
+              </div>
+              <div class="service-card__right">
+                <span class="service-card__price">£95</span>
+                <a href="contact.html" class="btn btn--primary btn--small">Book</a>
+              </div>
+            </div>
+            <div class="service-card fade-up">
+              <div class="service-card__info">
+                <span class="service-card__name">Bra Fat</span>
+                <span class="service-card__duration">30 minutes</span>
+              </div>
+              <div class="service-card__right">
+                <span class="service-card__price">£70</span>
+                <a href="contact.html" class="btn btn--primary btn--small">Book</a>
+              </div>
+            </div>
+            <div class="service-card fade-up">
+              <div class="service-card__info">
+                <span class="service-card__name">Knee Area</span>
+                <span class="service-card__duration">30 minutes</span>
+              </div>
+              <div class="service-card__right">
+                <span class="service-card__price">£70</span>
+                <a href="contact.html" class="btn btn--primary btn--small">Book</a>
+              </div>
+            </div>
+            <div class="service-card fade-up">
+              <div class="service-card__info">
+                <span class="service-card__name">Under Bum</span>
+                <span class="service-card__duration">30 minutes</span>
+              </div>
+              <div class="service-card__right">
+                <span class="service-card__price">£70</span>
+                <a href="contact.html" class="btn btn--primary btn--small">Book</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Facials -->
+    <section class="section" id="facials" data-category="facials">
+      <div class="container">
+        <div class="service-category">
+          <div class="service-category__header fade-up">
+            <div class="service-category__icon"><span class="material-symbols-rounded">face_retouching_natural</span></div>
+            <div>
+              <h2 class="service-category__title">Facial & Skincare Treatments</h2>
+              <p class="service-category__subtitle">Advanced clinical skincare procedures</p>
+            </div>
+          </div>
+          <div class="grid grid--3 stagger">
+            <div class="card card--featured fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">auto_awesome</span></div>
+              <h3 class="card__title">Skin Booster</h3>
+              <p class="card__desc">Intensive hydration and rejuvenation treatment for luminous, youthful skin.</p>
+              <div class="card__meta">
+                <span class="card__price">£150</span>
+                <span class="card__duration">30 mins</span>
+              </div>
+              <a href="contact.html" class="btn btn--primary btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">spa</span></div>
+              <h3 class="card__title">Deluxe Facial</h3>
+              <p class="card__desc">Our premium facial experience for deep cleansing and visible radiance.</p>
+              <div class="card__meta">
+                <span class="card__price">£80</span>
+                <span class="card__duration">1 hour</span>
+              </div>
+              <a href="contact.html" class="btn btn--outline btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">eco</span></div>
+              <h3 class="card__title">Detox Facial</h3>
+              <p class="card__desc">Purifying treatment to remove impurities and refresh congested skin.</p>
+              <div class="card__meta">
+                <span class="card__price">£70</span>
+                <span class="card__duration">1 hour</span>
+              </div>
+              <a href="contact.html" class="btn btn--outline btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">water_drop</span></div>
+              <h3 class="card__title">Hydrofacial</h3>
+              <p class="card__desc">Multi-step hydration treatment for plump, dewy, and nourished skin.</p>
+              <div class="card__meta">
+                <span class="card__price">£65</span>
+                <span class="card__duration">1 hr 30 mins</span>
+              </div>
+              <a href="contact.html" class="btn btn--outline btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">healing</span></div>
+              <h3 class="card__title">Microneedling</h3>
+              <p class="card__desc">Collagen-stimulating treatment for smoother texture and reduced scarring.</p>
+              <div class="card__meta">
+                <span class="card__price">£65</span>
+                <span class="card__duration">1 hour</span>
+              </div>
+              <a href="contact.html" class="btn btn--outline btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">self_improvement</span></div>
+              <h3 class="card__title">Rejuvenate Facial</h3>
+              <p class="card__desc">Anti-ageing facial treatment to restore vitality and youthful glow.</p>
+              <div class="card__meta">
+                <span class="card__price">£55</span>
+                <span class="card__duration">1 hour</span>
+              </div>
+              <a href="contact.html" class="btn btn--outline btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">light_mode</span></div>
+              <h3 class="card__title">Glow Facial</h3>
+              <p class="card__desc">Brightening treatment designed to enhance your natural radiance.</p>
+              <div class="card__meta">
+                <span class="card__price">£45</span>
+                <span class="card__duration">1 hour</span>
+              </div>
+              <a href="contact.html" class="btn btn--outline btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">bolt</span></div>
+              <h3 class="card__title">Express Facial</h3>
+              <p class="card__desc">A quick yet effective facial for busy schedules — maximum results, minimal time.</p>
+              <div class="card__meta">
+                <span class="card__price">£45</span>
+                <span class="card__duration">1 hour</span>
+              </div>
+              <a href="contact.html" class="btn btn--outline btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">content_cut</span></div>
+              <h3 class="card__title">Dermaplaning</h3>
+              <p class="card__desc">Exfoliation treatment to remove dead skin cells and peach fuzz for a flawless finish.</p>
+              <div class="card__meta">
+                <span class="card__price">£35</span>
+                <span class="card__duration">45 mins</span>
+              </div>
+              <a href="contact.html" class="btn btn--outline btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">fluorescent</span></div>
+              <h3 class="card__title">LED Therapy</h3>
+              <p class="card__desc">Light-based therapy to stimulate collagen, reduce inflammation, and target acne.</p>
+              <div class="card__meta">
+                <span class="card__price">£30</span>
+                <span class="card__duration">1 hour</span>
+              </div>
+              <a href="contact.html" class="btn btn--outline btn--small" style="margin-top: var(--space-md);">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vitamin Injections -->
+    <section class="section section--bg" id="vitamins" data-category="vitamins">
+      <div class="container">
+        <div class="service-category">
+          <div class="service-category__header fade-up">
+            <div class="service-category__icon"><span class="material-symbols-rounded">vaccines</span></div>
+            <div>
+              <h2 class="service-category__title">Vitamin Injections</h2>
+              <p class="service-category__subtitle">Quick 15-minute nutrient therapy sessions</p>
+            </div>
+          </div>
+          <div class="grid grid--4 stagger">
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">genetics</span></div>
+              <h3 class="card__title">Biotin</h3>
+              <p class="card__desc">Supports healthy hair, skin, and nails from within.</p>
+              <div class="card__meta">
+                <span class="card__price">£50</span>
+                <span class="card__duration">15 mins</span>
+              </div>
+              <a href="contact.html" class="btn btn--primary btn--small" style="margin-top: var(--space-md); width: 100%;">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">local_pharmacy</span></div>
+              <h3 class="card__title">Vitamin C</h3>
+              <p class="card__desc">Immune boost and skin brightening antioxidant therapy.</p>
+              <div class="card__meta">
+                <span class="card__price">£45</span>
+                <span class="card__duration">15 mins</span>
+              </div>
+              <a href="contact.html" class="btn btn--primary btn--small" style="margin-top: var(--space-md); width: 100%;">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">wb_sunny</span></div>
+              <h3 class="card__title">Vitamin D</h3>
+              <p class="card__desc">Essential for bone health, mood, and immune system support.</p>
+              <div class="card__meta">
+                <span class="card__price">£35</span>
+                <span class="card__duration">15 mins</span>
+              </div>
+              <a href="contact.html" class="btn btn--primary btn--small" style="margin-top: var(--space-md); width: 100%;">Book</a>
+            </div>
+            <div class="card fade-up">
+              <div class="card__icon"><span class="material-symbols-rounded">energy_savings_leaf</span></div>
+              <h3 class="card__title">Vitamin B12</h3>
+              <p class="card__desc">Energy, metabolism, and nervous system support injection.</p>
+              <div class="card__meta">
+                <span class="card__price">£35</span>
+                <span class="card__duration">15 mins</span>
+              </div>
+              <a href="contact.html" class="btn btn--primary btn--small" style="margin-top: var(--space-md); width: 100%;">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Policy & CTA -->
+    <section class="section">
+      <div class="container">
+        <div class="cta fade-up">
+          <h2 class="cta__title">Ready to Book Your Treatment?</h2>
+          <p class="cta__desc">Contact us to schedule your appointment. All prices are per single session with transparent pricing.</p>
+          <a href="contact.html" class="btn btn--primary btn--large">Book Your Appointment</a>
+          <div class="policy-bar" style="margin-top: var(--space-xl); max-width: 500px; margin-left: auto; margin-right: auto;">
+            <span class="policy-bar__icon material-symbols-rounded">info</span>
+            <span>Please note our 24-hour cancellation policy for all appointments.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <div class="footer__logo">
+            <span class="footer__logo-icon">✦</span>
+            Bright Smile & Skin
+          </div>
+          <p class="footer__desc">Redefining beauty and confidence through clinical excellence and personalised aesthetic care in Eccleshall, Staffordshire.</p>
+        </div>
+        <div>
+          <h4 class="footer__heading">Quick Links</h4>
+          <nav class="footer__links">
+            <a href="index.html" class="footer__link">Home</a>
+            <a href="services.html" class="footer__link">Services</a>
+            <a href="about.html" class="footer__link">About Us</a>
+            <a href="contact.html" class="footer__link">Contact</a>
+          </nav>
+        </div>
+        <div>
+          <h4 class="footer__heading">Services</h4>
+          <nav class="footer__links">
+            <a href="#whitening" class="footer__link">Teeth Whitening</a>
+            <a href="#fat-dissolving" class="footer__link">Fat Dissolving</a>
+            <a href="#facials" class="footer__link">Facials</a>
+            <a href="#vitamins" class="footer__link">Vitamin Injections</a>
+          </nav>
+        </div>
+        <div>
+          <h4 class="footer__heading">Contact</h4>
+          <div class="footer__contact-item">
+            <span class="footer__contact-icon material-symbols-rounded">location_on</span>
+            <span>Eccleshall, Staffordshire, UK</span>
+          </div>
+          <div class="footer__contact-item">
+            <span class="footer__contact-icon material-symbols-rounded">phone</span>
+            <a href="tel:+447979427777">+44 7979 427777</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>© 2026 No.1 Bright Smile and Skin Solutions. All rights reserved.</span>
+        <div class="footer__socials">
+          <a href="#" class="footer__social" aria-label="Facebook"><span class="material-symbols-rounded">share</span></a>
+          <a href="#" class="footer__social" aria-label="Instagram"><span class="material-symbols-rounded">photo_camera</span></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
