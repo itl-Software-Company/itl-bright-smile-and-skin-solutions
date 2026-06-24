@@ -4,7 +4,50 @@ Project changelog and known-good state log for the Bright Smile & Skin Solutions
 
 ---
 
+## Quick Notes
+
+| Date | Note |
+|---|---|
+| 2026-06-05 | Jacqie likes cappuccino, no sugar ☕ |
+
+---
+
 ## Changelog
+
+### 2026-06-03 — Digital Growth Pitch & Assets (Session 3)
+
+**itl-bright-smile-and-skin-solutions commits:** `[NOT COMMITTED]` (untracked presentation.html)
+
+#### Pitch Development
+- **Created client proposal** artifact mapping out a custom AI appointment system and local SEO strategy.
+- **Built HTML presentation** (`presentation.html`) with a Google-inspired color scheme and a programmatic SVG Worzl logo.
+
+#### Presentation Assets
+- **Generated OpenArt scene description** for "Jackie", a Pixar-style friendly receptionist.
+- **Drafted video/audio script** integrating Jackie's character into the pitch.
+
+#### Known Good State
+
+| Item | Status |
+|---|---|
+| Site deployment (Cloud Run) | ✅ Working (last commit: `40536d9`) |
+
+---
+
+### 2026-06-03 — Session Close and Next Steps (Session 2)
+
+**itl-bright-smile-and-skin-solutions commits:** `[NOT COMMITTED]` (untracked presentation.html)
+
+#### Planning for Next Session
+- **Noted outstanding tasks** for the next session including Pitch review, BRD development, and exploring agent deployment.
+
+#### Known Good State
+
+| Item | Status |
+|---|---|
+| Site deployment (Cloud Run) | ✅ Working (last commit: `40536d9`) |
+
+---
 
 ### 2026-05-20 — Deprecation Audit (Session 1)
 

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Growth Strategy | Bright Smile & Skin Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Modern Dark Theme */
+            --bg-dark: #0f111a;
+            --bg-card: rgba(25, 28, 41, 0.6);
+            --text-main: #f8f9fa;
+            --text-secondary: #a0aab2;
+            
+            /* Vibrant Accents */
+            --g-blue: #4285F4;
+            --g-red: #EA4335;
+            --g-yellow: #FBBC05;
+            --g-green: #34A853;
+            
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(66, 133, 244, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(234, 67, 53, 0.05) 0%, transparent 50%);
+            background-attachment: fixed;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Container & Sections */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem 0;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeUpIn 0.8s ease-out forwards;
+        }
+
+        /* Animation delays for sections based on scroll (using intersection observer later or simple delays for now) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeUpIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 4rem;
+            box-shadow: var(--glass-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Decorative Glow in cards */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: var(--g-blue);
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+            border-radius: 50%;
+        }
+
+        .glass-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Typography inside cards */
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--g-blue) 0%, var(--g-red) 33%, var(--g-yellow) 66%, var(--g-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 2rem;
+        }
+
+        li {
+            font-size: 1.15rem;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            padding-left: 2.5rem;
+            position: relative;
+            background: rgba(255,255,255,0.02);
+            padding: 1.5rem 1.5rem 1.5rem 3rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: background 0.2s ease;
+        }
+        
+        li:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        li::before {
+            content: "";
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--g-blue);
+            box-shadow: 0 0 10px var(--g-blue);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            background: rgba(66, 133, 244, 0.15);
+            color: #8ab4f8;
+            border: 1px solid rgba(66, 133, 244, 0.2);
+        }
+        .badge.red { background: rgba(234, 67, 53, 0.15); color: #f28b82; border-color: rgba(234, 67, 53, 0.2); }
+        .badge.yellow { background: rgba(251, 188, 5, 0.15); color: #fdd663; border-color: rgba(251, 188, 5, 0.2); }
+        .badge.green { background: rgba(52, 168, 83, 0.15); color: #81c995; border-color: rgba(52, 168, 83, 0.2); }
+
+        /* Custom Colors for List Dots */
+        .card-red li::before { background-color: var(--g-red); box-shadow: 0 0 10px var(--g-red); }
+        .card-yellow li::before { background-color: var(--g-yellow); box-shadow: 0 0 10px var(--g-yellow); }
+        .card-green li::before { background-color: var(--g-green); box-shadow: 0 0 10px var(--g-green); }
+
+        /* Logo Area */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .worzl-svg {
+            width: 120px;
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.1));
+        }
+
+        /* Scroll Hint */
+        .scroll-hint {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeInHint 1s 1.5s forwards;
+        }
+
+        .mouse {
+            width: 24px;
+            height: 36px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .wheel {
+            width: 4px;
+            height: 6px;
+            background: var(--text-secondary);
+            border-radius: 2px;
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scrollWheel 2s infinite;
+        }
+
+        @keyframes scrollWheel {
+            0% { top: 6px; opacity: 1; }
+            100% { top: 18px; opacity: 0; }
+        }
+
+        @keyframes fadeInHint {
+            to { opacity: 0.6; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .glass-card { padding: 2rem; }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            section { padding: 4rem 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Slide 1: Title -->
+        <section style="position: relative;">
+            <div class="glass-card" style="text-align: center; padding: 5rem 2rem;">
+                <div class="logo-container">
+                    <svg class="worzl-svg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#4285F4"/>
+                                <stop offset="33%" stop-color="#EA4335"/>
+                                <stop offset="66%" stop-color="#FBBC05"/>
+                                <stop offset="100%" stop-color="#34A853"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Hexagon Border -->
+                        <polygon points="100,10 180,50 180,140 100,180 20,140 20,50" fill="none" stroke="url(#hexGrad)" stroke-width="6" stroke-linejoin="round"/>
+                        <!-- The W -->
+                        <g transform="translate(45, 60)">
+                            <path d="M 0,0 L 25,60" fill="none" stroke="#4285F4" stroke-width="20" stroke-linecap="round"/>
+                            <path d="M 50,0 L 25,60" fill="none" stroke="#EA4335" stroke-width="20" stroke-linecap="round"/>
+                            <path d="M 50,0 L 75,60" fill="none" stroke="#FBBC05" stroke-width="20" stroke-linecap="round"/>
+                            <path d="M 100,0 L 75,60" fill="none" stroke="#34A853" stroke-width="20" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+                <h1>Digital Growth &amp; Smart Scheduling</h1>
+                <p class="subtitle">Prepared for <strong>Bright Smile &amp; Skin Solutions</strong></p>
+                <div style="margin-top: 3rem; display: inline-flex; align-items: center; gap: 10px; color: var(--text-secondary); font-size: 0.9rem;">
+                    <span style="width: 30px; height: 1px; background: var(--text-secondary); opacity: 0.3;"></span>
+                    POWERED BY WORZL AGENTS
+                    <span style="width: 30px; height: 1px; background: var(--text-secondary); opacity: 0.3;"></span>
+                </div>
+            </div>
+            
+            <div class="scroll-hint">
+                <div class="mouse"><div class="wheel"></div></div>
+                Scroll to explore
+            </div>
+        </section>
+
+        <!-- Slide 2: Intro -->
+        <section class="reveal">
+            <div class="glass-card">
+                <span class="badge">The Vision</span>
+                <h2>Helping You Grow</h2>
+                <p>We know how hard you work to provide top-tier treatments in Newcastle Under Lyme. Our goal is to make your technology work just as hard behind the scenes.</p>
+                <p>We propose a gentle, phased approach to upgrading your digital presence and introducing smart, time-saving tools to your daily routine.</p>
+                <div style="background: rgba(66, 133, 244, 0.05); border-left: 4px solid var(--g-blue); padding: 1.5rem; margin-top: 2rem; border-radius: 0 8px 8px 0;">
+                    <p style="margin: 0; color: #fff;"><strong>This isn't about replacing the personal touch you offer—it's about removing the admin headaches so you have more time to deliver it.</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: SEO -->
+        <section class="reveal">
+            <div class="glass-card card-red">
+                <span class="badge red">Phase 1: Visibility</span>
+                <h2>Getting More Eyes on Your Clinic</h2>
+                <p>Your newly developed website is the foundation of your digital presence. It's built to ensure that when someone in Staffordshire searches for "teeth whitening" or "fat dissolving," they find you first.</p>
+                <ul>
+                    <li><strong>A Fresh New Look:</strong> We have already developed a brand new, highly-responsive, and fast-loading website tailored to your clinic.</li>
+                    <li><strong>Built-in SEO:</strong> The new site includes technical SEO improvements targeting Newcastle Under Lyme and specific treatments to capture organic local traffic out of the box.</li>
+                    <li><strong>The Result:</strong> Consistent local traffic, leading to more organic inquiries and effortless bookings.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 4: AI Scheduling -->
+        <section class="reveal">
+            <div class="glass-card card-yellow">
+                <span class="badge yellow">Phase 2: Efficiency</span>
+                <h2>A Smarter Way to Schedule</h2>
+                <p>Introducing an intelligent booking engine that works 24/7 to optimize your clinic's day. This system is designed to gradually replace your current reliance on external booking software.</p>
+                <ul>
+                    <li><strong>Gradual Transition:</strong> A phased roll-out that smoothly replaces your current booking system without disrupting your day-to-day operations.</li>
+                    <li><strong>"Tetris" Booking Logic:</strong> The system actively encourages bookings that fit perfectly back-to-back to maximize your daily earning potential.</li>
+                    <li><strong>Automated Waitlist Recovery:</strong> If someone cancels, the system automatically messages your waitlist to fill the slot instantly—recovering lost revenue.</li>
+                    <li><strong>Proactive Reminders:</strong> Friendly, automated WhatsApp and SMS reminders sent 48 and 24 hours before treatments.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 5: Social Media -->
+        <section class="reveal">
+            <div class="glass-card card-green">
+                <span class="badge green">Phase 3: Marketing</span>
+                <h2>Effortless Social Media</h2>
+                <p>Staying active on social media is vital for aesthetics, but it takes up a lot of your precious time. Let our agents do the heavy lifting.</p>
+                <ul>
+                    <li><strong>Content Repurposing:</strong> A background agent reviews your website's treatments and drafts engaging, professional social media posts.</li>
+                    <li><strong>Localized Hashtags:</strong> Automatically includes relevant, high-performing hashtags for Newcastle Under Lyme and Staffordshire.</li>
+                    <li><strong>Total Control:</strong> You maintain editorial control. Just review the generated drafts and hit "Approve" to keep your pages active with a fraction of the effort.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Slide 6: Outro -->
+        <section class="reveal">
+            <div class="glass-card" style="text-align: center; padding: 6rem 2rem;">
+                <h2>Ready to transform your clinic?</h2>
+                <p style="font-size: 1.3rem;">Let's eliminate the admin work and focus on what you do best.</p>
+                <div style="margin-top: 4rem;">
+                    <svg class="worzl-svg" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg" style="width: 80px; opacity: 0.5;">
+                        <polygon points="100,10 180,50 180,140 100,180 20,140 20,50" fill="none" stroke="url(#hexGrad)" stroke-width="6" stroke-linejoin="round"/>
+                        <g transform="translate(45, 60)">
+                            <path d="M 0,0 L 25,60" fill="none" stroke="#4285F4" stroke-width="20" stroke-linecap="round"/>
+                            <path d="M 50,0 L 25,60" fill="none" stroke="#EA4335" stroke-width="20" stroke-linecap="round"/>
+                            <path d="M 50,0 L 75,60" fill="none" stroke="#FBBC05" stroke-width="20" stroke-linecap="round"/>
+                            <path d="M 100,0 L 75,60" fill="none" stroke="#34A853" stroke-width="20" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </section>
+        
+        <div style="height: 100px;"></div>
+
+    </div>
+
+    <!-- Scroll Reveal Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const reveals = document.querySelectorAll(".reveal");
+
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 150;
+                
+                reveals.forEach(reveal => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add("active");
+                    }
+                });
+            };
+
+            window.addEventListener("scroll", revealOnScroll);
+            // Trigger once on load
+            revealOnScroll();
+        });
+    </script>
+</body>
+</html>
