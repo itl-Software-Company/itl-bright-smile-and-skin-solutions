@@ -14,6 +14,8 @@ COPY css/ /usr/share/nginx/html/css/
 COPY js/ /usr/share/nginx/html/js/
 COPY images/ /usr/share/nginx/html/images/
 COPY blog/ /usr/share/nginx/html/blog/
+COPY portal/ /usr/share/nginx/html/portal/
+COPY docs/ /usr/share/nginx/html/docs/
 
 # Cloud Run expects port 8080
 EXPOSE 8080

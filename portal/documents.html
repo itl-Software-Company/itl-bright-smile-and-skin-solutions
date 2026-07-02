@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documents — Bright Smile Client Portal</title>
+  <meta name="description" content="Review all project documents for No.1 Bright Smile and Skin Solutions — agreements, policies, and your growth plan.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="header__logo">
+        <div class="header__logo-icon">✦</div>
+        Bright Smile
+        <span class="header__logo-sub">Client Portal</span>
+      </a>
+      <nav class="header__nav">
+        <div class="header__links">
+          <a href="index.html" class="header__link">Overview</a>
+          <a href="documents.html" class="header__link header__link--active">Documents</a>
+        </div>
+      </nav>
+      <span class="header__powered">Powered by <strong>worzl.ai</strong></span>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="portal-hero container" style="padding-bottom: var(--space-lg);">
+      <span class="portal-hero__label">Project Documents</span>
+      <h1 class="section-title" style="font-size: var(--fs-h1);">
+        Everything in <em style="font-style: normal; color: var(--color-primary-dark);">one place</em>
+      </h1>
+      <p class="portal-hero__desc" style="font-size: var(--fs-body);">
+        All your project documents, explained in plain English.
+        Click any document to read the full version.
+      </p>
+    </section>
+
+    <!-- Document Cards -->
+    <section class="section container" style="padding-top: 0;">
+      <div class="doc-grid">
+
+        <!-- 1. Growth Plan (Client-Facing BRD) -->
+        <div class="doc-card">
+          <div class="doc-card__header">
+            <div class="doc-card__icon" style="background: var(--color-info-bg); color: var(--color-info);">
+              <span class="material-symbols-rounded">rocket_launch</span>
+            </div>
+            <div class="doc-card__meta">
+              <h3>Your Digital Growth Plan</h3>
+              <span class="doc-card__ref">ITL-BSSS-BRD-001</span>
+            </div>
+            <span class="status-badge status-badge--complete">✓ Sent</span>
+          </div>
+          <div class="doc-card__body">
+            <div class="doc-card__summary">
+              <strong>What this means for you</strong>
+              Your personalised roadmap covering website redesign, local SEO, social media content, and future AI-powered features — all designed to bring more clients through the door.
+            </div>
+          </div>
+          <div class="doc-card__footer">
+            <span class="doc-card__footer-meta">Version 1.0 — 23 Jun 2026</span>
+            <div class="doc-card__actions">
+              <button class="btn btn--primary btn--small" onclick="openDoc('Your Digital Growth Plan', '../docs/html/brd-bright-smile.html')">
+                <span class="material-symbols-rounded btn--icon">visibility</span>
+                Review
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Onboarding Questionnaire -->
+        <div class="doc-card">
+          <div class="doc-card__header">
+            <div class="doc-card__icon" style="background: var(--color-primary-bg); color: var(--color-primary-dark);">
+              <span class="material-symbols-rounded">quiz</span>
+            </div>
+            <div class="doc-card__meta">
+              <h3>Getting to Know You</h3>
+              <span class="doc-card__ref">ITL-BSSS-OBQ-001</span>
+            </div>
+            <span class="status-badge status-badge--in-progress">⏳ Awaiting</span>
+          </div>
+          <div class="doc-card__body">
+            <div class="doc-card__summary">
+              <strong>What this means for you</strong>
+              A friendly questionnaire so we can understand your brand, your ideal clients, and how you want your business to look online. Your answers shape everything we build.
+            </div>
+          </div>
+          <div class="doc-card__footer">
+            <span class="doc-card__footer-meta">Sent 23 Jun 2026</span>
+            <div class="doc-card__actions">
+              <button class="btn btn--primary btn--small" onclick="openDoc('Getting to Know You', '../docs/html/onboarding-questionnaire-bright-smile.html')">
+                <span class="material-symbols-rounded btn--icon">visibility</span>
+                Review
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Service Agreement (Contract) -->
+        <div class="doc-card">
+          <div class="doc-card__header">
+            <div class="doc-card__icon" style="background: var(--color-success-bg); color: var(--color-success);">
+              <span class="material-symbols-rounded">handshake</span>
+            </div>
+            <div class="doc-card__meta">
+              <h3>Service Agreement</h3>
+              <span class="doc-card__ref">ITL-BSSS-SA-001</span>
+            </div>
+            <span class="status-badge status-badge--pending">Pending</span>
+          </div>
+          <div class="doc-card__body">
+            <div class="doc-card__summary">
+              <strong>What this means for you</strong>
+              Our working agreement — what we'll deliver, the timeline, costs, and how we'll work together. Simple, fair, and transparent.
+            </div>
+          </div>
+          <div class="doc-card__footer">
+            <span class="doc-card__footer-meta">Version 1.0 — 24 Jun 2026</span>
+            <div class="doc-card__actions">
+              <button class="btn btn--primary btn--small" onclick="openDoc('Service Agreement', '../docs/html/contract-itl-bright-smile.html')">
+                <span class="material-symbols-rounded btn--icon">visibility</span>
+                Review
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. NDA -->
+        <div class="doc-card">
+          <div class="doc-card__header">
+            <div class="doc-card__icon" style="background: var(--color-pending-bg); color: var(--color-pending);">
+              <span class="material-symbols-rounded">lock</span>
+            </div>
+            <div class="doc-card__meta">
+              <h3>Confidentiality Agreement</h3>
+              <span class="doc-card__ref">ITL-BSSS-NDA-001</span>
+            </div>
+            <span class="status-badge status-badge--pending">Pending</span>
+          </div>
+          <div class="doc-card__body">
+            <div class="doc-card__summary">
+              <strong>What this means for you</strong>
+              A mutual promise — we keep your business information private, you keep our technical details private. Standard protection for both sides.
+            </div>
+          </div>
+          <div class="doc-card__footer">
+            <span class="doc-card__footer-meta">Version 1.0 — 24 Jun 2026</span>
+            <div class="doc-card__actions">
+              <button class="btn btn--primary btn--small" onclick="openDoc('Confidentiality Agreement', '../docs/html/nda-itl-bright-smile.html')">
+                <span class="material-symbols-rounded btn--icon">visibility</span>
+                Review
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. DPA -->
+        <div class="doc-card">
+          <div class="doc-card__header">
+            <div class="doc-card__icon" style="background: var(--color-warning-bg); color: var(--color-warning);">
+              <span class="material-symbols-rounded">shield</span>
+            </div>
+            <div class="doc-card__meta">
+              <h3>Data Processing Agreement</h3>
+              <span class="doc-card__ref">ITL-BSSS-DPA-001</span>
+            </div>
+            <span class="status-badge status-badge--pending">Pending</span>
+          </div>
+          <div class="doc-card__body">
+            <div class="doc-card__summary">
+              <strong>What this means for you</strong>
+              Required by UK data protection law. This confirms how we handle your clients' personal data (names, bookings, etc.) and the security measures we have in place.
+            </div>
+          </div>
+          <div class="doc-card__footer">
+            <span class="doc-card__footer-meta">Version 1.0 — 24 Jun 2026</span>
+            <div class="doc-card__actions">
+              <button class="btn btn--primary btn--small" onclick="openDoc('Data Processing Agreement', '../docs/html/dpa-itl-bright-smile.html')">
+                <span class="material-symbols-rounded btn--icon">visibility</span>
+                Review
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Privacy Policy -->
+        <div class="doc-card">
+          <div class="doc-card__header">
+            <div class="doc-card__icon" style="background: var(--color-info-bg); color: var(--color-info);">
+              <span class="material-symbols-rounded">policy</span>
+            </div>
+            <div class="doc-card__meta">
+              <h3>Privacy Policy</h3>
+              <span class="doc-card__ref">ITL-BSSS-PP-001</span>
+            </div>
+            <span class="status-badge status-badge--pending">Pending</span>
+          </div>
+          <div class="doc-card__body">
+            <div class="doc-card__summary">
+              <strong>What this means for you</strong>
+              The privacy policy for your website — tells your clients what data you collect, why, and how it's protected. A legal requirement for any business with a website.
+            </div>
+          </div>
+          <div class="doc-card__footer">
+            <span class="doc-card__footer-meta">Version 1.0 — 24 Jun 2026</span>
+            <div class="doc-card__actions">
+              <button class="btn btn--primary btn--small" onclick="openDoc('Privacy Policy', '../docs/html/privacy-policy-bright-smile.html')">
+                <span class="material-symbols-rounded btn--icon">visibility</span>
+                Review
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. AUP -->
+        <div class="doc-card">
+          <div class="doc-card__header">
+            <div class="doc-card__icon" style="background: var(--color-success-bg); color: var(--color-success);">
+              <span class="material-symbols-rounded">gavel</span>
+            </div>
+            <div class="doc-card__meta">
+              <h3>Acceptable Use Policy</h3>
+              <span class="doc-card__ref">ITL-BSSS-AUP-001</span>
+            </div>
+            <span class="status-badge status-badge--pending">Pending</span>
+          </div>
+          <div class="doc-card__body">
+            <div class="doc-card__summary">
+              <strong>What this means for you</strong>
+              Simple ground rules for using the website and any future digital tools we build for you — basically, use them responsibly and we'll keep them running smoothly.
+            </div>
+          </div>
+          <div class="doc-card__footer">
+            <span class="doc-card__footer-meta">Version 1.0 — 24 Jun 2026</span>
+            <div class="doc-card__actions">
+              <button class="btn btn--primary btn--small" onclick="openDoc('Acceptable Use Policy', '../docs/html/aup-bright-smile.html')">
+                <span class="material-symbols-rounded btn--icon">visibility</span>
+                Review
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. Data Retention Schedule -->
+        <div class="doc-card">
+          <div class="doc-card__header">
+            <div class="doc-card__icon" style="background: var(--color-pending-bg); color: var(--color-pending);">
+              <span class="material-symbols-rounded">schedule</span>
+            </div>
+            <div class="doc-card__meta">
+              <h3>Data Retention Schedule</h3>
+              <span class="doc-card__ref">ITL-BSSS-DRS-001</span>
+            </div>
+            <span class="status-badge status-badge--pending">Pending</span>
+          </div>
+          <div class="doc-card__body">
+            <div class="doc-card__summary">
+              <strong>What this means for you</strong>
+              How long we keep different types of data — client records, booking history, before/after photos — and when it gets securely deleted. Keeps you compliant with UK law.
+            </div>
+          </div>
+          <div class="doc-card__footer">
+            <span class="doc-card__footer-meta">Version 1.0 — 24 Jun 2026</span>
+            <div class="doc-card__actions">
+              <button class="btn btn--primary btn--small" onclick="openDoc('Data Retention Schedule', '../docs/html/data-retention-schedule-bright-smile.html')">
+                <span class="material-symbols-rounded btn--icon">visibility</span>
+                Review
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Document Viewer Modal -->
+  <div class="doc-viewer-overlay" id="docViewer">
+    <div class="doc-viewer">
+      <div class="doc-viewer__header">
+        <h2 id="docViewerTitle">Document</h2>
+        <button class="doc-viewer__close" onclick="closeDoc()" aria-label="Close document viewer">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="doc-viewer__body">
+        <iframe id="docViewerFrame" title="Document content"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__content">
+        <div class="footer__brand">
+          <div class="footer__brand-icon">✦</div>
+          <span class="footer__brand-name">Bright Smile &amp; Skin Solutions</span>
+        </div>
+        <div class="footer__links">
+          <a href="index.html">Overview</a>
+          <a href="documents.html">Documents</a>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 In The Look Software Company. All rights reserved.</p>
+        <span class="footer__powered">Built with care by <strong>worzl.ai</strong></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Scroll header shadow
+    window.addEventListener('scroll', () => {
+      document.getElementById('header').classList.toggle('header--scrolled', window.scrollY > 10);
+    });
+
+    // Document Viewer
+    function openDoc(title, url) {
+      const overlay = document.getElementById('docViewer');
+      document.getElementById('docViewerTitle').textContent = title;
+      document.getElementById('docViewerFrame').src = url;
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDoc() {
+      const overlay = document.getElementById('docViewer');
+      document.getElementById('docViewerFrame').src = '';
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Close on overlay click
+    document.getElementById('docViewer').addEventListener('click', function(e) {
+      if (e.target === this) closeDoc();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeDoc();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "name": "itl-bright-smile-and-skin-solutions",
+  "owner": "itl",
+  "type": "client",
+  "tier": 2,
+  "stack": {
+    "frontend": "static-html",
+    "backend": "nginx",
+    "database": null,
+    "hosting": "cloud-run",
+    "auth": null
+  },
+  "gcp": {
+    "project": "itl-bright-smile-web",
+    "projectNumber": "292390947245",
+    "region": "europe-west2",
+    "service": "bright-smile-prod",
+    "billingAccount": "0162B1-B2AB5E-625B57"
+  },
+  "gemini": {
+    "workspace": "itl-clients",
+    "license": "gemini-enterprise",
+    "cloudAiCompanion": true
+  },
+  "git": {
+    "org": "worzl-ai",
+    "repo": "itl-bright-smile-and-skin-solutions",
+    "branches": {
+      "production": "main",
+      "staging": "staging",
+      "development": "dev"
+    }
+  },
+  "safety": "strict",
+  "models": {
+    "code": "claude-opus",
+    "research": "gemini-pro",
+    "review": "gemini-flash",
+    "docs": "gemini-pro"
+  },
+  "commands": {
+    "build": null,
+    "test": null,
+    "lint": null,
+    "deploy": "gcloud run deploy",
+    "smokeTest": ".agent/smoke-test.sh"
+  }
+}
