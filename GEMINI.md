@@ -20,6 +20,38 @@ Project changelog and known-good state log for the Bright Smile & Skin Solutions
 
 ## Changelog
 
+### 2026-07-02 — Client Portal & Governance Document Delivery (Session 5)
+
+**itl-bright-smile-and-skin-solutions commits:** `d21a6fc` (chore: session close — commit outstanding changes)
+
+#### Client Demo Portal
+- **Designed and implemented** the client demo portal styled with "Bright Smile Glow v1" (matching the light, teal, Manrope design system of the main site).
+- **Created landing page** (`portal/index.html`) featuring a four-step launch readiness tracker, contact panel, and external resource cards (Booking, Instagram, Preview).
+- **Created document viewer** (`portal/documents.html`) displaying 8 project cards with plain-English summaries, current statuses, and an inline document viewer modal.
+- **Created DESIGN.md** as a developer/agent design system reference.
+
+#### Document Generation
+- **Successfully generated 6 legal & governance documents** adapted from Loud Hall Music templates, custom-tailored for the beauty and aesthetics industry.
+- **Documents created**: NDA (`docs/nda-itl-bright-smile.md`), Service Agreement / Contract (`docs/contract-itl-bright-smile.md`), Data Processing Agreement (`docs/dpa-itl-bright-smile.md`), Privacy Policy (`docs/privacy-policy-bright-smile.md`), Acceptable Use Policy (`docs/aup-bright-smile.md`), and Data Retention Schedule (`docs/data-retention-schedule-bright-smile.md`).
+- **All templates adapted**: Children's data references (KCSiE, Ofsted) removed; adult-only clauses, beauty treatment records (with 7-year retention), before/after photos, and specific sub-processors (Hey Goldie, Google Analytics) added.
+
+#### Infrastructure & Deployment
+- **Updated Dockerfile** to include `portal/` and `docs/` in static file serving.
+- **Successfully deployed** `bright-smile-prod` service to Google Cloud Run in `europe-west2` (London) under `itl-software-company-web` GCP project.
+- **Validated deployment** with automated smoke tests.
+
+#### Known Good State
+
+| Item | Status |
+|---|---|
+| Site deployment (Cloud Run) | ✅ Live ([URL](https://bright-smile-prod-789212110055.europe-west2.run.app)) |
+| Client Portal | ✅ Live ([URL](https://bright-smile-prod-789212110055.europe-west2.run.app/portal/)) |
+| Governance Documents | ✅ Complete (6/6 in `/docs/`) |
+| Location corrections | ✅ Complete (Newcastle under Lyme purges) |
+| Codebase state | ✅ Clean & committed (`d21a6fc`) |
+
+---
+
 ### 2026-06-24 — BRD Refinement, Client Onboarding & Document Consolidation (Session 4)
 
 **itl-bright-smile-and-skin-solutions commits:** `bc1c25e` (chore: session close — commit outstanding changes)
