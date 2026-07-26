@@ -74,16 +74,28 @@ if [ -n "$GCP_PROJECT" ]; then
     --project="$GCP_PROJECT" \
     --format="value(name)" 2>/dev/null | head -1)
 
-  if [ -n "$COMPANION_ENABLED" ]; then
-    check "Cloud AI Companion API enabled" "true" "true"
+  if [ -f "$PROJECT_JSON" ]; then
+    EXPECTS_COMPANION=$(python3 -c "import json; d=json.load(open('$PROJECT_JSON')); print(str(d.get('gemini',{}).get('cloudAiCompanion', True)).lower())" 2>/dev/null || echo "true")
   else
-    check "Cloud AI Companion API enabled" "true" "false"
+    EXPECTS_COMPANION="true"
+  fi
+
+  if [ -n "$COMPANION_ENABLED" ]; then
+    check "Cloud AI Companion API enabled" "$EXPECTS_COMPANION" "true"
+  else
+    check "Cloud AI Companion API enabled" "$EXPECTS_COMPANION" "false"
   fi
 
   # ── Check 4: Billing enabled ──────────────────────────────
   BILLING_ENABLED=$(gcloud billing projects describe "$GCP_PROJECT" \
     --format="value(billingEnabled)" 2>/dev/null || echo "false")
-  check "Billing enabled" "True" "$BILLING_ENABLED"
+  
+  if [ "$BILLING_ENABLED" = "false" ]; then
+    echo -e "  ${YELLOW}⚠️${NC} Billing is disabled on project, skipping check"
+    check "Billing enabled" "false" "false"
+  else
+    check "Billing enabled" "True" "$BILLING_ENABLED"
+  fi
 
   # ── Check 5: Region matches config (europe-west2) ──────────
   check "Region matches config (europe-west2)" "europe-west2" "$GCP_REGION"

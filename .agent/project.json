@@ -18,9 +18,9 @@
     "billingAccount": "0162B1-B2AB5E-625B57"
   },
   "gemini": {
-    "workspace": "itl-clients",
-    "license": "gemini-enterprise",
-    "cloudAiCompanion": true
+    "workspace": "worzlai-gmail",
+    "license": "ai-ultra-personal",
+    "cloudAiCompanion": false
   },
   "git": {
     "org": "worzl-ai",
@@ -33,7 +33,7 @@
   },
   "safety": "strict",
   "models": {
-    "code": "claude-opus",
+    "code": "gemini-pro",
     "research": "gemini-pro",
     "review": "gemini-flash",
     "docs": "gemini-pro"
