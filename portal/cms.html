@@ -290,10 +290,26 @@
         </div>
 
         <label class="form__label">Short Description</label>
-        <textarea id="sDesc" class="form__textarea" rows="3" placeholder="Brief summary of what this treatment does and who it is ideal for..." required></textarea>
+        <textarea id="sDesc" class="form__textarea" rows="2" placeholder="Brief summary of what this treatment does and who it is ideal for..." required></textarea>
 
-        <label class="form__label">Key Benefits / Bullet Points (One per line)</label>
-        <textarea id="sBenefits" class="form__textarea" rows="3" placeholder="Enamel-safe formula&#10;Visible results in 1 session&#10;Zero downtime"></textarea>
+        <label class="form__label">Key Benefits / Features (One per line)</label>
+        <textarea id="sBenefits" class="form__textarea" rows="2" placeholder="Enamel-safe formula&#10;Visible results in 1 session&#10;Zero downtime"></textarea>
+
+        <!-- Pre-Care & Aftercare Management -->
+        <div style="background: var(--color-bg-soft); border: 1px solid var(--color-border); padding: 16px; border-radius: var(--border-radius-sm); margin-bottom: 16px;">
+          <h4 style="margin: 0 0 12px; font-size: 0.95rem; color: var(--color-primary-dark); display: flex; align-items: center; gap: 6px;">
+            <span class="material-symbols-rounded" style="font-size: 1.2rem;">fact_check</span> Patient Portal Pre-Care &amp; Aftercare Guidelines
+          </h4>
+
+          <label class="form__label">Pre-Care Preparation Checklist (One step per line)</label>
+          <textarea id="sPreCare" class="form__textarea" rows="3" placeholder="Step 1: Brush gently 30 mins prior&#10;Step 2: Avoid staining drinks 24h prior&#10;Step 3: Eat a light meal beforehand"></textarea>
+
+          <label class="form__label">Aftercare Banner / Key Rule</label>
+          <input type="text" id="sAftercareHighlight" class="form__input" placeholder="e.g. 🦷 The 48-Hour 'White Diet' Rule: Only white foods...">
+
+          <label class="form__label">Post-Treatment Recovery Protocols (One step per line)</label>
+          <textarea id="sAftercare" class="form__textarea" rows="3" placeholder="✓ Strictly avoid tea, coffee, and curry for 48 hours&#10;✓ Drink 2L of water daily&#10;✓ Apply broad-spectrum SPF 50 daily"></textarea>
+        </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
           <button type="button" class="btn btn--outline" onclick="closeServiceModal()">Cancel</button>
@@ -352,7 +368,7 @@
   <script type="module">
     import { db, collection, addDoc, getDocs, getDoc, setDoc, doc, deleteDoc, updateDoc, query, orderBy, serverTimestamp } from './firebase-init.js';
 
-    // All 22 official clinic services from services.html
+    // All 22 official clinic services from services.html with tailored Pre-Care & Aftercare
     const defaultServices = [
       // 1. Teeth Whitening
       {
@@ -363,7 +379,18 @@
         duration: 90,
         icon: "dentistry",
         desc: "Expert in-clinic whitening treatment for a brilliant, natural-looking smile. Safe, enamel-preserving formula for results that last.",
-        benefits: ["Enamel-safe, professional-grade formula", "Visible results in a single session", "Suitable for sensitive teeth", "Perfect for weddings, proms, and events"]
+        benefits: ["Enamel-safe, professional-grade formula", "Visible results in a single session", "Suitable for sensitive teeth", "Perfect for weddings, proms, and events"],
+        preCare: [
+          "Brush gently with a soft toothbrush 30 minutes prior to clear surface plaque.",
+          "Avoid dark staining foods (black tea, coffee, red wine, curry) for 24 hours prior.",
+          "Eat a satisfying meal before arrival as you will adhere to the 'White Diet' afterwards."
+        ],
+        aftercareHighlight: "🦷 The 48-Hour 'White Diet' Rule: Strictly consume only white/clear foods (chicken, white rice, pasta with white sauce, water, milk).",
+        aftercare: [
+          "Strictly avoid tea, coffee, colas, red wine, curry, bolognese, berries, and smoking/vaping for 48 hours.",
+          "Mild transient sensitivity to cold is normal and subsides within 24 hours.",
+          "Use a straw for coloured beverages in future to prolong your radiant shade."
+        ]
       },
       // 2. Fat Dissolving (All 30 mins)
       {
@@ -374,7 +401,18 @@
         duration: 30,
         icon: "body_fat",
         desc: "Targeted body contouring for the stomach area to eliminate stubborn fat deposits without surgery.",
-        benefits: ["Non-surgical permanent fat cell reduction", "Quick 30-minute procedure", "Minimal downtime"]
+        benefits: ["Non-surgical permanent fat cell reduction", "Quick 30-minute procedure", "Minimal downtime"],
+        preCare: [
+          "Drink 1.5 to 2 litres of fresh water throughout the day leading up to your session.",
+          "Avoid alcohol, aspirin, ibuprofen, and Vitamin E for 24 hours prior to minimise bruising.",
+          "Wear loose, comfortable clothing around the abdomen."
+        ],
+        aftercareHighlight: "💧 Mandatory 2–3L Daily Hydration: Drink plenty of water for 7–10 days to flush emulsified lipids through your lymphatic system.",
+        aftercare: [
+          "Swelling, tenderness, and warmth are expected and indicate the active solution is working.",
+          "Starting Day 3, gently massage the stomach in circular motions for 5 mins twice daily.",
+          "Avoid saunas, steam rooms, intense workouts, and alcohol for 48 hours."
+        ]
       },
       {
         id: "fat_dissolving_love_handles",
@@ -384,7 +422,18 @@
         duration: 30,
         icon: "body_fat",
         desc: "Precision fat dissolving injections for flank contouring and love handles.",
-        benefits: ["Targeted waistline shaping", "Clinically proven compound", "Permanent fat reduction"]
+        benefits: ["Targeted waistline shaping", "Clinically proven compound", "Permanent fat reduction"],
+        preCare: [
+          "Hydrate with 2L of water on the day of treatment.",
+          "Avoid blood thinners, ibuprofen, and alcohol 24h prior.",
+          "Wear loose-waisted bottoms."
+        ],
+        aftercareHighlight: "💧 Mandatory 2–3L Daily Hydration: Assist lymphatic drainage to process dissolved flank fat cells.",
+        aftercare: [
+          "Swelling and firm fullness under the skin is normal for 1–2 weeks.",
+          "Massage the flank areas gently starting on Day 3 twice daily.",
+          "Avoid hot baths and intense gym sessions for 48 hours."
+        ]
       },
       {
         id: "fat_dissolving_thighs",
@@ -394,7 +443,18 @@
         duration: 30,
         icon: "body_fat",
         desc: "Targeted fat dissolving for inner or outer thigh areas to smooth and contour legs.",
-        benefits: ["Streamlines thigh silhouette", "Tightens skin texture", "Targeted application"]
+        benefits: ["Streamlines thigh silhouette", "Tightens skin texture", "Targeted application"],
+        preCare: [
+          "Drink 1.5–2L water beforehand.",
+          "Avoid aspirin, alcohol, and NSAIDs 24h prior.",
+          "Wear loose trousers or joggers."
+        ],
+        aftercareHighlight: "💧 Drink 2–3L of water daily for 7 days to accelerate cellular elimination.",
+        aftercare: [
+          "Expect mild swelling and tenderness around the inner/outer thigh area.",
+          "Perform gentle upward lymphatic massage starting Day 3.",
+          "Refrain from high-impact leg training for 48 hours."
+        ]
       },
       {
         id: "fat_dissolving_jaw",
@@ -403,8 +463,19 @@
         price: "£95",
         duration: 30,
         icon: "body_fat",
-        desc: "Submental fat dissolving injections to sculpt and define the jawline and eliminate double chin.",
-        benefits: ["Sculpts and defines jawline", "Non-surgical profile transformation", "Fast recovery"]
+        desc: "Define your jawline and reduce submental fullness (double chin) permanently with targeted injections.",
+        benefits: ["Sculpts sharp jawline definition", "Permanent submental fat removal", "No general anaesthesia"],
+        preCare: [
+          "Arrive with a clean jawline/neck area.",
+          "Drink a glass of water beforehand.",
+          "Avoid alcohol and blood thinners 24h prior."
+        ],
+        aftercareHighlight: "💧 Stay Hydrated: Drink 2L water daily to support rapid lymphatic drainage.",
+        aftercare: [
+          "Submental swelling (the 'bullfrog effect') is completely normal and peaks in days 1–3 before subsiding.",
+          "Sleep with your head slightly elevated on two pillows tonight.",
+          "Gently massage the under-chin area starting Day 3."
+        ]
       },
       {
         id: "fat_dissolving_bra_fat",
@@ -413,8 +484,11 @@
         price: "£70",
         duration: 30,
         icon: "body_fat",
-        desc: "Targeted fat dissolving injections for upper back and bra bulge area.",
-        benefits: ["Smooths back profile", "Quick treatment", "Boosts body confidence"]
+        desc: "Targeted contouring for stubborn back and bra-line fat deposits.",
+        benefits: ["Smooths back profile under clothing", "Precise application", "Quick recovery"],
+        preCare: ["Hydrate with water beforehand.", "Wear a loose, non-restrictive bra or top.", "Avoid NSAIDs 24h prior."],
+        aftercareHighlight: "💧 2–3L Daily Water Intake for 7 days.",
+        aftercare: ["Wear a soft, non-underwired bra for 48h.", "Massage the area gently starting Day 3.", "Avoid saunas and heavy lifting for 48h."]
       },
       {
         id: "fat_dissolving_knee",
@@ -423,8 +497,11 @@
         price: "£70",
         duration: 30,
         icon: "body_fat",
-        desc: "Targeted contouring injections for localized stubborn fat around the knees.",
-        benefits: ["Contours knee area", "Safe and effective", "Non-invasive"]
+        desc: "Specialised contouring to eliminate localized fatty pockets around the knee joints.",
+        benefits: ["Streamlines knee contours", "Permanent fat reduction", "Quick treatment time"],
+        preCare: ["Drink plenty of water.", "Wear loose shorts or wide trousers.", "Avoid alcohol 24h prior."],
+        aftercareHighlight: "💧 Stay well hydrated to help clear dissolved lipids.",
+        aftercare: ["Mild swelling around knee is normal.", "Gentle massage starting Day 3.", "Avoid heavy squats or running for 48h."]
       },
       {
         id: "fat_dissolving_under_bum",
@@ -433,10 +510,13 @@
         price: "£70",
         duration: 30,
         icon: "body_fat",
-        desc: "Targeted fat dissolving injections under the buttocks to refine the gluteal fold.",
-        benefits: ["Lifts and refines contour", "Permanent fat cell destruction", "Minimal downtime"]
+        desc: "Contour and lift the gluteal fold by dissolving stubborn sub-buttock fat rolls.",
+        benefits: ["Enhances gluteal fold definition", "Targeted body sculpting", "Permanent results"],
+        preCare: ["Drink 1.5L water beforehand.", "Wear loose underwear and clothing.", "Avoid alcohol 24h prior."],
+        aftercareHighlight: "💧 Mandatory 2–3L water daily for 7 days.",
+        aftercare: ["Swelling is expected; avoid tight shapewear for 48h.", "Massage upward starting Day 3.", "Avoid hot tubs and intense gym sessions for 48h."]
       },
-      // 3. Facial & Skincare Treatments
+      // 3. Facials & Skincare
       {
         id: "facial_skin_booster",
         title: "Skin Booster",
@@ -444,8 +524,20 @@
         price: "£150",
         duration: 30,
         icon: "auto_awesome",
-        desc: "Intensive micro-droplet hydration and rejuvenation treatment for luminous, youthful skin.",
-        benefits: ["Deep dermal hydration", "Stimulates natural collagen", "Instant radiant glow"]
+        desc: "Intensive micro-droplet hyaluronic acid hydration treatment for luminous, plump, and deeply rejuvenated skin.",
+        benefits: ["Intense deep cellular hydration", "Boosts natural elasticity", "Long-lasting radiant skin barrier"],
+        preCare: [
+          "Pause retinoids, AHA/BHA chemical peels, and Vitamin C 3–5 days prior.",
+          "Arrive makeup-free.",
+          "Avoid direct sunbeds or sunburn 1 week prior."
+        ],
+        aftercareHighlight: "🚫 Strict No-Makeup for 24 Hours: Allow micro-injection points to seal cleanly.",
+        aftercare: [
+          "Apply broad-spectrum mineral SPF 50 daily.",
+          "Use only pure hyaluronic acid serum and gentle moisturiser for 48h.",
+          "Sleep on a fresh clean pillowcase tonight and avoid touching your face.",
+          "Avoid retinols, chemical acids, and scrubs for 5–7 days."
+        ]
       },
       {
         id: "facial_deluxe",
@@ -454,8 +546,11 @@
         price: "£80",
         duration: 60,
         icon: "spa",
-        desc: "Our premium facial experience for deep cleansing, exfoliation, and visible radiance.",
-        benefits: ["Comprehensive 60-minute care", "Custom mask & lymphatic massage", "Suitable for all skin types"]
+        desc: "Our signature multi-step clinical facial experience for deep steam cleansing, gentle extraction, and visible radiance.",
+        benefits: ["Deep pore detoxification", "Multi-layer nutrient infusion", "Immediate luminous glow"],
+        preCare: ["Arrive with bare skin if possible.", "Avoid facial waxing 48h prior.", "Drink water before arrival."],
+        aftercareHighlight: "🌸 Let Your Skin Breathe: No heavy foundation or makeup for 12 hours.",
+        aftercare: ["Apply SPF 50 daily.", "Drink plenty of water to maintain hydration.", "Avoid hot saunas and intense workouts for 24h."]
       },
       {
         id: "facial_detox",
@@ -464,8 +559,11 @@
         price: "£70",
         duration: 60,
         icon: "eco",
-        desc: "Purifying treatment to remove environmental impurities, unblock pores, and refresh congested skin.",
-        benefits: ["Deep pore purification", "Controls excess sebum", "Calms breakouts and redness"]
+        desc: "Purifying clinical treatment designed to clear congested pores, eliminate impurities, and soothe inflammation.",
+        benefits: ["Clears blemish-causing congestion", "Calms skin redness", "Balances natural sebum"],
+        preCare: ["Avoid exfoliating scrubs for 3 days before.", "Arrive makeup-free."],
+        aftercareHighlight: "🌸 Pure Skin Rest: Avoid makeup for 12 hours to prevent re-clogging cleared pores.",
+        aftercare: ["Keep skin hydrated with non-comedogenic moisturiser.", "Apply daily SPF.", "Avoid picking or touching the skin."]
       },
       {
         id: "facial_hydrofacial",
@@ -474,8 +572,11 @@
         price: "£65",
         duration: 90,
         icon: "water_drop",
-        desc: "Multi-step hydration treatment using vortex suction and active serums for plump, dewy skin.",
-        benefits: ["Painless extraction", "Intense peptide infusion", "Zero irritation or downtime"]
+        desc: "High-performance vortex suction infusion delivering deep exfoliation, painless extraction, and intense hydration.",
+        benefits: ["Vortex pore extraction", "Hyaluronic acid and peptide infusion", "Instantly dewy and plump texture"],
+        preCare: ["Pause strong retinol products 48h prior.", "Arrive hydrated."],
+        aftercareHighlight: "💧 Lock in Hydration: Drink 2L of water daily to prolong that plump dewy radiance.",
+        aftercare: ["No heavy makeup for 12 hours.", "Apply broad-spectrum SPF 50 daily.", "Avoid facial scrubs for 5 days."]
       },
       {
         id: "facial_microneedling",
@@ -485,7 +586,19 @@
         duration: 60,
         icon: "healing",
         desc: "Collagen-stimulating precision treatment for smoother texture, smaller pores, and reduced scarring.",
-        benefits: ["Triggers collagen synthesis", "Reduces fine lines and scars", "Improves product absorption"]
+        benefits: ["Triggers collagen synthesis", "Reduces fine lines and scars", "Improves product absorption"],
+        preCare: [
+          "Discontinue retinoids and chemical acids 3–5 days prior.",
+          "Arrive with clean, bare skin.",
+          "Avoid direct sun exposure or sunbeds for 1 week prior."
+        ],
+        aftercareHighlight: "🚫 Strict No-Makeup for 24–48 Hours: Protect open micro-channels from bacteria.",
+        aftercare: [
+          "Apply mineral SPF 50+ every single morning without fail.",
+          "Use only pure hyaluronic acid serum and soothing clinical balm.",
+          "Sleep on a clean pillowcase tonight and sanitise your phone screen.",
+          "Do not use retinol, Vitamin C, or exfoliating acids for 5–7 days."
+        ]
       },
       {
         id: "facial_rejuvenate",
@@ -495,7 +608,10 @@
         duration: 60,
         icon: "self_improvement",
         desc: "Targeted anti-ageing facial treatment to restore skin elasticity, vitality, and firmness.",
-        benefits: ["Firms and tones facial contours", "Boosts cellular renewal", "Nourishing antioxidant blend"]
+        benefits: ["Firms and tones facial contours", "Boosts cellular renewal", "Nourishing antioxidant blend"],
+        preCare: ["Arrive with clean skin.", "Avoid facial waxing 48h prior."],
+        aftercareHighlight: "🌸 Keep Skin Hydrated: Protect your fresh new collagen with daily SPF.",
+        aftercare: ["No makeup for 12 hours.", "Apply hydrating serum and SPF 50 daily.", "Drink 2L of water."]
       },
       {
         id: "facial_glow",
@@ -505,7 +621,10 @@
         duration: 60,
         icon: "light_mode",
         desc: "Brightening treatment designed to enhance your natural radiance and even out skin tone.",
-        benefits: ["Instant luminosity", "Gentle enzyme exfoliation", "Perfect before special events"]
+        benefits: ["Instant luminosity", "Gentle enzyme exfoliation", "Perfect before special events"],
+        preCare: ["Clean skin on arrival.", "Avoid sunburn prior."],
+        aftercareHighlight: "✨ Radiance Care: Keep skin protected with SPF 50.",
+        aftercare: ["Allow serum to absorb without makeup for 12h.", "Apply daily SPF.", "Stay hydrated."]
       },
       {
         id: "facial_express",
@@ -515,7 +634,10 @@
         duration: 60,
         icon: "bolt",
         desc: "A focused, effective facial for busy schedules — maximum glow and skin revitalization in minimal time.",
-        benefits: ["Quick cleanse, tone, and moisture", "Refreshes tired skin", "Great monthly maintenance"]
+        benefits: ["Quick cleanse, tone, and moisture", "Refreshes tired skin", "Great monthly maintenance"],
+        preCare: ["Arrive makeup-free if possible."],
+        aftercareHighlight: "🌸 Fresh Skin: Maintain your results with daily hydration and SPF.",
+        aftercare: ["Apply daily moisturiser and SPF.", "Drink plenty of water."]
       },
       {
         id: "facial_dermaplaning",
@@ -525,7 +647,17 @@
         duration: 45,
         icon: "content_cut",
         desc: "Surgical-grade exfoliation treatment to remove dead skin cells and peach fuzz for flawless makeup application.",
-        benefits: ["Silky-smooth texture", "Enhances skincare penetration", "Immediate glass-skin finish"]
+        benefits: ["Silky-smooth texture", "Enhances skincare penetration", "Immediate glass-skin finish"],
+        preCare: [
+          "Ensure skin is calm and free from active cystic breakouts or cold sores.",
+          "Pause exfoliating acids and scrubs for 3 days before."
+        ],
+        aftercareHighlight: "✨ Protect Your Fresh Stratum Corneum: Your new skin absorbs products deeper.",
+        aftercare: [
+          "Daily high-factor broad spectrum SPF 50 is mandatory.",
+          "Strictly no facial scrubs or exfoliating acids for 7 days.",
+          "Wait 24 hours before applying makeup for a flawless, airbrushed finish."
+        ]
       },
       {
         id: "facial_led_therapy",
@@ -535,7 +667,10 @@
         duration: 60,
         icon: "fluorescent",
         desc: "Targeted light-based therapy to stimulate collagen, reduce inflammation, and heal acne-prone skin.",
-        benefits: ["Clinically proven light wavelengths", "Soothes inflammation", "Safe and non-invasive"]
+        benefits: ["Clinically proven light wavelengths", "Soothes inflammation", "Safe and non-invasive"],
+        preCare: ["Arrive with clean skin free from heavy reflective creams.", "Inform Jacqie of light-sensitising meds."],
+        aftercareHighlight: "💡 Zero Downtime: Cellular healing and collagen synthesis stimulated.",
+        aftercare: ["Apply normal hydrating serums, moisturiser, and SPF.", "Drink water for optimal cellular recovery."]
       },
       // 4. Vitamin Injections (All 15 mins)
       {
@@ -546,7 +681,10 @@
         duration: 15,
         icon: "genetics",
         desc: "High-potency Biotin (Vitamin H/B7) injection to support healthy hair growth, strengthen nails, and nourish skin.",
-        benefits: ["Supports thicker, healthier hair", "Strengthens brittle nails", "Improves skin health"]
+        benefits: ["Supports thicker, healthier hair", "Strengthens brittle nails", "Improves skin health"],
+        preCare: ["Drink a large glass of water beforehand.", "Wear a loose-sleeved top."],
+        aftercareHighlight: "⚡ Direct Bioavailability: Supports hair, skin, and nail keratin structure.",
+        aftercare: ["Keep injection site clean and dry for 4 hours.", "Stay hydrated with 2L water daily.", "Mild tenderness at injection site fades quickly."]
       },
       {
         id: "vitamin_c",
@@ -556,7 +694,10 @@
         duration: 15,
         icon: "local_pharmacy",
         desc: "Pure Vitamin C injection providing an instant antioxidant boost, immune defense, and skin brightening.",
-        benefits: ["Powerful antioxidant protection", "Boosts collagen production", "Enhances immune resistance"]
+        benefits: ["Powerful antioxidant protection", "Boosts collagen production", "Enhances immune resistance"],
+        preCare: ["Stay hydrated.", "Eat a light snack beforehand.", "Wear loose clothing."],
+        aftercareHighlight: "⚡ Rapid Immune & Antioxidant Boost within 24 to 48 hours.",
+        aftercare: ["Keep injection site clean for 4 hours.", "Drink plenty of water.", "Avoid rubbing the site vigorously."]
       },
       {
         id: "vitamin_d",
@@ -566,7 +707,10 @@
         duration: 15,
         icon: "wb_sunny",
         desc: "Essential Vitamin D injection for optimal bone strength, hormonal balance, mood support, and immunity.",
-        benefits: ["Fights seasonal fatigue", "Strengthens bones and joints", "Supports immune system"]
+        benefits: ["Fights seasonal fatigue", "Strengthens bones and joints", "Supports immune system"],
+        preCare: ["Drink water before appointment.", "Wear loose sleeves."],
+        aftercareHighlight: "⚡ Sustained Wellness: Helps combat fatigue and supports bone/joint health.",
+        aftercare: ["Keep injection site clean and dry.", "Drink water throughout the day.", "Mild ache in muscle is normal and temporary."]
       },
       {
         id: "vitamin_b12",
@@ -576,7 +720,10 @@
         duration: 15,
         icon: "energy_savings_leaf",
         desc: "High-grade Methylcobalamin B12 injection to banish fatigue, boost metabolism, and improve mental focus.",
-        benefits: ["Instant cellular absorption", "Boosts daily energy levels", "Supports healthy metabolism & nervous system"]
+        benefits: ["Instant cellular absorption", "Boosts daily energy levels", "Supports healthy metabolism & nervous system"],
+        preCare: ["Drink a large glass of water beforehand.", "Eat a light snack.", "Wear a loose top."],
+        aftercareHighlight: "⚡ Energy & Metabolic Boost: Most clients feel renewed vitality within 24–72 hours.",
+        aftercare: ["Keep injection site clean and dry for 4 hours.", "Drink 2L of water to aid metabolism.", "Slight muscular tenderness resolves within a few hours."]
       }
     ];
 
@@ -624,10 +771,16 @@
           document.getElementById('sIcon').value = item.icon || 'dentistry';
           document.getElementById('sDesc').value = item.desc || '';
           document.getElementById('sBenefits').value = Array.isArray(item.benefits) ? item.benefits.join('\n') : (item.benefits || '');
+          document.getElementById('sPreCare').value = Array.isArray(item.preCare) ? item.preCare.join('\n') : (item.preCare || '');
+          document.getElementById('sAftercareHighlight').value = item.aftercareHighlight || '';
+          document.getElementById('sAftercare').value = Array.isArray(item.aftercare) ? item.aftercare.join('\n') : (item.aftercare || '');
         }
       } else {
         document.getElementById('serviceModalTitle').textContent = "Add New Treatment / Product";
         document.getElementById('editServiceId').value = "";
+        document.getElementById('sPreCare').value = "";
+        document.getElementById('sAftercareHighlight').value = "";
+        document.getElementById('sAftercare').value = "";
       }
 
       modal.classList.add('active');
@@ -658,6 +811,10 @@
         const id = document.getElementById('editServiceId').value;
         const benefitsRaw = document.getElementById('sBenefits').value.trim();
         const benefits = benefitsRaw ? benefitsRaw.split('\n').map(b => b.trim()).filter(Boolean) : [];
+        const preCareRaw = document.getElementById('sPreCare').value.trim();
+        const preCare = preCareRaw ? preCareRaw.split('\n').map(b => b.trim()).filter(Boolean) : [];
+        const aftercareRaw = document.getElementById('sAftercare').value.trim();
+        const aftercare = aftercareRaw ? aftercareRaw.split('\n').map(b => b.trim()).filter(Boolean) : [];
 
         const payload = {
           title: document.getElementById('sTitle').value.trim(),
@@ -667,6 +824,9 @@
           icon: document.getElementById('sIcon').value,
           desc: document.getElementById('sDesc').value.trim(),
           benefits: benefits,
+          preCare: preCare,
+          aftercareHighlight: document.getElementById('sAftercareHighlight').value.trim(),
+          aftercare: aftercare,
           updatedAt: serverTimestamp()
         };
 

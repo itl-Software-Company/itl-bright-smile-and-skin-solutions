@@ -381,27 +381,40 @@
     let currentBookingId = null;
     let currentBookingData = null;
 
-    // Guidance database
+    // Comprehensive Treatment-Specific Guidance Database
     const prepGuides = {
       teeth_whitening: [
-        { title: "Brush & Floss Beforehand", desc: "Brush gently 30 minutes before your appointment to remove plaque for an even whitening result." },
-        { title: "Avoid Staining Drinks 24h Prior", desc: "Minimise heavy tea, coffee, red wine, or curry consumption leading up to your session." },
-        { title: "Eat a Light Meal", desc: "You will need to adhere to the 'White Diet' for 24-48 hours after treatment, so eat comfortably before arriving." }
+        { title: "Brush Gently 30 Mins Prior", desc: "Brush gently with a soft toothbrush to clear surface plaque for an even, flawless whitening lift." },
+        { title: "Avoid Staining Foods 24h Before", desc: "Minimise dark tea, coffee, red wine, soy sauce, and curry leading up to your session." },
+        { title: "Eat a Good Meal Beforehand", desc: "You will follow the strict 48-hour 'White Diet' post-treatment, so eat comfortably before arriving." }
       ],
       fat_dissolving: [
-        { title: "Hydrate Thoroughly", desc: "Drink at least 1.5 to 2 litres of water on the day of treatment to assist lymphatic drainage." },
-        { title: "Avoid Blood Thinners & Alcohol", desc: "Avoid alcohol, aspirin, ibuprofen, or vitamin E 24 hours prior to minimise bruising." },
-        { title: "Wear Comfortable Clothing", desc: "Wear loose-fitting clothes around the target area for ease of treatment and comfort afterwards." }
+        { title: "Drink 1.5–2L Water Beforehand", desc: "Ample hydration primes your lymphatic system to process and eliminate dissolved fat cells." },
+        { title: "Avoid Alcohol & Blood Thinners (24h)", desc: "Avoid alcohol, aspirin, ibuprofen, and Vitamin E for 24 hours prior to minimise bruising." },
+        { title: "Wear Loose, Comfortable Clothes", desc: "Wear loose clothing over the target area (stomach, thighs, chin, etc.) for maximum comfort." }
       ],
-      facial: [
-        { title: "Pause Strong Actives 48h Prior", desc: "Avoid strong retinol, AHA/BHA chemical exfoliants, or benzoyl peroxide for 2 days before." },
-        { title: "Arrive With Clean Skin", desc: "Avoid heavy waterproof makeup or fake tan on the face/neck area on the day." },
-        { title: "Stay Sun Protected", desc: "Avoid sunbeds or active sunburn prior to any clinical facial treatment." }
+      microneedling: [
+        { title: "Pause Strong Actives (3–5 Days)", desc: "Discontinue retinoids, tretinoin, AHA/BHA chemical peels, and benzoyl peroxide 3-5 days before." },
+        { title: "Arrive With Clean, Bare Skin", desc: "Avoid wearing makeup, tinted moisturisers, or fake tan on your face on the day of treatment." },
+        { title: "Avoid Direct Sun & Sunbeds", desc: "Ensure your skin is free from active sunburn, irritation, or recent chemical peel treatments." }
       ],
-      vitamin: [
-        { title: "Stay Well Hydrated", desc: "Drink a large glass of water beforehand for optimal intramuscular absorption." },
-        { title: "Eat a Snack", desc: "Having a light snack 1 hour before ensures stable blood sugar during injection therapy." },
-        { title: "Wear Loose Sleeves", desc: "Wear a short-sleeved top or loose clothing for easy access to the upper arm or gluteal area." }
+      dermaplaning: [
+        { title: "No Active Breakouts or Sunburn", desc: "Ensure your skin is calm and free from open blemishes, active sunburn, or cold sores." },
+        { title: "Pause Exfoliating Acids (3 Days)", desc: "Avoid harsh scrubs or acid peels for 3 days before your dermaplaning appointment." }
+      ],
+      facials: [
+        { title: "Arrive Makeup-Free If Possible", desc: "A clean face allows Jacqie to perform an in-depth skin analysis and maximize treatment time." },
+        { title: "Avoid Waxing or Shaving (48h)", desc: "Avoid facial waxing, threading, or depilatory creams for 48 hours prior to prevent sensitivity." },
+        { title: "Stay Well Hydrated", desc: "Drinking water before your session enhances the plumping and hydration results of your facial." }
+      ],
+      led_therapy: [
+        { title: "Cleanse Skin Thoroughly", desc: "Skin should be clean and free from heavy reflective creams or makeup before light exposure." },
+        { title: "Note Light-Sensitising Meds", desc: "Inform Jacqie if you are currently taking any light-sensitising prescription medications." }
+      ],
+      vitamins: [
+        { title: "Drink a Large Glass of Water", desc: "Hydration enhances intramuscular blood flow and accelerates rapid cellular nutrient delivery." },
+        { title: "Eat a Light Snack", desc: "Having a snack 1 hour beforehand keeps your blood sugar steady during injection therapy." },
+        { title: "Wear a Loose-Sleeved Top", desc: "Wear loose clothing for quick, easy, and comfortable access to the upper arm injection site." }
       ]
     };
 
@@ -409,48 +422,91 @@
       teeth_whitening: `
         <div class="aftercare-highlight">
           <strong>🦷 The 48-Hour "White Diet" Rule:</strong>
-          <p style="margin: 6px 0 0; font-size: 0.95rem;">Your enamel pores remain open for 24–48 hours. Only consume non-staining foods: chicken, white rice, pasta with white sauce, cauliflower, milk, and water. Strictly avoid tea, coffee, red wine, curry, tomato sauces, and smoking.</p>
+          <p style="margin: 6px 0 0; font-size: 0.95rem;">Your enamel pores remain open for up to 48 hours post-whitening. <strong>Consume ONLY non-staining foods:</strong> chicken, turkey, white fish, white rice, pasta with white sauce, peeled potatoes, egg whites, cauliflower, water, and milk.</p>
         </div>
         <ul style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
-          <li>✓ <strong>Managing Sensitivity:</strong> Mild sensitivity to cold is normal and usually subsides in 24 hours. Use sensitive toothpaste if needed.</li>
-          <li>✓ <strong>Avoid Extremes:</strong> Stick to lukewarm drinks rather than ice-cold or piping-hot beverages for the first day.</li>
-          <li>✓ <strong>Long-term Maintenance:</strong> Use a straw for coloured drinks in the future to keep your smile bright!</li>
+          <li>❌ <strong>Strictly Avoid for 48 Hours:</strong> Coffee, tea, colas, red wine, curry, tomato bolognese, chocolate, berries, beetroot, soy sauce, and smoking/vaping.</li>
+          <li>✓ <strong>Managing Sensitivity:</strong> Mild transient sensitivity to cold/air is normal and subsides in 24 hours. Avoid ice-cold drinks today and use sensitive toothpaste if needed.</li>
+          <li>✓ <strong>Long-Term Maintenance:</strong> Use a straw for dark beverages in future and keep up with 6-month hygiene cleans to maintain your brilliant shade.</li>
         </ul>
       `,
       fat_dissolving: `
         <div class="aftercare-highlight">
-          <strong>💧 Hydration is Essential:</strong>
-          <p style="margin: 6px 0 0; font-size: 0.95rem;">Drink 2 to 3 litres of water daily for the next 7 days. The treated fat cells are processed and eliminated via your lymphatic system and kidneys.</p>
+          <strong>💧 Mandatory 2–3L Daily Hydration:</strong>
+          <p style="margin: 6px 0 0; font-size: 0.95rem;">Drink <strong>2 to 3 litres of fresh water daily for the next 7–10 days</strong>. The dissolved fat cells and lipid waste are broken down and eliminated entirely via your lymphatic system and kidneys.</p>
         </div>
         <ul style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
-          <li>✓ <strong>Swelling & Warmth:</strong> Mild redness, swelling, and a firm feeling are expected and indicate the product is actively working.</li>
-          <li>✓ <strong>Gentle Massage:</strong> Starting day 3, gently massage the treated area for 5 minutes twice daily to facilitate drainage.</li>
-          <li>✓ <strong>Exercise & Heat:</strong> Avoid strenuous exercise, saunas, and hot baths for 48 hours.</li>
+          <li>✓ <strong>Swelling, Warmth & Firmness:</strong> Swelling, redness, and a firm feeling under the skin are completely normal signs the active compound is emulsifying fat. Peak swelling is days 1–3 and settles over 1–2 weeks.</li>
+          <li>✓ <strong>Lymphatic Massage (From Day 3):</strong> Gently massage the treated area with firm circular motions for 5 minutes twice daily starting on Day 3 to assist smooth contouring and drainage.</li>
+          <li>❌ <strong>Avoid Heat & Heavy Cardio (48h):</strong> Avoid hot saunas, steam rooms, intense workouts, and alcohol for 48 hours to prevent prolonged inflammation.</li>
         </ul>
       `,
-      facial: `
+      microneedling: `
         <div class="aftercare-highlight">
-          <strong>☀️ Sunscreen is Mandatory:</strong>
-          <p style="margin: 6px 0 0; font-size: 0.95rem;">Apply broad-spectrum SPF 50 daily. Your freshly treated skin is more receptive and sensitive to UV exposure.</p>
+          <strong>🚫 Strict No-Makeup for 24–48 Hours:</strong>
+          <p style="margin: 6px 0 0; font-size: 0.95rem;">Micro-channels created in your skin barrier remain open. <strong>Do not apply makeup, foundation, or makeup brushes for at least 24 hours</strong> to prevent bacteria entering the skin.</p>
         </div>
         <ul style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
-          <li>✓ <strong>No Makeup for 12–24h:</strong> Allow your pores and skin barrier to rest and breathe.</li>
-          <li>✓ <strong>Gentle Hydration:</strong> Use simple, fragrance-free hyaluronic acid moisturiser. Avoid retinols or acids for 3 days.</li>
-          <li>✓ <strong>Touch-Free:</strong> Avoid touching, rubbing, or picking at the face to keep bacteria away.</li>
+          <li>☀️ <strong>Broad Spectrum SPF 50+ is Mandatory:</strong> Your fresh new skin is ultra-vulnerable to UV damage. Apply mineral SPF 50 daily and strictly avoid sunbeds for 14 days.</li>
+          <li>✓ <strong>Gentle Barrier Hydration:</strong> Use only simple, unfragranced Hyaluronic Acid serum. Sleep on a fresh clean pillowcase tonight and avoid touching your face with unwashed hands.</li>
+          <li>❌ <strong>Pause Active Acids (5–7 Days):</strong> Do not use Retinol, Vitamin C, AHA/BHA glycolic/salicylic acids, or facial scrubs for 5–7 days until skin is completely calm.</li>
         </ul>
       `,
-      vitamin: `
+      dermaplaning: `
         <div class="aftercare-highlight">
-          <strong>⚡ Quick Absorption:</strong>
-          <p style="margin: 6px 0 0; font-size: 0.95rem;">Most clients feel a noticeable energy and wellness lift within 24 to 72 hours.</p>
+          <strong>✨ Protecting Your Fresh Stratum Corneum:</strong>
+          <p style="margin: 6px 0 0; font-size: 0.95rem;">Your top layer of dead skin and peach fuzz has been expertly cleared. Your skin will absorb active products much deeper — keep routine gentle and deeply hydrating.</p>
         </div>
         <ul style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
-          <li>✓ <strong>Injection Site Care:</strong> Keep the injection site clean and dry. Avoid rubbing vigorously for 4 hours.</li>
-          <li>✓ <strong>Hydration:</strong> Continue drinking plenty of water to support metabolism.</li>
-          <li>✓ <strong>Mild Tenderness:</strong> Slight muscular ache at the injection site is normal and fades quickly.</li>
+          <li>☀️ <strong>Daily High-Factor SPF 50:</strong> Freshly dermaplaned skin requires rigorous daily UV protection to prevent sun spots and pigmentation.</li>
+          <li>❌ <strong>No Physical Scrubs for 7 Days:</strong> Avoid harsh exfoliating scrubs, cleansing brushes, and active retinol serums for 5–7 days.</li>
+          <li>✓ <strong>Flawless Makeup (After 24h):</strong> Wait 24 hours before applying makeup; your products will glide on with an airbrushed, glassy finish!</li>
+        </ul>
+      `,
+      facials: `
+        <div class="aftercare-highlight">
+          <strong>🌸 Seal In Your Radiant Glow:</strong>
+          <p style="margin: 6px 0 0; font-size: 0.95rem;">Your skin has been deeply cleansed, exfoliated, and infused with active botanical nutrients. Let your skin breathe and absorb the hydration.</p>
+        </div>
+        <ul style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+          <li>✓ <strong>No Makeup for 12 Hours:</strong> Allow your pores to rest and remain clear of makeup for the rest of today.</li>
+          <li>☀️ <strong>Daily Sunscreen:</strong> Apply SPF 30+ or SPF 50 daily to protect and preserve your rejuvenated skin barrier.</li>
+          <li>✓ <strong>Drink Plenty of Water:</strong> Keep well-hydrated to maintain skin elasticity and prolong your plump, dewy glow.</li>
+        </ul>
+      `,
+      led_therapy: `
+        <div class="aftercare-highlight">
+          <strong>💡 Zero Downtime Cellular Healing:</strong>
+          <p style="margin: 6px 0 0; font-size: 0.95rem;">Light wavelengths have stimulated cellular ATP and collagen production with no surface damage or peeling.</p>
+        </div>
+        <ul style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+          <li>✓ <strong>Continue Normal Skincare:</strong> You can apply makeup, skincare, and sun protection immediately.</li>
+          <li>✓ <strong>Hydration Boost:</strong> Apply your favourite antioxidant serum and moisturiser to support active cellular repair.</li>
+        </ul>
+      `,
+      vitamins: `
+        <div class="aftercare-highlight">
+          <strong>⚡ Maximising Intramuscular Absorption:</strong>
+          <p style="margin: 6px 0 0; font-size: 0.95rem;">Your vitamin injection bypasses the digestive tract for direct cellular bioavailability. Most clients feel an energy and wellness lift within 24 to 72 hours.</p>
+        </div>
+        <ul style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+          <li>✓ <strong>Injection Site Care:</strong> Keep the injection area clean and dry. Avoid rubbing vigorously for 4 hours.</li>
+          <li>✓ <strong>Stay Well Hydrated:</strong> Drink 2 litres of water throughout the day to support nutrient distribution.</li>
+          <li>✓ <strong>Mild Tenderness:</strong> A slight ache in the muscle is normal and fades quickly within a few hours.</li>
         </ul>
       `
     };
+
+    function resolveGuideKey(serviceId, serviceTitle) {
+      const s = ((serviceId || '') + ' ' + (serviceTitle || '')).toLowerCase();
+      if (s.includes('whiten') || s.includes('teeth')) return 'teeth_whitening';
+      if (s.includes('fat') || s.includes('dissolv') || s.includes('stomach') || s.includes('jaw') || s.includes('chin') || s.includes('thigh') || s.includes('bra') || s.includes('knee') || s.includes('bum')) return 'fat_dissolving';
+      if (s.includes('microneedl') || s.includes('booster')) return 'microneedling';
+      if (s.includes('dermaplan')) return 'dermaplaning';
+      if (s.includes('led')) return 'led_therapy';
+      if (s.includes('vitamin') || s.includes('b12') || s.includes('biotin') || s.includes('injection')) return 'vitamins';
+      return 'facials';
+    }
 
     // Tab Switching
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -563,7 +619,7 @@
       }
     }
 
-    function renderAppointment(id, data) {
+    async function renderAppointment(id, data) {
       currentBookingId = id;
       currentBookingData = data;
 
@@ -606,27 +662,79 @@
         document.getElementById('uploadTrigger').innerHTML = `<img src="${data.photoPreviewUrl}" alt="Uploaded consultation preview">`;
       }
 
-      // Populate Prep Checklist
-      const serviceKey = (data.service || '').toLowerCase().replace(/[^a-z_]/g, '');
-      const matchedPrep = prepGuides[serviceKey] || prepGuides.teeth_whitening;
+      // Fetch custom pre-care and aftercare from service document if available
+      let customPreCare = null;
+      let customAftercareHighlight = null;
+      let customAftercare = null;
+
+      try {
+        const sId = data.serviceId || data.service;
+        if (sId) {
+          const sSnap = await getDoc(doc(db, "services", sId));
+          if (sSnap.exists()) {
+            const sData = sSnap.data();
+            if (sData.preCare && sData.preCare.length > 0) customPreCare = sData.preCare;
+            if (sData.aftercareHighlight) customAftercareHighlight = sData.aftercareHighlight;
+            if (sData.aftercare && sData.aftercare.length > 0) customAftercare = sData.aftercare;
+          }
+        }
+      } catch (e) {
+        console.warn("Could not fetch custom service protocols:", e);
+      }
+
+      const guideKey = resolveGuideKey(data.serviceId || data.service, cleanService);
+      const defaultPrep = prepGuides[guideKey] || prepGuides.teeth_whitening;
       const prepContainer = document.getElementById('prepChecklistContainer');
       prepContainer.innerHTML = '';
-      matchedPrep.forEach((step, idx) => {
-        const item = document.createElement('div');
-        item.className = 'checklist-item';
-        item.innerHTML = `
-          <span class="step-badge">${idx + 1}</span>
-          <div>
-            <strong style="font-size: 1.05rem;">${step.title}</strong>
-            <p style="margin: 4px 0 0; color: var(--color-text-light); font-size: 0.92rem;">${step.desc}</p>
-          </div>
-        `;
-        prepContainer.appendChild(item);
-      });
+
+      if (customPreCare && customPreCare.length > 0) {
+        customPreCare.forEach((stepText, idx) => {
+          const item = document.createElement('div');
+          item.className = 'checklist-item';
+          item.innerHTML = `
+            <span class="step-badge">${idx + 1}</span>
+            <div>
+              <strong style="font-size: 1.05rem;">Step ${idx + 1}</strong>
+              <p style="margin: 4px 0 0; color: var(--color-text-light); font-size: 0.92rem;">${stepText}</p>
+            </div>
+          `;
+          prepContainer.appendChild(item);
+        });
+      } else {
+        defaultPrep.forEach((step, idx) => {
+          const item = document.createElement('div');
+          item.className = 'checklist-item';
+          item.innerHTML = `
+            <span class="step-badge">${idx + 1}</span>
+            <div>
+              <strong style="font-size: 1.05rem;">${step.title}</strong>
+              <p style="margin: 4px 0 0; color: var(--color-text-light); font-size: 0.92rem;">${step.desc}</p>
+            </div>
+          `;
+          prepContainer.appendChild(item);
+        });
+      }
 
       // Populate Aftercare Guide
-      const matchedAftercare = aftercareGuides[serviceKey] || aftercareGuides.teeth_whitening;
-      document.getElementById('aftercareContentContainer').innerHTML = matchedAftercare;
+      if (customAftercare && customAftercare.length > 0) {
+        let customHtml = '';
+        if (customAftercareHighlight) {
+          customHtml += `
+            <div class="aftercare-highlight">
+              <strong>${customAftercareHighlight}</strong>
+            </div>
+          `;
+        }
+        customHtml += '<ul style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">';
+        customAftercare.forEach(item => {
+          customHtml += `<li>✓ ${item}</li>`;
+        });
+        customHtml += '</ul>';
+        document.getElementById('aftercareContentContainer').innerHTML = customHtml;
+      } else {
+        const matchedAftercare = aftercareGuides[guideKey] || aftercareGuides.teeth_whitening;
+        document.getElementById('aftercareContentContainer').innerHTML = matchedAftercare;
+      }
 
       // Add to calendar helper
       document.getElementById('addToCalBtn').onclick = () => {

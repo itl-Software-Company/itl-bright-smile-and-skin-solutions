@@ -326,16 +326,16 @@
         return;
       }
       
-      const submitBtn = form.querySelector('button[type="submit"]');
-      submitBtn.textContent = 'Booking...';
-      submitBtn.disabled = true;
+      const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
+      const serviceTitle = selectedOption ? selectedOption.textContent.replace(/\s*\(.*?\)\s*/g, '').trim() : service;
 
       try {
         const docRef = await addDoc(collection(db, "bookings"), {
           name: name,
           email: email,
           phone: phone,
-          service: service,
+          service: serviceTitle,
+          serviceId: service,
           date: dateInput.value,
           time: selectedTimeStr,
           status: 'Pending',
