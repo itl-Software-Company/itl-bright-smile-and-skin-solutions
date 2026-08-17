@@ -22,7 +22,7 @@ Project changelog and known-good state log for the Bright Smile & Skin Solutions
 
 ### 2026-08-17 — Patient Hub, Services Catalog CMS & Availability Engine (Session 8)
 
-**itl-bright-smile-and-skin-solutions commits:** `[COMMITTING]`
+**itl-bright-smile-and-skin-solutions commits:** `2d5bf31` (feat: add patient appointment hub, services & pricing CMS, availability engine, and light theme polish)
 
 #### Patient & Client Hub
 - **Created Patient Appointment Portal (`my-appointment.html`):** Self-service hub with zero-password access via booking reference, dynamic appointment summary, Google Calendar integration, and direct clinic contact.
