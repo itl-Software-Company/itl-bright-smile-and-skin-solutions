@@ -205,11 +205,14 @@
       <!-- ================= TAB 1: SERVICES & PRICING ================= -->
       <div id="tabServicesView">
         <div class="cms-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
             <div>
               <h2 style="margin: 0 0 4px; font-size: 1.35rem;">Treatments &amp; Pricing Catalog</h2>
               <p class="bs-text-muted" style="margin: 0; font-size: 0.9rem;">These services are displayed on your public website and available for client booking.</p>
             </div>
+            <button class="btn btn--outline btn--small" onclick="syncAllServices()" title="Force sync all 22 official treatments to database">
+              <span class="material-symbols-rounded">sync</span> Sync All 22 Menu Services
+            </button>
           </div>
           
           <div id="servicesListContainer">
@@ -849,82 +852,99 @@
     });
 
     window.syncAllServices = async function() {
-      const container = document.getElementById('servicesListContainer');
-      container.innerHTML = '<p style="text-align: center; padding: 24px; color: var(--color-primary-dark);">Syncing all 22 official services from your menu into database...</p>';
+      const btn = event?.currentTarget;
+      if (btn) btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Syncing...';
       try {
-        for (const s of defaultServices) {
+        await Promise.all(defaultServices.map(s => {
           const { id, ...data } = s;
-          await setDoc(doc(db, "services", id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
-        }
+          return setDoc(doc(db, "services", id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
+        }));
         await loadServices();
+        alert("✓ All 22 official menu services synced successfully!");
       } catch (err) {
         console.error("Sync error:", err);
         alert("Failed to sync services: " + err.message);
+      } finally {
+        if (btn) btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Sync All 22 Menu Services';
       }
     };
 
-    async function loadServices() {
+    function renderServices(services) {
       const container = document.getElementById('servicesListContainer');
+      document.getElementById('serviceCount').textContent = services.length;
+
+      if (!services || services.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:20px;">No services in catalog.</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      services.forEach(s => {
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="width: 44px; height: 44px; border-radius: 10px; background: var(--color-primary-bg); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <span class="material-symbols-rounded">${s.icon || 'dentistry'}</span>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <strong style="font-size: 1.05rem;">${s.title}</strong>
+                <span class="price-pill">${s.price}</span>
+                <span style="font-size: 0.8rem; color: var(--color-text-light);">${s.duration || 60} mins</span>
+              </div>
+              <div style="font-size: 0.88rem; color: var(--color-text-light); margin-top: 4px;">
+                ${s.category} • ${s.desc ? s.desc.substring(0, 80) + '...' : ''}
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-shrink: 0;">
+            <button class="btn btn--outline btn--small" onclick="openServiceModal('${s.id}')">
+              <span class="material-symbols-rounded">edit</span> Edit
+            </button>
+            <button class="btn btn--outline btn--small" style="color: #dc2626; border-color: rgba(220,38,38,0.3);" onclick="deleteService('${s.id}')">
+              <span class="material-symbols-rounded">delete</span>
+            </button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    async function loadServices() {
+      // 1. Instantly display default services so page is NEVER blank or spinning
+      if (loadedServices.length === 0) {
+        loadedServices = [...defaultServices];
+        renderServices(loadedServices);
+      }
+
       try {
         const snapshot = await getDocs(collection(db, "services"));
-        loadedServices = [];
-
-        // If empty or fewer than 22 services, auto-seed all default services
-        if (snapshot.empty || snapshot.size < 22) {
-          for (const s of defaultServices) {
-            const { id, ...data } = s;
-            await setDoc(doc(db, "services", id), { ...data, createdAt: serverTimestamp() }, { merge: true });
-          }
-          const freshSnap = await getDocs(collection(db, "services"));
-          freshSnap.forEach(d => loadedServices.push({ id: d.id, ...d.data() }));
-        } else {
+        
+        if (!snapshot.empty) {
+          const freshList = [];
           snapshot.forEach(d => {
-            loadedServices.push({ id: d.id, ...d.data() });
+            freshList.push({ id: d.id, ...d.data() });
           });
+          loadedServices = freshList;
+          renderServices(loadedServices);
         }
 
-        document.getElementById('serviceCount').textContent = loadedServices.length;
-
-        if (loadedServices.length === 0) {
-          container.innerHTML = '<p style="text-align:center; padding:20px;">No services in catalog.</p>';
-          return;
+        // If Firestore is empty or missing services, seed in background in parallel
+        if (snapshot.empty || snapshot.size < 22) {
+          Promise.all(defaultServices.map(s => {
+            const { id, ...data } = s;
+            return setDoc(doc(db, "services", id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
+          })).catch(e => console.warn("Background seed notice:", e));
         }
-
-        container.innerHTML = '';
-        loadedServices.forEach(s => {
-          const row = document.createElement('div');
-          row.className = 'item-row';
-          row.innerHTML = `
-            <div style="display: flex; align-items: center; gap: 16px;">
-              <div style="width: 44px; height: 44px; border-radius: 10px; background: var(--color-primary-bg); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center;">
-                <span class="material-symbols-rounded">${s.icon || 'dentistry'}</span>
-              </div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                  <strong style="font-size: 1.05rem;">${s.title}</strong>
-                  <span class="price-pill">${s.price}</span>
-                  <span style="font-size: 0.8rem; color: var(--color-text-light);">${s.duration || 60} mins</span>
-                </div>
-                <div style="font-size: 0.88rem; color: var(--color-text-light); margin-top: 4px;">
-                  ${s.category} • ${s.desc ? s.desc.substring(0, 80) + '...' : ''}
-                </div>
-              </div>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn--outline btn--small" onclick="openServiceModal('${s.id}')">
-                <span class="material-symbols-rounded">edit</span> Edit
-              </button>
-              <button class="btn btn--outline btn--small" style="color: #dc2626; border-color: rgba(220,38,38,0.3);" onclick="deleteService('${s.id}')">
-                <span class="material-symbols-rounded">delete</span>
-              </button>
-            </div>
-          `;
-          container.appendChild(row);
-        });
 
       } catch (err) {
-        console.error("Load services error:", err);
-        container.innerHTML = '<p style="color:red; text-align:center;">Failed to load services catalog.</p>';
+        console.warn("Firestore fetch notice, displaying local catalog:", err);
+        // Ensure catalog is rendered regardless
+        if (loadedServices.length === 0) {
+          loadedServices = [...defaultServices];
+          renderServices(loadedServices);
+        }
       }
     }
 
