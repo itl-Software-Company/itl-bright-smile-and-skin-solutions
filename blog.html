@@ -190,16 +190,25 @@
       const listing = document.getElementById('blogListing');
       
       try {
-        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
+        const snapshot = await getDocs(collection(db, "posts"));
         
         if (!snapshot.empty) {
           // Clear static/loading content
           listing.innerHTML = '';
-          
+          const posts = [];
           snapshot.forEach(doc => {
-            const post = doc.data();
-            const date = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Just now';
+            posts.push({ id: doc.id, ...doc.data() });
+          });
+
+          // Sort in memory by createdAt descending
+          posts.sort((a, b) => {
+            const timeA = a.createdAt?.seconds || 0;
+            const timeB = b.createdAt?.seconds || 0;
+            return timeB - timeA;
+          });
+          
+          posts.forEach(post => {
+            const date = post.createdAt ? new Date(post.createdAt.toDate ? post.createdAt.toDate() : post.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Recently updated';
             
             // Basic icon mapping based on category keywords
             let icon = 'article';
@@ -210,7 +219,13 @@
             else if (cat.includes('vitamin') || cat.includes('inject')) icon = 'vaccines';
             
             const card = document.createElement('a');
-            card.href = '#'; // In a full implementation, this would link to a dynamic article page (e.g., article.html?id=...)
+            // Link to dedicated blog post page if matching slug exists
+            if (cat.includes('teeth') || cat.includes('whiten')) card.href = 'blog/teeth-whitening.html';
+            else if (cat.includes('fat') || cat.includes('body')) card.href = 'blog/fat-dissolving.html';
+            else if (cat.includes('face') || cat.includes('skin')) card.href = 'blog/facials.html';
+            else if (cat.includes('vitamin') || cat.includes('inject')) card.href = 'blog/vitamins.html';
+            else card.href = '#';
+
             card.className = 'blog-card blog-card--featured fade-up';
             card.style.opacity = '1';
             card.style.transform = 'none';
