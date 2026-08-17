@@ -20,36 +20,38 @@ Project changelog and known-good state log for the Bright Smile & Skin Solutions
 
 ## Changelog
 
-### 2026-08-17 — Patient Hub, Services Catalog CMS & Availability Engine (Session 8)
+### 2026-08-17 — Patient Hub, Services CMS, 4-Tier Portal Architecture & Client Launch Delivery (Session 8)
 
-**itl-bright-smile-and-skin-solutions commits:** `2d5bf31` (feat: add patient appointment hub, services & pricing CMS, availability engine, and light theme polish)
+**itl-bright-smile-and-skin-solutions commits:** `9b140e8`, `1a99c6b`, `245732a`, `fdaf5ac`, `8191024`, `2d5bf31`
 
-#### Patient & Client Hub
-- **Created Patient Appointment Portal (`my-appointment.html`):** Self-service hub with zero-password access via booking reference, dynamic appointment summary, Google Calendar integration, and direct clinic contact.
-- **Pre-Care & Aftercare Guides:** Interactive pre-treatment preparation checklists and post-treatment recovery protocols tailored by service (including the 48-Hour "White Diet" guide for whitening and lymphatic drainage rules for fat dissolving).
-- **Digital Medical Declaration:** Built pre-treatment health screening questionnaire (allergies, medications, pregnancy, previous treatments) with digital signature saving directly to Firestore.
-- **Photo & Concern Assessment:** Upload feature allowing clients to share smile/skin photos and describe treatment goals.
+#### 4-Tier Portal Architecture Harmonization
+- **Harmonized 4 Dedicated Portals:** Formally restructured the entire application into 4 distinct portals: (1) Public Clinic Website, (2) Patient Appointment Hub, (3) Clinic Admin Manager, and (4) ITL Proposal & Launch Portal.
+- **Unified Public Navigation:** Restored full 7-item navigation (`Home`, `Services`, `Blog`, `About`, `Contact`, `My Appointment`, `Book Online`) with responsive mobile toggle across `booking.html`, `my-appointment.html`, and all public pages.
+- **Clinic Admin Rebranding:** Replaced confusing "Client Portal" label in `portal/cms.html`, `portal/bookings.html`, and `portal/social.html` with authoritative **"Clinic Admin"** branding and direct navigation to calendar, treatments, and social tools.
+- **Proposal Portal Overhaul (`portal/index.html`):** Updated Launch Readiness Tracker to reflect live build status and added interactive cards linking to all 8 clinic tools.
 
-#### Admin Portal & Services CMS
-- **Created Services, Products & Pricing Manager (`portal/cms.html`):** Full CRUD catalog editor for treatments, retail products, pricing (£), and durations.
-- **Created 7-Day Weekly Schedule & Duration Manager (`portal/bookings.html`):** Monday–Sunday working hours editor with Open/Closed toggles and per-treatment duration/buffer settings.
-- **Light Theme Unification:** Completely overhauled `portal/cms.html` and `portal/social.html` into clean, bright light theme ("Bright Smile Glow v1").
+#### Patient & Client Hub (`my-appointment.html`)
+- **Zero-Password Email Sign-In:** Built self-service patient portal allowing clients to securely access their appointment details via their booking email.
+- **Treatment-Specific Pre-Care & Aftercare:** Interactive preparation checklists and post-treatment recovery protocols dynamically fetched by service (e.g. 48h White Diet for whitening, 2-3L lymphatic hydration for fat dissolving).
+- **Digital Health Screening:** Built pre-treatment medical declaration form with digital signature saving directly to Firestore.
+- **Photo & Concern Upload:** Consultation feature allowing clients to share smile/skin photos and describe treatment goals.
 
-#### Public Website & Booking
-- **Public Booking Widget (`booking.html`):** Connected to live Firestore services catalog and 7-day schedule with Tetris slot calculation.
-- **Visibility Fixes:** Permanently eliminated scroll animation opacity delays across `index.html`, `services.html`, `about.html`, `contact.html`, and `blog.html`.
-- **Infrastructure:** Updated `Dockerfile` to copy `booking.html` and `my-appointment.html`; deployed hardened `firestore.rules` to live Firebase project (`itl-bright-smile-web`).
+#### Services & Pricing CMS (`portal/cms.html`)
+- **Instant 0ms Rendering:** Pre-rendered all 22 default services and 4 core website blog posts synchronously at parse time, eliminating loading delays.
+- **Dual Sync Engine:** Added one-click **"Sync All 22 Menu Services"** and **"Sync 4 Website Blog Articles"** controls to sync Firestore collections in parallel.
+- **Resilient Firestore In-Memory Sorting:** Replaced index-dependent Firestore queries with safe in-memory sorting across `portal/cms.html` and `blog.html`.
 
 #### Known Good State
 
 | Item | Status |
 |---|---|
-| Public Website & Visibility | ✅ Fully functional & verified |
-| AI Scheduling Engine (`booking.html`) | ✅ Working |
-| Patient Appointment Hub (`my-appointment.html`) | ✅ Working |
-| Services & Pricing Catalog (`portal/cms.html`) | ✅ Working |
-| Admin Calendar & Availability (`portal/bookings.html`) | ✅ Working |
-| Live Firebase Rules (`itl-bright-smile-web`) | ✅ Deployed |
+| Public Website & Visibility | ✅ Live & verified |
+| AI Scheduling Engine (`booking.html`) | ✅ Live & verified |
+| Patient Appointment Hub (`my-appointment.html`) | ✅ Live & verified |
+| Services & Pricing Catalog (`portal/cms.html`) | ✅ Live (Instant 0ms render & sync) |
+| Admin Calendar & Availability (`portal/bookings.html`) | ✅ Live & verified |
+| ITL Launch Proposal Portal (`portal/index.html`) | ✅ Live & updated |
+| Firestore Rules & Database Sync (`itl-bright-smile-web`) | ✅ Deployed & verified |
 
 ---
 
