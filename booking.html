@@ -85,12 +85,16 @@
 
           <form id="bookingForm" style="display: none; margin-top: 30px;">
             <div class="form__group">
-              <label>Name</label>
-              <input type="text" id="bName" required class="form__input">
+              <label>Full Name</label>
+              <input type="text" id="bName" placeholder="e.g. Sarah Jenkins" required class="form__input">
             </div>
             <div class="form__group">
-              <label>Phone (for SMS Reminders)</label>
-              <input type="tel" id="bPhone" required class="form__input">
+              <label>Email Address (for Confirmation & Patient Hub Login)</label>
+              <input type="email" id="bEmail" placeholder="e.g. sarah@example.co.uk" required class="form__input">
+            </div>
+            <div class="form__group">
+              <label>Mobile Number (for SMS Appointment Reminders)</label>
+              <input type="tel" id="bPhone" placeholder="e.g. 07850 123456" required class="form__input">
             </div>
             <button type="submit" class="btn btn--primary" style="width: 100%;">Confirm Booking</button>
           </form>
@@ -167,6 +171,14 @@
             opt.textContent = `${s.title} — ${s.price || ''} (${s.duration || 60} mins)`;
             serviceSelect.appendChild(opt);
           });
+
+          // Check if ?service=... was passed in URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const serviceParam = urlParams.get('service');
+          if (serviceParam) {
+            serviceSelect.value = serviceParam;
+            if (dateInput.value) loadBookingsAndRender();
+          }
         }
       } catch (e) {
         console.warn("Using default service dropdown:", e);
@@ -300,7 +312,9 @@
 
     form.onsubmit = async (e) => {
       e.preventDefault();
-      const phone = document.getElementById('bPhone').value;
+      const name = document.getElementById('bName').value.trim();
+      const email = document.getElementById('bEmail').value.trim().toLowerCase();
+      const phone = document.getElementById('bPhone').value.trim();
       const service = document.getElementById('bookingService').value;
       
       if (!service) {
@@ -318,7 +332,8 @@
 
       try {
         const docRef = await addDoc(collection(db, "bookings"), {
-          name: document.getElementById('bName').value,
+          name: name,
+          email: email,
           phone: phone,
           service: service,
           date: dateInput.value,
@@ -329,6 +344,7 @@
 
         // Mock SMS reminder
         console.log(`[Twilio Mock] Sending SMS reminder to ${phone}: 'Your Bright Smile booking is confirmed for ${dateInput.value} at ${selectedTimeStr}. Complete pre-care: ${window.location.origin}/my-appointment.html?id=${docRef.id}'`);
+        console.log(`[Email Mock] Sending booking confirmation to ${email} with link to Patient Hub.`);
         
         // Show confirmation panel
         form.style.display = 'none';

@@ -136,18 +136,35 @@
   <main style="padding-top: 120px; padding-bottom: 80px;">
     <div class="hub-container">
 
-      <!-- Lookup View (Shown if no ?id= provided) -->
+      <!-- Lookup / Login View (Shown if no ?id= provided) -->
       <div id="lookupSection" style="display: none;">
-        <div class="lookup-card">
-          <div class="card__icon" style="margin: 0 auto 16px;"><span class="material-symbols-rounded">calendar_month</span></div>
-          <h2>Find Your Appointment</h2>
-          <p class="bs-text-muted" style="margin-bottom: 24px;">Enter your phone number or Appointment Reference to view details, pre-care steps, and aftercare.</p>
+        <div class="lookup-card" style="max-width: 520px; margin: 0 auto; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--border-radius-lg); padding: 36px; box-shadow: var(--shadow-md);">
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-primary-bg); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">
+            <span class="material-symbols-rounded" style="font-size: 2rem;">lock</span>
+          </div>
+          <h2 style="text-align: center; margin-bottom: 8px;">Patient Portal Login</h2>
+          <p class="bs-text-muted" style="text-align: center; margin-bottom: 28px; font-size: 0.95rem;">
+            Enter the <strong>email address</strong> you used when booking to securely access your appointment details, medical declaration, and pre-care guides.
+          </p>
           <form id="lookupForm">
-            <div class="form__group">
-              <input type="text" id="lookupQuery" class="form__input" placeholder="e.g. 07850631777 or Booking ID" required>
+            <div class="form__group" style="margin-bottom: 16px;">
+              <label class="form__label" style="font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: block;">Your Email Address</label>
+              <input type="email" id="lookupEmail" class="form__input" placeholder="e.g. sarah@example.co.uk" required>
             </div>
-            <button type="submit" class="btn btn--primary" style="width: 100%;">Access Appointment Hub</button>
+            <div class="form__group" style="margin-bottom: 24px;">
+              <label class="form__label" style="font-weight: 600; font-size: 0.9rem; margin-bottom: 6px; display: block;">Booking Reference <span style="font-weight: 400; color: var(--color-text-light);">(Optional)</span></label>
+              <input type="text" id="lookupRef" class="form__input" placeholder="e.g. #YRM9GF">
+            </div>
+            <button type="submit" class="btn btn--primary" style="width: 100%; justify-content: center;">
+              <span class="material-symbols-rounded">login</span> Secure Sign In
+            </button>
           </form>
+
+          <!-- Multiple Bookings Selection Container -->
+          <div id="multiBookingsContainer" style="display: none; margin-top: 24px; text-align: left;">
+            <h4 style="margin-bottom: 12px;">Select an Appointment:</h4>
+            <div id="multiBookingsList"></div>
+          </div>
         </div>
       </div>
 
@@ -458,39 +475,77 @@
     // Lookup Form Handler
     document.getElementById('lookupForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const queryVal = document.getElementById('lookupQuery').value.trim();
+      const emailVal = document.getElementById('lookupEmail').value.trim().toLowerCase();
+      const refVal = document.getElementById('lookupRef').value.trim().replace(/^#/, '');
       const btn = e.target.querySelector('button');
-      btn.textContent = 'Searching...';
+      btn.textContent = 'Verifying...';
       btn.disabled = true;
 
       try {
-        // First try by doc ID
-        try {
-          const docRef = doc(db, "bookings", queryVal);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            renderAppointment(docSnap.id, docSnap.data());
+        // If specific reference entered, try directly first
+        if (refVal) {
+          try {
+            const docRef = doc(db, "bookings", refVal);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              renderAppointment(docSnap.id, docSnap.data());
+              return;
+            }
+          } catch (_) {}
+        }
+
+        // Search by email address
+        const q = query(collection(db, "bookings"), where("email", "==", emailVal));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          // Fallback: try by phone in case it's an old legacy record
+          const qPhone = query(collection(db, "bookings"), where("phone", "==", emailVal));
+          const snapPhone = await getDocs(qPhone);
+          if (!snapPhone.empty) {
+            handleFoundBookings(snapPhone.docs);
             return;
           }
-        } catch (_) {}
-
-        // Fallback: search by phone number
-        const q = query(collection(db, "bookings"), where("phone", "==", queryVal));
-        const snapshot = await getDocs(q);
-        if (!snapshot.empty) {
-          const match = snapshot.docs[0];
-          renderAppointment(match.id, match.data());
+          alert("No appointment found registered to " + emailVal + ". Please verify your email or check your booking confirmation.");
         } else {
-          alert("No appointment found matching that reference or phone number. Please check and try again.");
+          handleFoundBookings(snapshot.docs);
         }
       } catch (err) {
         console.error("Lookup error:", err);
-        alert("Failed to search appointments. Please try again.");
+        alert("Failed to load appointments. Please check your connection and try again.");
       } finally {
-        btn.textContent = 'Access Appointment Hub';
+        btn.innerHTML = '<span class="material-symbols-rounded">login</span> Secure Sign In';
         btn.disabled = false;
       }
     });
+
+    function handleFoundBookings(docs) {
+      if (docs.length === 1) {
+        renderAppointment(docs[0].id, docs[0].data());
+      } else {
+        // Multiple bookings for this email — let user select
+        const container = document.getElementById('multiBookingsContainer');
+        const list = document.getElementById('multiBookingsList');
+        list.innerHTML = '';
+        docs.forEach(d => {
+          const appt = d.data();
+          const item = document.createElement('div');
+          item.style.cssText = 'background: var(--color-bg-soft); border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer;';
+          item.innerHTML = `
+            <div>
+              <strong>${appt.service || 'Appointment'}</strong>
+              <div style="font-size: 0.85rem; color: var(--color-text-light); margin-top: 2px;">
+                📅 ${appt.date || ''} at ${appt.time || ''} • Ref: #${d.id.substring(0,6).toUpperCase()}
+              </div>
+            </div>
+            <button class="btn btn--primary btn--small" style="padding: 6px 14px;">Open</button>
+          `;
+          item.onclick = () => renderAppointment(d.id, appt);
+          list.appendChild(item);
+        });
+        container.style.display = 'block';
+      }
+    }
 
     async function loadAppointmentById(id) {
       try {
@@ -500,7 +555,7 @@
           renderAppointment(docSnap.id, docSnap.data());
         } else {
           document.getElementById('lookupSection').style.display = 'block';
-          alert("Appointment reference not found. Please look up using your phone number.");
+          alert("Appointment reference not found. Please log in with your email.");
         }
       } catch (err) {
         console.error("Error loading appointment:", err);
