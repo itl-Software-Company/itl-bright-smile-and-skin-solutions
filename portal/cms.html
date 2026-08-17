@@ -183,6 +183,9 @@
           <p class="section-desc" style="text-align: left; margin: 0;">Add new treatments, manage pricing, publish blog articles, and generate AI social drafts.</p>
         </div>
         <div style="display: flex; gap: 10px;">
+          <button id="btnSyncAll" class="btn btn--outline" onclick="syncAllServices()" style="display: flex; align-items: center; gap: 6px;">
+            <span class="material-symbols-rounded">sync</span> Sync All 22 Menu Services
+          </button>
           <button id="btnAddNew" class="btn btn--primary">
             <span class="material-symbols-rounded">add_circle</span> Add New Treatment / Product
           </button>
@@ -349,8 +352,9 @@
   <script type="module">
     import { db, collection, addDoc, getDocs, getDoc, setDoc, doc, deleteDoc, updateDoc, query, orderBy, serverTimestamp } from './firebase-init.js';
 
-    // Core default treatments to seed if Firestore is empty
+    // All 22 official clinic services from services.html
     const defaultServices = [
+      // 1. Teeth Whitening
       {
         id: "teeth_whitening",
         title: "Professional Teeth Whitening",
@@ -359,47 +363,220 @@
         duration: 90,
         icon: "dentistry",
         desc: "Expert in-clinic whitening treatment for a brilliant, natural-looking smile. Safe, enamel-preserving formula for results that last.",
-        benefits: ["Enamel-safe, professional formula", "Visible results in a single session", "Suitable for sensitive teeth"]
+        benefits: ["Enamel-safe, professional-grade formula", "Visible results in a single session", "Suitable for sensitive teeth", "Perfect for weddings, proms, and events"]
+      },
+      // 2. Fat Dissolving (All 30 mins)
+      {
+        id: "fat_dissolving_stomach",
+        title: "Stomach Fat Dissolving",
+        category: "Fat Dissolving",
+        price: "£175",
+        duration: 30,
+        icon: "body_fat",
+        desc: "Targeted body contouring for the stomach area to eliminate stubborn fat deposits without surgery.",
+        benefits: ["Non-surgical permanent fat cell reduction", "Quick 30-minute procedure", "Minimal downtime"]
       },
       {
-        id: "fat_dissolving_small",
-        title: "Fat Dissolving (Small Area / Chin)",
+        id: "fat_dissolving_love_handles",
+        title: "Love Handles Fat Dissolving",
+        category: "Fat Dissolving",
+        price: "£150",
+        duration: 30,
+        icon: "body_fat",
+        desc: "Precision fat dissolving injections for flank contouring and love handles.",
+        benefits: ["Targeted waistline shaping", "Clinically proven compound", "Permanent fat reduction"]
+      },
+      {
+        id: "fat_dissolving_thighs",
+        title: "Outer or Inner Thighs Fat Dissolving",
+        category: "Fat Dissolving",
+        price: "£150",
+        duration: 30,
+        icon: "body_fat",
+        desc: "Targeted fat dissolving for inner or outer thigh areas to smooth and contour legs.",
+        benefits: ["Streamlines thigh silhouette", "Tightens skin texture", "Targeted application"]
+      },
+      {
+        id: "fat_dissolving_jaw",
+        title: "Jaw & Double Chin Fat Dissolving",
+        category: "Fat Dissolving",
+        price: "£95",
+        duration: 30,
+        icon: "body_fat",
+        desc: "Submental fat dissolving injections to sculpt and define the jawline and eliminate double chin.",
+        benefits: ["Sculpts and defines jawline", "Non-surgical profile transformation", "Fast recovery"]
+      },
+      {
+        id: "fat_dissolving_bra_fat",
+        title: "Bra Fat Dissolving",
         category: "Fat Dissolving",
         price: "£70",
-        duration: 45,
+        duration: 30,
         icon: "body_fat",
-        desc: "Targeted fat dissolving injections for double chin, jowls, or small stubborn fat deposits with no surgery.",
-        benefits: ["Non-surgical permanent fat cell removal", "Quick 30-45 minute procedure", "Minimal downtime"]
+        desc: "Targeted fat dissolving injections for upper back and bra bulge area.",
+        benefits: ["Smooths back profile", "Quick treatment", "Boosts body confidence"]
       },
       {
-        id: "fat_dissolving_large",
-        title: "Fat Dissolving (Medium/Large Area)",
+        id: "fat_dissolving_knee",
+        title: "Knee Area Fat Dissolving",
         category: "Fat Dissolving",
-        price: "£120",
-        duration: 60,
+        price: "£70",
+        duration: 30,
         icon: "body_fat",
-        desc: "Body contouring injections for stomach, love handles, bra bulge, or inner thighs.",
-        benefits: ["Precision contouring", "Stimulates skin tightening", "Clinically proven compound"]
+        desc: "Targeted contouring injections for localized stubborn fat around the knees.",
+        benefits: ["Contours knee area", "Safe and effective", "Non-invasive"]
       },
       {
-        id: "hydra_facial",
-        title: "Deep Cleanse & Hydration Facial",
+        id: "fat_dissolving_under_bum",
+        title: "Under Bum (Banana Roll) Fat Dissolving",
+        category: "Fat Dissolving",
+        price: "£70",
+        duration: 30,
+        icon: "body_fat",
+        desc: "Targeted fat dissolving injections under the buttocks to refine the gluteal fold.",
+        benefits: ["Lifts and refines contour", "Permanent fat cell destruction", "Minimal downtime"]
+      },
+      // 3. Facial & Skincare Treatments
+      {
+        id: "facial_skin_booster",
+        title: "Skin Booster",
+        category: "Advanced Facials",
+        price: "£150",
+        duration: 30,
+        icon: "auto_awesome",
+        desc: "Intensive micro-droplet hydration and rejuvenation treatment for luminous, youthful skin.",
+        benefits: ["Deep dermal hydration", "Stimulates natural collagen", "Instant radiant glow"]
+      },
+      {
+        id: "facial_deluxe",
+        title: "Deluxe Facial",
+        category: "Advanced Facials",
+        price: "£80",
+        duration: 60,
+        icon: "spa",
+        desc: "Our premium facial experience for deep cleansing, exfoliation, and visible radiance.",
+        benefits: ["Comprehensive 60-minute care", "Custom mask & lymphatic massage", "Suitable for all skin types"]
+      },
+      {
+        id: "facial_detox",
+        title: "Detox Facial",
+        category: "Advanced Facials",
+        price: "£70",
+        duration: 60,
+        icon: "eco",
+        desc: "Purifying treatment to remove environmental impurities, unblock pores, and refresh congested skin.",
+        benefits: ["Deep pore purification", "Controls excess sebum", "Calms breakouts and redness"]
+      },
+      {
+        id: "facial_hydrofacial",
+        title: "Hydrofacial",
+        category: "Advanced Facials",
+        price: "£65",
+        duration: 90,
+        icon: "water_drop",
+        desc: "Multi-step hydration treatment using vortex suction and active serums for plump, dewy skin.",
+        benefits: ["Painless extraction", "Intense peptide infusion", "Zero irritation or downtime"]
+      },
+      {
+        id: "facial_microneedling",
+        title: "Microneedling",
+        category: "Advanced Facials",
+        price: "£65",
+        duration: 60,
+        icon: "healing",
+        desc: "Collagen-stimulating precision treatment for smoother texture, smaller pores, and reduced scarring.",
+        benefits: ["Triggers collagen synthesis", "Reduces fine lines and scars", "Improves product absorption"]
+      },
+      {
+        id: "facial_rejuvenate",
+        title: "Rejuvenate Facial",
+        category: "Advanced Facials",
+        price: "£55",
+        duration: 60,
+        icon: "self_improvement",
+        desc: "Targeted anti-ageing facial treatment to restore skin elasticity, vitality, and firmness.",
+        benefits: ["Firms and tones facial contours", "Boosts cellular renewal", "Nourishing antioxidant blend"]
+      },
+      {
+        id: "facial_glow",
+        title: "Glow Facial",
         category: "Advanced Facials",
         price: "£45",
         duration: 60,
-        icon: "face_retouching_natural",
-        desc: "Deep pore extractions, ultrasound hydration infusion, and soothing botanical mask for instant radiance.",
-        benefits: ["Clears congested pores", "Intense hydration boost", "Zero redness or peeling"]
+        icon: "light_mode",
+        desc: "Brightening treatment designed to enhance your natural radiance and even out skin tone.",
+        benefits: ["Instant luminosity", "Gentle enzyme exfoliation", "Perfect before special events"]
       },
       {
-        id: "b12_injection",
-        title: "Vitamin B12 Energy Injection",
+        id: "facial_express",
+        title: "Express Facial",
+        category: "Advanced Facials",
+        price: "£45",
+        duration: 60,
+        icon: "bolt",
+        desc: "A focused, effective facial for busy schedules — maximum glow and skin revitalization in minimal time.",
+        benefits: ["Quick cleanse, tone, and moisture", "Refreshes tired skin", "Great monthly maintenance"]
+      },
+      {
+        id: "facial_dermaplaning",
+        title: "Dermaplaning",
+        category: "Advanced Facials",
+        price: "£35",
+        duration: 45,
+        icon: "content_cut",
+        desc: "Surgical-grade exfoliation treatment to remove dead skin cells and peach fuzz for flawless makeup application.",
+        benefits: ["Silky-smooth texture", "Enhances skincare penetration", "Immediate glass-skin finish"]
+      },
+      {
+        id: "facial_led_therapy",
+        title: "LED Therapy",
+        category: "Advanced Facials",
+        price: "£30",
+        duration: 60,
+        icon: "fluorescent",
+        desc: "Targeted light-based therapy to stimulate collagen, reduce inflammation, and heal acne-prone skin.",
+        benefits: ["Clinically proven light wavelengths", "Soothes inflammation", "Safe and non-invasive"]
+      },
+      // 4. Vitamin Injections (All 15 mins)
+      {
+        id: "vitamin_biotin",
+        title: "Biotin Injection",
+        category: "Vitamin Therapy",
+        price: "£50",
+        duration: 15,
+        icon: "genetics",
+        desc: "High-potency Biotin (Vitamin H/B7) injection to support healthy hair growth, strengthen nails, and nourish skin.",
+        benefits: ["Supports thicker, healthier hair", "Strengthens brittle nails", "Improves skin health"]
+      },
+      {
+        id: "vitamin_c",
+        title: "Vitamin C Injection",
+        category: "Vitamin Therapy",
+        price: "£45",
+        duration: 15,
+        icon: "local_pharmacy",
+        desc: "Pure Vitamin C injection providing an instant antioxidant boost, immune defense, and skin brightening.",
+        benefits: ["Powerful antioxidant protection", "Boosts collagen production", "Enhances immune resistance"]
+      },
+      {
+        id: "vitamin_d",
+        title: "Vitamin D Injection",
         category: "Vitamin Therapy",
         price: "£35",
-        duration: 20,
-        icon: "vaccines",
-        desc: "High-grade Methylcobalamin B12 injection to banish fatigue, boost immunity, and enhance mental focus.",
-        benefits: ["Instant cellular absorption", "Boosts metabolism & energy", "Improves sleep and mood"]
+        duration: 15,
+        icon: "wb_sunny",
+        desc: "Essential Vitamin D injection for optimal bone strength, hormonal balance, mood support, and immunity.",
+        benefits: ["Fights seasonal fatigue", "Strengthens bones and joints", "Supports immune system"]
+      },
+      {
+        id: "vitamin_b12",
+        title: "Vitamin B12 Injection",
+        category: "Vitamin Therapy",
+        price: "£35",
+        duration: 15,
+        icon: "energy_savings_leaf",
+        desc: "High-grade Methylcobalamin B12 injection to banish fatigue, boost metabolism, and improve mental focus.",
+        benefits: ["Instant cellular absorption", "Boosts daily energy levels", "Supports healthy metabolism & nervous system"]
       }
     ];
 
@@ -511,24 +688,40 @@
       }
     });
 
+    window.syncAllServices = async function() {
+      const container = document.getElementById('servicesListContainer');
+      container.innerHTML = '<p style="text-align: center; padding: 24px; color: var(--color-primary-dark);">Syncing all 22 official services from your menu into database...</p>';
+      try {
+        for (const s of defaultServices) {
+          const { id, ...data } = s;
+          await setDoc(doc(db, "services", id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
+        }
+        await loadServices();
+      } catch (err) {
+        console.error("Sync error:", err);
+        alert("Failed to sync services: " + err.message);
+      }
+    };
+
     async function loadServices() {
       const container = document.getElementById('servicesListContainer');
       try {
         const snapshot = await getDocs(collection(db, "services"));
         loadedServices = [];
 
-        if (snapshot.empty) {
-          // Auto-seed defaults into Firestore if empty
+        // If empty or fewer than 22 services, auto-seed all default services
+        if (snapshot.empty || snapshot.size < 22) {
           for (const s of defaultServices) {
             const { id, ...data } = s;
-            await setDoc(doc(db, "services", id), { ...data, createdAt: serverTimestamp() });
+            await setDoc(doc(db, "services", id), { ...data, createdAt: serverTimestamp() }, { merge: true });
           }
-          return loadServices();
+          const freshSnap = await getDocs(collection(db, "services"));
+          freshSnap.forEach(d => loadedServices.push({ id: d.id, ...d.data() }));
+        } else {
+          snapshot.forEach(d => {
+            loadedServices.push({ id: d.id, ...d.data() });
+          });
         }
-
-        snapshot.forEach(d => {
-          loadedServices.push({ id: d.id, ...d.data() });
-        });
 
         document.getElementById('serviceCount').textContent = loadedServices.length;
 
