@@ -224,14 +224,19 @@
       <!-- ================= TAB 2: BLOG POSTS ================= -->
       <div id="tabPostsView" style="display: none;">
         <div class="cms-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
             <div>
               <h2 style="margin: 0 0 4px; font-size: 1.35rem;">Blog Articles &amp; Advice Guides</h2>
               <p class="bs-text-muted" style="margin: 0; font-size: 0.9rem;">Articles published here automatically appear on your website blog and trigger AI social draft creation.</p>
             </div>
-            <button class="btn btn--outline btn--small" onclick="openPostModal()">
-              <span class="material-symbols-rounded">post_add</span> Create Article
-            </button>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn--outline btn--small" onclick="syncAllPosts()" title="Force sync the 4 official website articles to database">
+                <span class="material-symbols-rounded">sync</span> Sync 4 Website Blog Articles
+              </button>
+              <button class="btn btn--primary btn--small" onclick="openPostModal()">
+                <span class="material-symbols-rounded">post_add</span> Create Article
+              </button>
+            </div>
           </div>
 
           <div id="postsListContainer">
@@ -730,9 +735,126 @@
       }
     ];
 
+    // 4 Core Website Blog Posts from blog.html
+    const defaultPosts = [
+      {
+        id: "post_teeth_whitening",
+        title: "The Complete Guide to Professional Teeth Whitening: What to Expect and Why It Works",
+        category: "Teeth Whitening",
+        excerpt: "Everything you need to know about professional whitening — how it works, what to expect, sensitivity tips, and why clinical whitening outperforms at-home kits.",
+        content: "Professional teeth whitening is one of the fastest and most transformative aesthetic treatments available. At No.1 Bright Smile and Skin Solutions in Newcastle under Lyme, we use advanced enamel-safe formulas designed to lift years of tea, coffee, and lifestyle staining in a single relaxing session."
+      },
+      {
+        id: "post_fat_dissolving",
+        title: "Fat Dissolving Injections: A Non-Surgical Approach to Body Contouring",
+        category: "Fat Dissolving",
+        excerpt: "The science behind fat dissolving, treatment areas and pricing, recovery expectations, and how to know if you're an ideal candidate for non-surgical body contouring.",
+        content: "Fat dissolving injections offer a targeted, non-surgical solution for stubborn localised fat deposits on the stomach, love handles, chin, arms, and thighs that resist diet and exercise."
+      },
+      {
+        id: "post_facials",
+        title: "Beyond the Basic Facial: Advanced Skincare Treatments That Truly Transform Your Skin",
+        category: "Advanced Facials",
+        excerpt: "Our full facial menu explained — from express treatments and dermaplaning to microneedling and clinical-grade skin boosters. Find the right treatment for your skin.",
+        content: "Transformative skincare requires treatments tailored precisely to your skin barrier and concerns. From deep Hydrofacials and physical Dermaplaning to collagen-stimulating Microneedling and hydrating Skin Boosters, discover your ideal clinical protocol."
+      },
+      {
+        id: "post_vitamins",
+        title: "Vitamin Injections: Why Direct Delivery Outperforms Oral Supplements",
+        category: "Vitamin Therapy",
+        excerpt: "B12, Vitamin D, Vitamin C, and Biotin — why intramuscular injections deliver better results than tablets, and how they can boost your energy, immunity, and appearance.",
+        content: "Intramuscular wellness injections deliver pure, bioavailable vitamins directly into muscle tissue, bypassing digestive breakdown for 100% cellular absorption and rapid revitalisation."
+      }
+    ];
+
     let currentTab = 'services';
-    let loadedServices = [];
-    let loadedPosts = [];
+    let loadedServices = [...defaultServices];
+    let loadedPosts = [...defaultPosts];
+
+    // ================= RENDER FUNCTIONS (0ms Instant Load) =================
+    function renderServices(services) {
+      const container = document.getElementById('servicesListContainer');
+      const countEl = document.getElementById('serviceCount');
+      if (countEl) countEl.textContent = services.length;
+      if (!container) return;
+
+      if (!services || services.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:20px;">No services in catalog.</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      services.forEach(s => {
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="width: 44px; height: 44px; border-radius: 10px; background: var(--color-primary-bg); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <span class="material-symbols-rounded">${s.icon || 'dentistry'}</span>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <strong style="font-size: 1.05rem;">${s.title}</strong>
+                <span class="price-pill">${s.price}</span>
+                <span style="font-size: 0.8rem; color: var(--color-text-light);">${s.duration || 60} mins</span>
+              </div>
+              <div style="font-size: 0.88rem; color: var(--color-text-light); margin-top: 4px;">
+                ${s.category} • ${s.desc ? s.desc.substring(0, 80) + '...' : ''}
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-shrink: 0;">
+            <button class="btn btn--outline btn--small" onclick="openServiceModal('${s.id}')">
+              <span class="material-symbols-rounded">edit</span> Edit
+            </button>
+            <button class="btn btn--outline btn--small" style="color: #dc2626; border-color: rgba(220,38,38,0.3);" onclick="deleteService('${s.id}')">
+              <span class="material-symbols-rounded">delete</span>
+            </button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function renderPosts(posts) {
+      const container = document.getElementById('postsListContainer');
+      const countEl = document.getElementById('postCount');
+      if (countEl) countEl.textContent = posts.length;
+      if (!container) return;
+
+      if (!posts || posts.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--color-text-light);">No custom blog posts published yet.</p>';
+        return;
+      }
+
+      container.innerHTML = '';
+      posts.forEach(p => {
+        const row = document.createElement('div');
+        row.className = 'item-row';
+        row.innerHTML = `
+          <div>
+            <strong style="font-size: 1.05rem;">${p.title}</strong>
+            <div style="font-size: 0.88rem; color: var(--color-text-light); margin-top: 4px;">
+              <span class="price-pill" style="padding: 2px 8px; font-size: 0.78rem;">${p.category}</span>
+              ${p.excerpt ? p.excerpt.substring(0, 90) + '...' : ''}
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn--outline btn--small" onclick="openPostModal('${p.id}')">
+              <span class="material-symbols-rounded">edit</span> Edit
+            </button>
+            <button class="btn btn--outline btn--small" style="color: #dc2626; border-color: rgba(220,38,38,0.3);" onclick="deletePost('${p.id}')">
+              <span class="material-symbols-rounded">delete</span>
+            </button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Immediately render defaults so UI is never blank
+    renderServices(loadedServices);
+    renderPosts(loadedPosts);
 
     // Tab switcher
     window.switchCmsTab = function(tab) {
@@ -754,7 +876,10 @@
       }
     };
 
-    document.getElementById('btnAddNew').onclick = () => openServiceModal();
+    document.getElementById('btnAddNew').onclick = () => {
+      if (currentTab === 'services') openServiceModal();
+      else openPostModal();
+    };
 
     // ================= SERVICES CRUD =================
     window.openServiceModal = function(serviceId = null) {
@@ -797,6 +922,8 @@
       if (!confirm("Are you sure you want to delete this treatment from your catalog?")) return;
       try {
         await deleteDoc(doc(db, "services", serviceId));
+        loadedServices = loadedServices.filter(s => s.id !== serviceId);
+        renderServices(loadedServices);
         loadServices();
       } catch (err) {
         console.error("Delete error:", err);
@@ -844,7 +971,7 @@
         loadServices();
       } catch (err) {
         console.error("Save error:", err);
-        alert("Failed to save treatment. Please try again.");
+        alert("Failed to save treatment: " + err.message);
       } finally {
         btn.textContent = 'Save Treatment';
         btn.disabled = false;
@@ -852,72 +979,24 @@
     });
 
     window.syncAllServices = async function() {
-      const btn = event?.currentTarget;
-      if (btn) btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Syncing...';
+      const btns = document.querySelectorAll('#btnSyncAll, button[onclick="syncAllServices()"]');
+      btns.forEach(b => b.innerHTML = '<span class="material-symbols-rounded">sync</span> Syncing...');
       try {
         await Promise.all(defaultServices.map(s => {
           const { id, ...data } = s;
           return setDoc(doc(db, "services", id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
         }));
         await loadServices();
-        alert("✓ All 22 official menu services synced successfully!");
+        alert("✓ All 22 official menu services synced successfully to database!");
       } catch (err) {
         console.error("Sync error:", err);
         alert("Failed to sync services: " + err.message);
       } finally {
-        if (btn) btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Sync All 22 Menu Services';
+        btns.forEach(b => b.innerHTML = '<span class="material-symbols-rounded">sync</span> Sync All 22 Menu Services');
       }
     };
 
-    function renderServices(services) {
-      const container = document.getElementById('servicesListContainer');
-      document.getElementById('serviceCount').textContent = services.length;
-
-      if (!services || services.length === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:20px;">No services in catalog.</p>';
-        return;
-      }
-
-      container.innerHTML = '';
-      services.forEach(s => {
-        const row = document.createElement('div');
-        row.className = 'item-row';
-        row.innerHTML = `
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <div style="width: 44px; height: 44px; border-radius: 10px; background: var(--color-primary-bg); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <span class="material-symbols-rounded">${s.icon || 'dentistry'}</span>
-            </div>
-            <div>
-              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <strong style="font-size: 1.05rem;">${s.title}</strong>
-                <span class="price-pill">${s.price}</span>
-                <span style="font-size: 0.8rem; color: var(--color-text-light);">${s.duration || 60} mins</span>
-              </div>
-              <div style="font-size: 0.88rem; color: var(--color-text-light); margin-top: 4px;">
-                ${s.category} • ${s.desc ? s.desc.substring(0, 80) + '...' : ''}
-              </div>
-            </div>
-          </div>
-          <div style="display: flex; gap: 8px; flex-shrink: 0;">
-            <button class="btn btn--outline btn--small" onclick="openServiceModal('${s.id}')">
-              <span class="material-symbols-rounded">edit</span> Edit
-            </button>
-            <button class="btn btn--outline btn--small" style="color: #dc2626; border-color: rgba(220,38,38,0.3);" onclick="deleteService('${s.id}')">
-              <span class="material-symbols-rounded">delete</span>
-            </button>
-          </div>
-        `;
-        container.appendChild(row);
-      });
-    }
-
     async function loadServices() {
-      // 1. Instantly display default services so page is NEVER blank or spinning
-      if (loadedServices.length === 0) {
-        loadedServices = [...defaultServices];
-        renderServices(loadedServices);
-      }
-
       try {
         const snapshot = await getDocs(collection(db, "services"));
         
@@ -930,21 +1009,16 @@
           renderServices(loadedServices);
         }
 
-        // If Firestore is empty or missing services, seed in background in parallel
+        // Background seed if database collection is empty or missing entries
         if (snapshot.empty || snapshot.size < 22) {
           Promise.all(defaultServices.map(s => {
             const { id, ...data } = s;
             return setDoc(doc(db, "services", id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
-          })).catch(e => console.warn("Background seed notice:", e));
+          })).catch(e => console.warn("Background service seed notice:", e));
         }
 
       } catch (err) {
-        console.warn("Firestore fetch notice, displaying local catalog:", err);
-        // Ensure catalog is rendered regardless
-        if (loadedServices.length === 0) {
-          loadedServices = [...defaultServices];
-          renderServices(loadedServices);
-        }
+        console.warn("Firestore fetch notice, using active local catalog:", err);
       }
     }
 
@@ -980,10 +1054,12 @@
       if (!confirm("Are you sure you want to delete this article?")) return;
       try {
         await deleteDoc(doc(db, "posts", postId));
+        loadedPosts = loadedPosts.filter(p => p.id !== postId);
+        renderPosts(loadedPosts);
         loadPosts();
       } catch (err) {
         console.error("Delete error:", err);
-        alert("Failed to delete article.");
+        alert("Failed to delete article: " + err.message);
       }
     };
 
@@ -1031,62 +1107,64 @@
         loadPosts();
       } catch (err) {
         console.error("Save post error:", err);
-        alert("Failed to publish post.");
+        alert("Failed to publish post: " + err.message);
       } finally {
         btn.textContent = 'Publish Article';
         btn.disabled = false;
       }
     });
 
-    async function loadPosts() {
-      const container = document.getElementById('postsListContainer');
+    window.syncAllPosts = async function() {
+      const btn = document.querySelector('button[onclick="syncAllPosts()"]');
+      if (btn) btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Syncing...';
       try {
-        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-        const snapshot = await getDocs(q);
-        loadedPosts = [];
+        await Promise.all(defaultPosts.map(p => {
+          const { id, ...data } = p;
+          return setDoc(doc(db, "posts", id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
+        }));
+        await loadPosts();
+        alert("✓ All 4 official website blog articles synced successfully to database!");
+      } catch (err) {
+        console.error("Sync posts error:", err);
+        alert("Failed to sync blog posts: " + err.message);
+      } finally {
+        if (btn) btn.innerHTML = '<span class="material-symbols-rounded">sync</span> Sync 4 Website Blog Articles';
+      }
+    };
 
-        snapshot.forEach(d => {
-          loadedPosts.push({ id: d.id, ...d.data() });
-        });
-
-        document.getElementById('postCount').textContent = loadedPosts.length;
-
-        if (loadedPosts.length === 0) {
-          container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--color-text-light);">No custom blog posts published yet.</p>';
-          return;
+    async function loadPosts() {
+      try {
+        const snapshot = await getDocs(collection(db, "posts"));
+        
+        if (!snapshot.empty) {
+          const freshList = [];
+          snapshot.forEach(d => {
+            freshList.push({ id: d.id, ...d.data() });
+          });
+          // Sort in memory by createdAt descending or fallback
+          freshList.sort((a, b) => {
+            const timeA = a.createdAt?.seconds || 0;
+            const timeB = b.createdAt?.seconds || 0;
+            return timeB - timeA;
+          });
+          loadedPosts = freshList;
+          renderPosts(loadedPosts);
         }
 
-        container.innerHTML = '';
-        loadedPosts.forEach(p => {
-          const row = document.createElement('div');
-          row.className = 'item-row';
-          row.innerHTML = `
-            <div>
-              <strong style="font-size: 1.05rem;">${p.title}</strong>
-              <div style="font-size: 0.88rem; color: var(--color-text-light); margin-top: 4px;">
-                <span class="price-pill" style="padding: 2px 8px; font-size: 0.78rem;">${p.category}</span>
-                ${p.excerpt ? p.excerpt.substring(0, 90) + '...' : ''}
-              </div>
-            </div>
-            <div style="display: flex; gap: 8px;">
-              <button class="btn btn--outline btn--small" onclick="openPostModal('${p.id}')">
-                <span class="material-symbols-rounded">edit</span>
-              </button>
-              <button class="btn btn--outline btn--small" style="color: #dc2626; border-color: rgba(220,38,38,0.3);" onclick="deletePost('${p.id}')">
-                <span class="material-symbols-rounded">delete</span>
-              </button>
-            </div>
-          `;
-          container.appendChild(row);
-        });
+        // Background seed if database collection is empty
+        if (snapshot.empty) {
+          Promise.all(defaultPosts.map(p => {
+            const { id, ...data } = p;
+            return setDoc(doc(db, "posts", id), { ...data, updatedAt: serverTimestamp() }, { merge: true });
+          })).catch(e => console.warn("Background post seed notice:", e));
+        }
 
       } catch (err) {
-        console.error("Load posts error:", err);
-        container.innerHTML = '<p style="color:red; text-align:center;">Failed to load posts.</p>';
+        console.warn("Firestore posts fetch notice, using active local posts:", err);
       }
     }
 
-    // Initialize
+    // Initialize remote fetches
     loadServices();
     loadPosts();
   </script>
