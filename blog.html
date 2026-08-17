@@ -54,8 +54,12 @@
           <h2 class="section-title">Explore Our Guides</h2>
           <p class="section-desc">In-depth articles covering everything you need to know about our treatments.</p>
         </div>
-        <div class="blog-listing">
-          <a href="blog/teeth-whitening.html" class="blog-card blog-card--featured fade-up">
+        <div class="blog-listing" id="blogListing">
+          <div id="blogLoading" style="text-align: center; padding: 2rem; color: var(--bs-text-muted);">
+            <span class="material-symbols-rounded" style="animation: spin 1s linear infinite;">autorenew</span> Loading posts...
+          </div>
+          <!-- Static fallback content will be replaced by JS -->
+          <a href="blog/teeth-whitening.html" class="blog-card blog-card--featured fade-up" id="fallbackCard">
             <div class="blog-card__icon blog-card__icon--lg"><span class="material-symbols-rounded">dentistry</span></div>
             <div class="blog-card__body">
               <span class="blog-card__category">Teeth Whitening</span>
@@ -174,5 +178,70 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <style>
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+  </style>
+  <script type="module">
+    import { db, collection, getDocs, query, orderBy } from './js/firebase-init.js';
+
+    async function loadBlogPosts() {
+      const listing = document.getElementById('blogListing');
+      
+      try {
+        const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        
+        if (!snapshot.empty) {
+          // Clear static/loading content
+          listing.innerHTML = '';
+          
+          snapshot.forEach(doc => {
+            const post = doc.data();
+            const date = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Just now';
+            
+            // Basic icon mapping based on category keywords
+            let icon = 'article';
+            const cat = (post.category || '').toLowerCase();
+            if (cat.includes('teeth') || cat.includes('whiten')) icon = 'dentistry';
+            else if (cat.includes('fat') || cat.includes('body')) icon = 'body_fat';
+            else if (cat.includes('face') || cat.includes('skin')) icon = 'face_retouching_natural';
+            else if (cat.includes('vitamin') || cat.includes('inject')) icon = 'vaccines';
+            
+            const card = document.createElement('a');
+            card.href = '#'; // In a full implementation, this would link to a dynamic article page (e.g., article.html?id=...)
+            card.className = 'blog-card blog-card--featured fade-up';
+            card.style.opacity = '1';
+            card.style.transform = 'none';
+            card.innerHTML = `
+              <div class="blog-card__icon blog-card__icon--lg"><span class="material-symbols-rounded">${icon}</span></div>
+              <div class="blog-card__body">
+                <span class="blog-card__category">${escapeHtml(post.category)}</span>
+                <h3 class="blog-card__title">${escapeHtml(post.title)}</h3>
+                <p class="blog-card__excerpt">${escapeHtml(post.excerpt)}</p>
+                <div class="blog-card__footer">
+                  <time class="blog-card__date">${date}</time>
+                  <span class="blog-card__read">Read article →</span>
+                </div>
+              </div>
+            `;
+            listing.appendChild(card);
+          });
+        } else {
+          document.getElementById('blogLoading').style.display = 'none';
+        }
+      } catch(e) {
+        console.error("Error fetching dynamic blog posts:", e);
+        document.getElementById('blogLoading').style.display = 'none';
+      }
+    }
+    
+    function escapeHtml(unsafe) {
+      if(!unsafe) return '';
+      return unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // Initialize
+    loadBlogPosts();
+  </script>
 </body>
 </html>

@@ -20,6 +20,48 @@ Project changelog and known-good state log for the Bright Smile & Skin Solutions
 
 ## Changelog
 
+### 2026-08-12 — Implementation Plan & Social Media Access Guide (Session 7)
+
+**itl-bright-smile-and-skin-solutions commits:** `[NOT COMMITTED]` (no code changes)
+
+#### Planning & Guides
+- **Created Implementation Plan:** Drafted the next steps for Phase 1 of the digital growth plan (Social Media Approval Dashboard, CMS, and Client Onboarding Processing).
+- **Created Social Media Guide:** Produced a step-by-step guide for Jacqie to grant `simon@worzl.ai` access to the business's Instagram and Facebook pages via Meta Business Suite.
+
+#### Known Good State
+
+| Item | Status |
+|---|---|
+| Site deployment (Cloud Run Staging) | ✅ Live |
+| Smoke Tests | ✅ Passing |
+| Client Portal Consistency | ✅ Complete |
+| Social Media Access | ❌ Blocked (Waiting for client to grant access) |
+
+---
+
+### 2026-07-26 — Portal Polish & Cloud Run Deployment (Session 6)
+
+**itl-bright-smile-and-skin-solutions commits:** `11d3d09` (chore: session close — commit outstanding changes)
+
+#### Client Demo Portal Polish
+- **Restyled the demo portal** to be visually consistent with the main site (light theme, teal `#13ecc8` accent, Manrope font, BEM naming) rather than the separate dark theme.
+- **Updated `DESIGN.md`** to reflect the single consistent design language.
+
+#### Infrastructure & Deployment
+- **Added `portal/` and `docs/`** to the `Dockerfile` so they are served alongside the main site.
+- **Triggered GitHub Action** by pushing to the `staging` branch, deploying the updated site to Cloud Run.
+- **Fixed `.agent/smoke-test.sh`** to properly respect the disabled Cloud AI Companion API flag in `project.json` and gracefully skip the billing check.
+
+#### Known Good State
+
+| Item | Status |
+|---|---|
+| Site deployment (Cloud Run Staging) | ✅ Live |
+| Smoke Tests | ✅ Passing |
+| Client Portal Consistency | ✅ Complete |
+
+---
+
 ### 2026-07-02 — Client Portal & Governance Document Delivery (Session 5)
 
 **itl-bright-smile-and-skin-solutions commits:** `d21a6fc` (chore: session close — commit outstanding changes)
