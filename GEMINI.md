@@ -20,6 +20,39 @@ Project changelog and known-good state log for the Bright Smile & Skin Solutions
 
 ## Changelog
 
+### 2026-08-17 — Patient Hub, Services Catalog CMS & Availability Engine (Session 8)
+
+**itl-bright-smile-and-skin-solutions commits:** `[COMMITTING]`
+
+#### Patient & Client Hub
+- **Created Patient Appointment Portal (`my-appointment.html`):** Self-service hub with zero-password access via booking reference, dynamic appointment summary, Google Calendar integration, and direct clinic contact.
+- **Pre-Care & Aftercare Guides:** Interactive pre-treatment preparation checklists and post-treatment recovery protocols tailored by service (including the 48-Hour "White Diet" guide for whitening and lymphatic drainage rules for fat dissolving).
+- **Digital Medical Declaration:** Built pre-treatment health screening questionnaire (allergies, medications, pregnancy, previous treatments) with digital signature saving directly to Firestore.
+- **Photo & Concern Assessment:** Upload feature allowing clients to share smile/skin photos and describe treatment goals.
+
+#### Admin Portal & Services CMS
+- **Created Services, Products & Pricing Manager (`portal/cms.html`):** Full CRUD catalog editor for treatments, retail products, pricing (£), and durations.
+- **Created 7-Day Weekly Schedule & Duration Manager (`portal/bookings.html`):** Monday–Sunday working hours editor with Open/Closed toggles and per-treatment duration/buffer settings.
+- **Light Theme Unification:** Completely overhauled `portal/cms.html` and `portal/social.html` into clean, bright light theme ("Bright Smile Glow v1").
+
+#### Public Website & Booking
+- **Public Booking Widget (`booking.html`):** Connected to live Firestore services catalog and 7-day schedule with Tetris slot calculation.
+- **Visibility Fixes:** Permanently eliminated scroll animation opacity delays across `index.html`, `services.html`, `about.html`, `contact.html`, and `blog.html`.
+- **Infrastructure:** Updated `Dockerfile` to copy `booking.html` and `my-appointment.html`; deployed hardened `firestore.rules` to live Firebase project (`itl-bright-smile-web`).
+
+#### Known Good State
+
+| Item | Status |
+|---|---|
+| Public Website & Visibility | ✅ Fully functional & verified |
+| AI Scheduling Engine (`booking.html`) | ✅ Working |
+| Patient Appointment Hub (`my-appointment.html`) | ✅ Working |
+| Services & Pricing Catalog (`portal/cms.html`) | ✅ Working |
+| Admin Calendar & Availability (`portal/bookings.html`) | ✅ Working |
+| Live Firebase Rules (`itl-bright-smile-web`) | ✅ Deployed |
+
+---
+
 ### 2026-08-12 — Implementation Plan & Social Media Access Guide (Session 7)
 
 **itl-bright-smile-and-skin-solutions commits:** `[NOT COMMITTED]` (no code changes)

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Approvals — Bright Smile &amp; Skin Solutions</title>
+  <meta name="theme-color" content="#ffffff">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap">
+  <style>
+    body {
+      background-color: var(--color-bg-soft, #f8fafa);
+      color: var(--color-text, #1a1a2e);
+      font-family: var(--font-primary, "Manrope", sans-serif);
+      margin: 0;
+      padding-top: 90px;
+    }
+    
+    .social-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 var(--space-md) var(--space-3xl);
+    }
+    
+    .draft-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+      transition: all 0.2s ease;
+    }
+    
+    .draft-card:hover {
+      border-color: var(--color-primary-dark);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .post-preview-bubble {
+      background: var(--color-bg-soft);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-md);
+      padding: 16px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      margin: 14px 0;
+    }
+    
+    .badge-approved {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+      padding: 4px 10px;
+      border-radius: var(--border-radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .badge-draft {
+      background: #fef3c7;
+      color: #d97706;
+      border: 1px solid #fde68a;
+      padding: 4px 10px;
+      border-radius: var(--border-radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" id="header" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);">
+    <div class="container header__inner">
+      <a href="index.html" class="header__logo">
+        <div class="header__logo-icon">✦</div>
+        Bright Smile
+        <span class="header__logo-sub">Client Portal</span>
+      </a>
+      <nav class="header__nav">
+        <div class="header__links">
+          <a href="index.html" class="header__link">Overview</a>
+          <a href="bookings.html" class="header__link">Calendar</a>
+          <a href="cms.html" class="header__link">Services &amp; CMS</a>
+          <a href="social.html" class="header__link header__link--active">Social</a>
+          <a href="documents.html" class="header__link">Documents</a>
+        </div>
+      </nav>
+      <span class="header__powered">Powered by <strong>worzl.ai</strong></span>
+    </div>
+  </header>
+
+  <main>
+    <div class="social-container">
+      
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+        <div>
+          <span class="section-label">AI Social Engine</span>
+          <h1 class="section-title" style="margin-bottom: 6px;">Social Media Post Approvals</h1>
+          <p class="section-desc" style="text-align: left; margin: 0;">Review, edit, and approve AI-crafted posts for your Instagram and Facebook before they publish.</p>
+        </div>
+        <a href="cms.html" class="btn btn--outline btn--small">
+          <span class="material-symbols-rounded">post_add</span> Create New Blog &amp; Post
+        </a>
+      </div>
+
+      <!-- Live Drafts List -->
+      <div id="draftsList">
+        <p style="text-align: center; padding: 32px; color: var(--color-text-light);">Loading social media drafts...</p>
+      </div>
+
+    </div>
+  </main>
+
+  <script type="module">
+    import { db, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from './firebase-init.js';
+
+    async function loadDrafts() {
+      const container = document.getElementById('draftsList');
+      try {
+        const q = query(collection(db, "social_drafts"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          container.innerHTML = `
+            <div class="draft-card" style="text-align: center; padding: 48px;">
+              <span class="material-symbols-rounded" style="font-size: 3rem; color: var(--color-primary-dark); margin-bottom: 12px;">thumb_up</span>
+              <h3>No Drafts Awaiting Approval</h3>
+              <p class="bs-text-muted">When you publish new articles in your CMS, Worzl AI will automatically prepare suggested Instagram and Facebook posts here for your review.</p>
+              <a href="cms.html" class="btn btn--primary" style="margin-top: 16px;">Go to CMS Dashboard</a>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = '';
+        snapshot.forEach(d => {
+          const draft = { id: d.id, ...d.data() };
+          const isApproved = draft.status === 'Approved';
+          
+          const card = document.createElement('div');
+          card.className = 'draft-card';
+          card.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <strong style="font-size: 1.1rem;">${draft.platform || 'Instagram & Facebook'}</strong>
+                  <span class="${isApproved ? 'badge-approved' : 'badge-draft'}">${draft.status || 'Draft'}</span>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--color-text-light); margin-top: 4px;">
+                  Linked Article: <em>"${draft.postTitle || 'Treatment Guide'}"</em>
+                </div>
+              </div>
+              <button class="btn btn--outline btn--small" style="color: #dc2626; border-color: rgba(220,38,38,0.3);" onclick="deleteDraft('${draft.id}')">
+                <span class="material-symbols-rounded">delete</span>
+              </button>
+            </div>
+
+            <div class="post-preview-bubble" id="text_${draft.id}">${escapeHtml(draft.text || '')}</div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px;">
+              ${isApproved 
+                ? '<span style="color: #059669; font-weight: 600; display: flex; align-items: center; gap: 6px;"><span class="material-symbols-rounded">check_circle</span> Approved for Publishing</span>'
+                : `<button class="btn btn--primary btn--small" onclick="approveDraft('${draft.id}')">
+                    <span class="material-symbols-rounded">done_all</span> Approve &amp; Schedule Post
+                   </button>`
+              }
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error("Load drafts error:", err);
+        container.innerHTML = '<p style="color:red; text-align:center;">Failed to load social drafts.</p>';
+      }
+    }
+
+    window.approveDraft = async function(id) {
+      try {
+        await updateDoc(doc(db, "social_drafts", id), {
+          status: "Approved",
+          approvedAt: new Date().toISOString()
+        });
+        loadDrafts();
+      } catch (err) {
+        console.error("Approve error:", err);
+        alert("Failed to approve draft.");
+      }
+    };
+
+    window.deleteDraft = async function(id) {
+      if (!confirm("Are you sure you want to remove this draft?")) return;
+      try {
+        await deleteDoc(doc(db, "social_drafts", id));
+        loadDrafts();
+      } catch (err) {
+        console.error("Delete error:", err);
+        alert("Failed to delete draft.");
+      }
+    };
+
+    function escapeHtml(str) {
+      return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    loadDrafts();
+  </script>
+</body>
+</html>

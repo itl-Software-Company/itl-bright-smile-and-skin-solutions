@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book an Appointment | No.1 Bright Smile and Skin Solutions</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <style>
+    .booking-widget {
+      background: var(--color-bg);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-xl);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .timeslot {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 5px;
+      border: 1px solid var(--color-primary);
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .timeslot:hover {
+      background: var(--color-primary-bg);
+    }
+    .timeslot.disabled {
+      border-color: #eee;
+      background: #f9f9f9;
+      color: #aaa;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .timeslot.selected {
+      background: var(--color-primary);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <header class="header header--scrolled" id="header">
+    <div class="container header__inner">
+      <a href="/" class="header__logo">
+        <span class="header__logo-icon">✦</span> Bright Smile & Skin
+      </a>
+      <nav class="header__nav" id="nav">
+        <ul class="header__links">
+          <li><a href="/" class="header__link">Home</a></li>
+          <li><a href="services.html" class="header__link">Services</a></li>
+          <li><a href="contact.html" class="header__link">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main style="padding-top: 120px; padding-bottom: 80px;">
+    <section class="section">
+      <div class="container">
+        <div class="text-center fade-up visible">
+          <span class="section-label">Scheduling</span>
+          <h1 class="section-title">Book Your Appointment</h1>
+          <p class="section-desc">Select an available time for your treatment.</p>
+        </div>
+        
+        <div class="booking-widget fade-up visible" id="bookingWidget" style="margin-top: 40px;">
+          <h3 style="margin-bottom: 20px;">1. Select Treatment</h3>
+          <select id="bookingService" class="form__input" style="margin-bottom: 20px;" required>
+            <option value="" disabled selected>Choose a treatment...</option>
+            <option value="teeth_whitening">Teeth Whitening</option>
+            <option value="fat_dissolving">Fat Dissolving</option>
+            <option value="facial">Advanced Facial</option>
+            <option value="vitamin">Vitamin Injections</option>
+          </select>
+
+          <h3 style="margin-bottom: 20px;">2. Select a Date & Time</h3>
+          <input type="date" id="bookingDate" class="form__input" style="margin-bottom: 20px;" />
+          
+          <p style="font-size: 0.9rem; color: var(--color-text-light); margin-bottom: 10px;">
+            <em>Note: To optimize our schedule, only timeslots adjacent to existing bookings are available.</em>
+          </p>
+          <div id="timeslotsContainer"></div>
+
+          <form id="bookingForm" style="display: none; margin-top: 30px;">
+            <div class="form__group">
+              <label>Name</label>
+              <input type="text" id="bName" required class="form__input">
+            </div>
+            <div class="form__group">
+              <label>Phone (for SMS Reminders)</label>
+              <input type="tel" id="bPhone" required class="form__input">
+            </div>
+            <button type="submit" class="btn btn--primary" style="width: 100%;">Confirm Booking</button>
+          </form>
+
+          <div id="bookingConfirmation" style="display: none; margin-top: 30px; text-align: center; background: rgba(19, 236, 200, 0.08); border: 1px solid var(--color-primary); padding: 28px; border-radius: var(--border-radius-md);">
+            <div style="font-size: 2.5rem; color: var(--color-primary-dark); margin-bottom: 8px;">✦</div>
+            <h2 style="margin-bottom: 8px;">Booking Confirmed!</h2>
+            <p style="color: var(--color-text-light); margin-bottom: 18px;">Your appointment has been scheduled with Jacqie.</p>
+            <div style="background: var(--color-bg); padding: 14px; border-radius: var(--border-radius-sm); margin-bottom: 20px; font-weight: 600;">
+              Reference: <span id="confirmedRefCode" style="color: var(--color-primary-dark);">#...</span>
+            </div>
+            <p style="font-size: 0.92rem; margin-bottom: 20px;">
+              Please complete your <strong>Pre-Treatment Medical Declaration</strong> before arriving.
+            </p>
+            <a id="patientHubLink" href="#" class="btn btn--primary" style="width: 100%;">
+              Open Your Appointment Hub & Pre-Care Guide →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <script type="module">
+    import { db, collection, addDoc, serverTimestamp, query, where, getDocs, getDoc, doc } from './js/firebase-init.js';
+
+    const dayKeys = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const defaultSchedule = {
+      weekly: {
+        monday: { open: true, start: "09:00", end: "17:30" },
+        tuesday: { open: true, start: "09:00", end: "17:30" },
+        wednesday: { open: true, start: "09:00", end: "17:30" },
+        thursday: { open: true, start: "09:00", end: "19:00" },
+        friday: { open: true, start: "09:00", end: "17:30" },
+        saturday: { open: true, start: "09:30", end: "16:00" },
+        sunday: { open: false, start: "10:00", end: "15:00" }
+      },
+      durations: {
+        teeth_whitening: { duration: 90, buffer: 15 },
+        fat_dissolving: { duration: 45, buffer: 15 },
+        facial: { duration: 60, buffer: 15 },
+        vitamin: { duration: 30, buffer: 10 }
+      }
+    };
+
+    let clinicSchedule = defaultSchedule;
+    let existingBookings = [];
+    const container = document.getElementById('timeslotsContainer');
+    const form = document.getElementById('bookingForm');
+    const dateInput = document.getElementById('bookingDate');
+    const serviceSelect = document.getElementById('bookingService');
+    let selectedTimeStr = null;
+
+    async function initSchedule() {
+      try {
+        const docRef = doc(db, "settings", "schedule");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          clinicSchedule = { ...defaultSchedule, ...docSnap.data() };
+        }
+      } catch (err) {
+        console.warn("Using default schedule:", err);
+      }
+
+      // Load services from catalog
+      try {
+        const snap = await getDocs(collection(db, "services"));
+        if (!snap.empty) {
+          serviceSelect.innerHTML = '<option value="" disabled selected>Choose a treatment...</option>';
+          snap.forEach(d => {
+            const s = d.data();
+            const opt = document.createElement('option');
+            opt.value = d.id;
+            opt.textContent = `${s.title} — ${s.price || ''} (${s.duration || 60} mins)`;
+            serviceSelect.appendChild(opt);
+          });
+        }
+      } catch (e) {
+        console.warn("Using default service dropdown:", e);
+      }
+    }
+
+    function timeToMinutes(tStr) {
+      const [h, m] = tStr.split(':').map(Number);
+      return h * 60 + (m || 0);
+    }
+
+    function minutesToTime(mins) {
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+
+    async function loadBookingsAndRender() {
+      const dateVal = dateInput.value;
+      const serviceVal = serviceSelect.value;
+      
+      if (!dateVal) return;
+
+      container.innerHTML = '<p style="color: var(--color-text-light);">Loading available timeslots...</p>';
+      
+      const dayIndex = new Date(dateVal + 'T00:00:00').getDay();
+      const dayKey = dayKeys[dayIndex];
+      const dayConfig = (clinicSchedule.weekly && clinicSchedule.weekly[dayKey]) || defaultSchedule.weekly[dayKey];
+
+      if (!dayConfig || !dayConfig.open) {
+        const dayTitle = dayKey.charAt(0).toUpperCase() + dayKey.slice(1);
+        container.innerHTML = `<div style="padding: 16px; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; color: #dc2626;"><strong>Clinic Closed:</strong> We are closed on ${dayTitle}s. Please choose another date above.</div>`;
+        form.style.display = 'none';
+        return;
+      }
+
+      try {
+        const q = query(collection(db, "bookings"), where("date", "==", dateVal));
+        const snapshot = await getDocs(q);
+        existingBookings = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.time) {
+            const startM = timeToMinutes(data.time);
+            existingBookings.push({ startM, endM: startM + 60 });
+          }
+        });
+
+        renderDynamicSlots(dayConfig, serviceVal);
+      } catch (e) {
+        console.error("Error loading bookings:", e);
+        container.innerHTML = '<p style="color:red;">Failed to load timeslots.</p>';
+      }
+    }
+
+    function renderDynamicSlots(dayConfig, serviceKey) {
+      container.innerHTML = '';
+      
+      const durConfig = (clinicSchedule.durations && clinicSchedule.durations[serviceKey]) || defaultSchedule.durations[serviceKey] || { duration: 60, buffer: 15 };
+      const durationMins = durConfig.duration || 60;
+      const bufferMins = durConfig.buffer || 15;
+      const stepMins = durationMins + bufferMins;
+
+      const startMin = timeToMinutes(dayConfig.start || "09:00");
+      const endMin = timeToMinutes(dayConfig.end || "17:30");
+
+      const availableSlots = [];
+      for (let m = startMin; m + durationMins <= endMin; m += stepMins) {
+        availableSlots.push({
+          timeStr: minutesToTime(m),
+          startM: m,
+          endM: m + durationMins
+        });
+      }
+
+      if (availableSlots.length === 0) {
+        container.innerHTML = '<p>No available slots on this day.</p>';
+        return;
+      }
+
+      // Render slots with Tetris logic
+      availableSlots.forEach((slot, idx) => {
+        const isOverlapping = existingBookings.some(b => 
+          (slot.startM >= b.startM && slot.startM < b.endM) ||
+          (slot.endM > b.startM && slot.endM <= b.endM)
+        );
+
+        // Tetris logic: allow edge slots or adjacent to existing bookings
+        const isAdjacent = idx === 0 || idx === availableSlots.length - 1 || existingBookings.length === 0 ||
+                           existingBookings.some(b => Math.abs(b.startM - slot.endM) <= bufferMins || Math.abs(slot.startM - b.endM) <= bufferMins);
+
+        const btn = document.createElement('div');
+        btn.className = 'timeslot';
+        
+        if (isOverlapping || !isAdjacent) {
+          btn.classList.add('disabled');
+        }
+        
+        btn.textContent = slot.timeStr;
+        
+        btn.onclick = () => {
+          document.querySelectorAll('.timeslot').forEach(el => el.classList.remove('selected'));
+          btn.classList.add('selected');
+          selectedTimeStr = slot.timeStr;
+          form.style.display = 'block';
+        };
+        
+        container.appendChild(btn);
+      });
+    }
+
+    // Initialize with today's date
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+    
+    initSchedule().then(() => {
+      loadBookingsAndRender();
+    });
+
+    dateInput.addEventListener('change', () => {
+      form.style.display = 'none';
+      selectedTimeStr = null;
+      loadBookingsAndRender();
+    });
+
+    serviceSelect.addEventListener('change', () => {
+      form.style.display = 'none';
+      selectedTimeStr = null;
+      loadBookingsAndRender();
+    });
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const phone = document.getElementById('bPhone').value;
+      const service = document.getElementById('bookingService').value;
+      
+      if (!service) {
+        alert("Please select a treatment first.");
+        return;
+      }
+      if (!selectedTimeStr) {
+        alert("Please select an available timeslot.");
+        return;
+      }
+      
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.textContent = 'Booking...';
+      submitBtn.disabled = true;
+
+      try {
+        const docRef = await addDoc(collection(db, "bookings"), {
+          name: document.getElementById('bName').value,
+          phone: phone,
+          service: service,
+          date: dateInput.value,
+          time: selectedTimeStr,
+          status: 'Pending',
+          createdAt: serverTimestamp()
+        });
+
+        // Mock SMS reminder
+        console.log(`[Twilio Mock] Sending SMS reminder to ${phone}: 'Your Bright Smile booking is confirmed for ${dateInput.value} at ${selectedTimeStr}. Complete pre-care: ${window.location.origin}/my-appointment.html?id=${docRef.id}'`);
+        
+        // Show confirmation panel
+        form.style.display = 'none';
+        document.getElementById('bookingService').style.display = 'none';
+        document.getElementById('bookingDate').style.display = 'none';
+        document.getElementById('timeslotsContainer').style.display = 'none';
+        document.querySelectorAll('h3').forEach(h => h.style.display = 'none');
+        
+        const confirmBox = document.getElementById('bookingConfirmation');
+        confirmBox.style.display = 'block';
+        document.getElementById('confirmedRefCode').textContent = `#${docRef.id.substring(0, 6).toUpperCase()}`;
+        document.getElementById('patientHubLink').href = `my-appointment.html?id=${docRef.id}`;
+        
+      } catch (err) {
+        console.error("Error saving booking", err);
+        alert("Failed to book appointment. Please try again.");
+      } finally {
+        submitBtn.textContent = 'Confirm Booking';
+        submitBtn.disabled = false;
+      }
+    };
+  </script>
+</body>
+</html>

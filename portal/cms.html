@@ -1,469 +1,721 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CMS Dashboard | Bright Smile & Skin Solutions</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Content & Services CMS — Bright Smile &amp; Skin Solutions</title>
+  <meta name="theme-color" content="#ffffff">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&display=swap">
   <style>
     body {
-      background-color: var(--bs-bg);
-      color: var(--bs-on-surface);
-      font-family: 'Inter', sans-serif;
+      background-color: var(--color-bg-soft, #f8fafa);
+      color: var(--color-text, #1a1a2e);
+      font-family: var(--font-primary, "Manrope", sans-serif);
       margin: 0;
-      padding-top: 80px; /* Header space */
+      padding-top: 90px;
     }
     
-    .navbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 70px;
-      background: var(--bs-header-bg);
-      backdrop-filter: blur(20px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      z-index: 100;
-    }
-    
-    .nav-brand {
-      font-weight: 700;
-      font-size: 1.25rem;
-    }
-    
-    .btn-logout {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: var(--bs-on-surface);
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-    }
-    
-    .btn-logout:hover {
-      background: rgba(255,255,255,0.05);
-    }
-    
-    .container {
-      max-width: 1000px;
+    .cms-container {
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 0 var(--space-md) var(--space-3xl);
     }
     
-    .dashboard-header {
+    .nav-tabs {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
+      gap: 12px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 12px;
     }
     
-    .btn-primary {
-      background: linear-gradient(135deg, var(--bs-primary), #d4a5a5);
-      color: var(--bs-on-primary);
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
+    .nav-tab-btn {
+      padding: 10px 20px;
+      border-radius: var(--border-radius-sm);
+      border: 1px solid var(--color-border);
+      background: var(--color-bg);
+      color: var(--color-text);
       font-weight: 600;
+      font-size: 0.95rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      transition: transform 0.2s;
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
+      gap: 8px;
+      transition: all 0.2s ease;
     }
     
-    .post-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .nav-tab-btn:hover {
+      background: var(--color-primary-bg);
     }
     
-    .post-item {
+    .nav-tab-btn.active {
+      background: var(--color-primary);
+      color: #0b1225;
+      border-color: var(--color-primary);
+    }
+    
+    .cms-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    
+    .item-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem;
-      border-radius: 12px;
-      background: var(--bs-surface-container);
+      padding: 18px 20px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-md);
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
     }
     
-    .post-title {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin: 0 0 0.25rem 0;
+    .item-row:hover {
+      border-color: var(--color-primary-dark);
+      box-shadow: var(--shadow-sm);
     }
     
-    .post-meta {
-      font-size: 0.875rem;
-      color: var(--bs-text-muted);
+    .price-pill {
+      background: var(--color-primary-bg);
+      color: var(--color-primary-dark);
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: var(--border-radius-full);
+      font-size: 0.9rem;
     }
     
-    .post-actions button {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: var(--bs-on-surface);
-      padding: 0.5rem;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-left: 0.5rem;
-    }
-    .post-actions button:hover {
-      background: rgba(255,255,255,0.1);
-    }
-    .post-actions .delete-btn:hover {
-      background: rgba(248, 113, 113, 0.2);
-      border-color: #f87171;
-      color: #f87171;
-    }
-    
-    /* Modal styles */
-    .modal {
+    /* Clean Light Modal */
+    .modal-backdrop {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(11, 18, 37, 0.8);
-      backdrop-filter: blur(8px);
-      z-index: 200;
+      background: rgba(26, 26, 46, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
       align-items: center;
       justify-content: center;
+      padding: var(--space-md);
     }
     
-    .modal.active {
+    .modal-backdrop.active {
       display: flex;
     }
     
-    .modal-content {
+    .modal-box {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-lg);
       width: 100%;
-      max-width: 600px;
-      background: var(--bs-surface);
-      padding: 2rem;
-      border-radius: 16px;
-      border: 1px solid rgba(232,168,124,0.15);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px;
+      box-shadow: var(--shadow-xl);
+      color: var(--color-text);
     }
     
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-    .form-group label {
+    .form__label {
       display: block;
-      margin-bottom: 0.5rem;
-      font-size: 0.875rem;
-      color: var(--bs-on-surface-variant);
-    }
-    .form-control {
-      width: 100%;
-      padding: 0.75rem;
-      background: var(--bs-surface-container-high);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      color: white;
-      font-family: inherit;
-      box-sizing: border-box;
-    }
-    .form-control:focus {
-      outline: none;
-      border-color: var(--bs-primary);
-    }
-    textarea.form-control {
-      min-height: 150px;
-      resize: vertical;
-    }
-    
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-    
-    .btn-secondary {
-      background: transparent;
-      color: var(--bs-on-surface);
-      border: none;
-      cursor: pointer;
-    }
-    
-    .btn-generate {
-      background: rgba(232,168,124,0.15);
-      color: var(--bs-primary);
-      border: 1px solid rgba(232,168,124,0.3);
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      font-weight: 600;
       font-size: 0.9rem;
-      margin-top: 0.5rem;
+      margin-bottom: 6px;
+      color: var(--color-text);
     }
-    .btn-generate:hover {
-      background: rgba(232,168,124,0.25);
+    
+    .form__input, .form__select, .form__textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: var(--border-radius-sm);
+      border: 1px solid var(--color-border);
+      background: var(--color-bg);
+      color: var(--color-text);
+      font-family: inherit;
+      font-size: 0.95rem;
+      box-sizing: border-box;
+      margin-bottom: 16px;
+    }
+    
+    .form__input:focus, .form__select:focus, .form__textarea:focus {
+      outline: none;
+      border-color: var(--color-primary-dark);
+      box-shadow: 0 0 0 3px rgba(19, 236, 200, 0.2);
     }
   </style>
 </head>
 <body>
-  <div class="orb-1"></div>
 
-  <nav class="navbar">
-    <div class="nav-brand gradient-text">CMS Dashboard</div>
-    <button id="logoutBtn" class="btn-logout">Sign Out</button>
-  </nav>
-
-  <div class="container">
-    <div class="dashboard-header">
-      <div>
-        <h1 style="margin: 0 0 0.5rem 0;">Blog Posts</h1>
-        <p style="margin: 0; color: var(--bs-text-muted);">Manage content on the main Bright Smile website.</p>
-      </div>
-      <button id="newPostBtn" class="btn-primary">
-        <span class="material-symbols-outlined">add</span> New Post
-      </button>
+  <!-- Header -->
+  <header class="header" id="header" style="background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);">
+    <div class="container header__inner">
+      <a href="index.html" class="header__logo">
+        <div class="header__logo-icon">✦</div>
+        Bright Smile
+        <span class="header__logo-sub">Client Portal</span>
+      </a>
+      <nav class="header__nav">
+        <div class="header__links">
+          <a href="index.html" class="header__link">Overview</a>
+          <a href="bookings.html" class="header__link">Calendar</a>
+          <a href="cms.html" class="header__link header__link--active">Services &amp; CMS</a>
+          <a href="social.html" class="header__link">Social</a>
+          <a href="documents.html" class="header__link">Documents</a>
+        </div>
+      </nav>
+      <span class="header__powered">Powered by <strong>worzl.ai</strong></span>
     </div>
-    
-    <div class="post-list" id="postList">
-      <div style="text-align: center; padding: 2rem; color: var(--bs-text-muted);">Loading posts...</div>
-    </div>
-  </div>
+  </header>
 
-  <!-- Post Editor Modal -->
-  <div class="modal" id="postModal">
-    <div class="modal-content">
-      <h2 id="modalTitle" style="margin-top: 0;">Create Post</h2>
-      <form id="postForm">
-        <input type="hidden" id="postId">
-        
-        <div class="form-group">
-          <label for="postTitle">Title</label>
-          <input type="text" id="postTitle" class="form-control" required>
+  <main>
+    <div class="cms-container">
+      
+      <!-- Top Title & Stats Banner -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+        <div>
+          <span class="section-label">Management Hub</span>
+          <h1 class="section-title" style="margin-bottom: 6px;">Services, Pricing &amp; Content</h1>
+          <p class="section-desc" style="text-align: left; margin: 0;">Add new treatments, manage pricing, publish blog articles, and generate AI social drafts.</p>
         </div>
-        
-        <div class="form-group">
-          <label for="postCategory">Category</label>
-          <input type="text" id="postCategory" class="form-control" placeholder="e.g. Teeth Whitening">
-        </div>
-        
-        <div class="form-group">
-          <label for="postExcerpt">Excerpt (Summary)</label>
-          <textarea id="postExcerpt" class="form-control" style="min-height: 80px;"></textarea>
-        </div>
-        
-        <div class="form-group">
-          <label for="postContent">Content (HTML)</label>
-          <textarea id="postContent" class="form-control"></textarea>
-          
-          <!-- Worzl Agent Hook -->
-          <button type="button" class="btn-generate" id="generateSocialBtn">
-            <span class="material-symbols-outlined">magic_button</span> Generate Social Media Post (Worzl)
+        <div style="display: flex; gap: 10px;">
+          <button id="btnAddNew" class="btn btn--primary">
+            <span class="material-symbols-rounded">add_circle</span> Add New Treatment / Product
           </button>
         </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="nav-tabs">
+        <button class="nav-tab-btn active" id="tabBtnServices" onclick="switchCmsTab('services')">
+          <span class="material-symbols-rounded">dentistry</span> Services &amp; Pricing Catalog (<span id="serviceCount">0</span>)
+        </button>
+        <button class="nav-tab-btn" id="tabBtnPosts" onclick="switchCmsTab('posts')">
+          <span class="material-symbols-rounded">article</span> Blog Posts &amp; Guides (<span id="postCount">0</span>)
+        </button>
+      </div>
+
+      <!-- ================= TAB 1: SERVICES & PRICING ================= -->
+      <div id="tabServicesView">
+        <div class="cms-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+              <h2 style="margin: 0 0 4px; font-size: 1.35rem;">Treatments &amp; Pricing Catalog</h2>
+              <p class="bs-text-muted" style="margin: 0; font-size: 0.9rem;">These services are displayed on your public website and available for client booking.</p>
+            </div>
+          </div>
+          
+          <div id="servicesListContainer">
+            <p style="text-align: center; padding: 24px; color: var(--color-text-light);">Loading treatments catalog...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 2: BLOG POSTS ================= -->
+      <div id="tabPostsView" style="display: none;">
+        <div class="cms-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+              <h2 style="margin: 0 0 4px; font-size: 1.35rem;">Blog Articles &amp; Advice Guides</h2>
+              <p class="bs-text-muted" style="margin: 0; font-size: 0.9rem;">Articles published here automatically appear on your website blog and trigger AI social draft creation.</p>
+            </div>
+            <button class="btn btn--outline btn--small" onclick="openPostModal()">
+              <span class="material-symbols-rounded">post_add</span> Create Article
+            </button>
+          </div>
+
+          <div id="postsListContainer">
+            <p style="text-align: center; padding: 24px; color: var(--color-text-light);">Loading published articles...</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= MODAL: ADD / EDIT SERVICE ================= -->
+  <div class="modal-backdrop" id="serviceModal">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 id="serviceModalTitle" style="margin: 0;">Add New Treatment / Product</h2>
+        <button type="button" onclick="closeServiceModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--color-text-light);">&times;</button>
+      </div>
+
+      <form id="serviceForm">
+        <input type="hidden" id="editServiceId">
         
-        <div class="modal-actions">
-          <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
-          <button type="submit" class="btn-primary" id="saveBtn">Save Post</button>
+        <label class="form__label">Treatment / Product Name</label>
+        <input type="text" id="sTitle" class="form__input" placeholder="e.g. Microneedling & Skin Booster" required>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div>
+            <label class="form__label">Category</label>
+            <select id="sCategory" class="form__select" required>
+              <option value="Teeth Whitening">Teeth Whitening</option>
+              <option value="Fat Dissolving">Fat Dissolving</option>
+              <option value="Advanced Facials">Advanced Facials</option>
+              <option value="Vitamin Therapy">Vitamin Therapy</option>
+              <option value="Retail Product">Retail Product / Aftercare</option>
+            </select>
+          </div>
+          <div>
+            <label class="form__label">Price (e.g. £120 or From £70)</label>
+            <input type="text" id="sPrice" class="form__input" placeholder="e.g. £120" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div>
+            <label class="form__label">Duration (Minutes)</label>
+            <input type="number" id="sDuration" class="form__input" value="60" min="15" step="15" required>
+          </div>
+          <div>
+            <label class="form__label">Icon Symbol</label>
+            <select id="sIcon" class="form__select">
+              <option value="dentistry">dentistry (Teeth)</option>
+              <option value="body_fat">body_fat (Fat Dissolving)</option>
+              <option value="face_retouching_natural">face_retouching_natural (Facial)</option>
+              <option value="vaccines">vaccines (Injections)</option>
+              <option value="spa">spa (Wellness)</option>
+              <option value="shopping_bag">shopping_bag (Product)</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="form__label">Short Description</label>
+        <textarea id="sDesc" class="form__textarea" rows="3" placeholder="Brief summary of what this treatment does and who it is ideal for..." required></textarea>
+
+        <label class="form__label">Key Benefits / Bullet Points (One per line)</label>
+        <textarea id="sBenefits" class="form__textarea" rows="3" placeholder="Enamel-safe formula&#10;Visible results in 1 session&#10;Zero downtime"></textarea>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+          <button type="button" class="btn btn--outline" onclick="closeServiceModal()">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="btnSaveService">Save Treatment</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- ================= MODAL: CREATE / EDIT BLOG POST ================= -->
+  <div class="modal-backdrop" id="postModal">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 id="postModalTitle" style="margin: 0;">Create Blog Post</h2>
+        <button type="button" onclick="closePostModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--color-text-light);">&times;</button>
+      </div>
+
+      <form id="postForm">
+        <input type="hidden" id="editPostId">
+
+        <label class="form__label">Article Title</label>
+        <input type="text" id="pTitle" class="form__input" placeholder="e.g. Top 5 Tips for Prolonging Your Teeth Whitening Results" required>
+
+        <label class="form__label">Category</label>
+        <select id="pCategory" class="form__select" required>
+          <option value="Teeth Whitening">Teeth Whitening</option>
+          <option value="Fat Dissolving">Fat Dissolving</option>
+          <option value="Advanced Facials">Advanced Facials</option>
+          <option value="Vitamin Therapy">Vitamin Therapy</option>
+          <option value="Skincare Advice">Skincare Advice</option>
+        </select>
+
+        <label class="form__label">Excerpt (Summary)</label>
+        <textarea id="pExcerpt" class="form__textarea" rows="2" placeholder="Brief 1-2 sentence preview for search engines and listings..." required></textarea>
+
+        <label class="form__label">Article Content</label>
+        <textarea id="pContent" class="form__textarea" rows="6" placeholder="Full article body content..." required></textarea>
+
+        <!-- Worzl AI Social Generator Integration -->
+        <div style="background: rgba(19, 236, 200, 0.08); border: 1px solid var(--color-primary); padding: 16px; border-radius: var(--border-radius-sm); margin-bottom: 20px;">
+          <label style="display: flex; gap: 10px; align-items: center; cursor: pointer; font-weight: 600;">
+            <input type="checkbox" id="generateSocialDraft" checked style="width: 18px; height: 18px;">
+            <span>✨ Automatically generate Instagram &amp; Facebook draft with Worzl AI</span>
+          </label>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+          <button type="button" class="btn btn--outline" onclick="closePostModal()">Cancel</button>
+          <button type="submit" class="btn btn--primary" id="btnSavePost">Publish Article</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script type="module">
-    import { auth, db, onAuthStateChanged, signOut, collection, addDoc, getDocs, doc, deleteDoc, updateDoc, query, orderBy, serverTimestamp } from './firebase-init.js';
-    
-    // Auth Guard
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.href = 'login.html';
+    import { db, collection, addDoc, getDocs, getDoc, setDoc, doc, deleteDoc, updateDoc, query, orderBy, serverTimestamp } from './firebase-init.js';
+
+    // Core default treatments to seed if Firestore is empty
+    const defaultServices = [
+      {
+        id: "teeth_whitening",
+        title: "Professional Teeth Whitening",
+        category: "Teeth Whitening",
+        price: "£120",
+        duration: 90,
+        icon: "dentistry",
+        desc: "Expert in-clinic whitening treatment for a brilliant, natural-looking smile. Safe, enamel-preserving formula for results that last.",
+        benefits: ["Enamel-safe, professional formula", "Visible results in a single session", "Suitable for sensitive teeth"]
+      },
+      {
+        id: "fat_dissolving_small",
+        title: "Fat Dissolving (Small Area / Chin)",
+        category: "Fat Dissolving",
+        price: "£70",
+        duration: 45,
+        icon: "body_fat",
+        desc: "Targeted fat dissolving injections for double chin, jowls, or small stubborn fat deposits with no surgery.",
+        benefits: ["Non-surgical permanent fat cell removal", "Quick 30-45 minute procedure", "Minimal downtime"]
+      },
+      {
+        id: "fat_dissolving_large",
+        title: "Fat Dissolving (Medium/Large Area)",
+        category: "Fat Dissolving",
+        price: "£120",
+        duration: 60,
+        icon: "body_fat",
+        desc: "Body contouring injections for stomach, love handles, bra bulge, or inner thighs.",
+        benefits: ["Precision contouring", "Stimulates skin tightening", "Clinically proven compound"]
+      },
+      {
+        id: "hydra_facial",
+        title: "Deep Cleanse & Hydration Facial",
+        category: "Advanced Facials",
+        price: "£45",
+        duration: 60,
+        icon: "face_retouching_natural",
+        desc: "Deep pore extractions, ultrasound hydration infusion, and soothing botanical mask for instant radiance.",
+        benefits: ["Clears congested pores", "Intense hydration boost", "Zero redness or peeling"]
+      },
+      {
+        id: "b12_injection",
+        title: "Vitamin B12 Energy Injection",
+        category: "Vitamin Therapy",
+        price: "£35",
+        duration: 20,
+        icon: "vaccines",
+        desc: "High-grade Methylcobalamin B12 injection to banish fatigue, boost immunity, and enhance mental focus.",
+        benefits: ["Instant cellular absorption", "Boosts metabolism & energy", "Improves sleep and mood"]
+      }
+    ];
+
+    let currentTab = 'services';
+    let loadedServices = [];
+    let loadedPosts = [];
+
+    // Tab switcher
+    window.switchCmsTab = function(tab) {
+      currentTab = tab;
+      if (tab === 'services') {
+        document.getElementById('tabServicesView').style.display = 'block';
+        document.getElementById('tabPostsView').style.display = 'none';
+        document.getElementById('tabBtnServices').className = 'nav-tab-btn active';
+        document.getElementById('tabBtnPosts').className = 'nav-tab-btn';
+        document.getElementById('btnAddNew').innerHTML = '<span class="material-symbols-rounded">add_circle</span> Add New Treatment / Product';
+        document.getElementById('btnAddNew').onclick = () => openServiceModal();
       } else {
-        loadPosts();
+        document.getElementById('tabServicesView').style.display = 'none';
+        document.getElementById('tabPostsView').style.display = 'block';
+        document.getElementById('tabBtnServices').className = 'nav-tab-btn';
+        document.getElementById('tabBtnPosts').className = 'nav-tab-btn active';
+        document.getElementById('btnAddNew').innerHTML = '<span class="material-symbols-rounded">post_add</span> Create Article';
+        document.getElementById('btnAddNew').onclick = () => openPostModal();
+      }
+    };
+
+    document.getElementById('btnAddNew').onclick = () => openServiceModal();
+
+    // ================= SERVICES CRUD =================
+    window.openServiceModal = function(serviceId = null) {
+      const modal = document.getElementById('serviceModal');
+      const form = document.getElementById('serviceForm');
+      form.reset();
+
+      if (serviceId) {
+        const item = loadedServices.find(s => s.id === serviceId);
+        if (item) {
+          document.getElementById('serviceModalTitle').textContent = "Edit Treatment";
+          document.getElementById('editServiceId').value = item.id;
+          document.getElementById('sTitle').value = item.title || '';
+          document.getElementById('sCategory').value = item.category || 'Teeth Whitening';
+          document.getElementById('sPrice').value = item.price || '';
+          document.getElementById('sDuration').value = item.duration || 60;
+          document.getElementById('sIcon').value = item.icon || 'dentistry';
+          document.getElementById('sDesc').value = item.desc || '';
+          document.getElementById('sBenefits').value = Array.isArray(item.benefits) ? item.benefits.join('\n') : (item.benefits || '');
+        }
+      } else {
+        document.getElementById('serviceModalTitle').textContent = "Add New Treatment / Product";
+        document.getElementById('editServiceId').value = "";
+      }
+
+      modal.classList.add('active');
+    };
+
+    window.closeServiceModal = function() {
+      document.getElementById('serviceModal').classList.remove('active');
+    };
+
+    window.deleteService = async function(serviceId) {
+      if (!confirm("Are you sure you want to delete this treatment from your catalog?")) return;
+      try {
+        await deleteDoc(doc(db, "services", serviceId));
+        loadServices();
+      } catch (err) {
+        console.error("Delete error:", err);
+        alert("Failed to delete treatment. Please try again.");
+      }
+    };
+
+    document.getElementById('serviceForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btnSaveService');
+      btn.textContent = 'Saving...';
+      btn.disabled = true;
+
+      try {
+        const id = document.getElementById('editServiceId').value;
+        const benefitsRaw = document.getElementById('sBenefits').value.trim();
+        const benefits = benefitsRaw ? benefitsRaw.split('\n').map(b => b.trim()).filter(Boolean) : [];
+
+        const payload = {
+          title: document.getElementById('sTitle').value.trim(),
+          category: document.getElementById('sCategory').value,
+          price: document.getElementById('sPrice').value.trim(),
+          duration: parseInt(document.getElementById('sDuration').value) || 60,
+          icon: document.getElementById('sIcon').value,
+          desc: document.getElementById('sDesc').value.trim(),
+          benefits: benefits,
+          updatedAt: serverTimestamp()
+        };
+
+        if (id) {
+          await updateDoc(doc(db, "services", id), payload);
+        } else {
+          payload.createdAt = serverTimestamp();
+          await addDoc(collection(db, "services"), payload);
+        }
+
+        closeServiceModal();
+        loadServices();
+      } catch (err) {
+        console.error("Save error:", err);
+        alert("Failed to save treatment. Please try again.");
+      } finally {
+        btn.textContent = 'Save Treatment';
+        btn.disabled = false;
       }
     });
 
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      signOut(auth);
+    async function loadServices() {
+      const container = document.getElementById('servicesListContainer');
+      try {
+        const snapshot = await getDocs(collection(db, "services"));
+        loadedServices = [];
+
+        if (snapshot.empty) {
+          // Auto-seed defaults into Firestore if empty
+          for (const s of defaultServices) {
+            const { id, ...data } = s;
+            await setDoc(doc(db, "services", id), { ...data, createdAt: serverTimestamp() });
+          }
+          return loadServices();
+        }
+
+        snapshot.forEach(d => {
+          loadedServices.push({ id: d.id, ...d.data() });
+        });
+
+        document.getElementById('serviceCount').textContent = loadedServices.length;
+
+        if (loadedServices.length === 0) {
+          container.innerHTML = '<p style="text-align:center; padding:20px;">No services in catalog.</p>';
+          return;
+        }
+
+        container.innerHTML = '';
+        loadedServices.forEach(s => {
+          const row = document.createElement('div');
+          row.className = 'item-row';
+          row.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div style="width: 44px; height: 44px; border-radius: 10px; background: var(--color-primary-bg); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center;">
+                <span class="material-symbols-rounded">${s.icon || 'dentistry'}</span>
+              </div>
+              <div>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                  <strong style="font-size: 1.05rem;">${s.title}</strong>
+                  <span class="price-pill">${s.price}</span>
+                  <span style="font-size: 0.8rem; color: var(--color-text-light);">${s.duration || 60} mins</span>
+                </div>
+                <div style="font-size: 0.88rem; color: var(--color-text-light); margin-top: 4px;">
+                  ${s.category} • ${s.desc ? s.desc.substring(0, 80) + '...' : ''}
+                </div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn--outline btn--small" onclick="openServiceModal('${s.id}')">
+                <span class="material-symbols-rounded">edit</span> Edit
+              </button>
+              <button class="btn btn--outline btn--small" style="color: #dc2626; border-color: rgba(220,38,38,0.3);" onclick="deleteService('${s.id}')">
+                <span class="material-symbols-rounded">delete</span>
+              </button>
+            </div>
+          `;
+          container.appendChild(row);
+        });
+
+      } catch (err) {
+        console.error("Load services error:", err);
+        container.innerHTML = '<p style="color:red; text-align:center;">Failed to load services catalog.</p>';
+      }
+    }
+
+    // ================= BLOG POSTS CRUD =================
+    window.openPostModal = function(postId = null) {
+      const modal = document.getElementById('postModal');
+      const form = document.getElementById('postForm');
+      form.reset();
+
+      if (postId) {
+        const item = loadedPosts.find(p => p.id === postId);
+        if (item) {
+          document.getElementById('postModalTitle').textContent = "Edit Article";
+          document.getElementById('editPostId').value = item.id;
+          document.getElementById('pTitle').value = item.title || '';
+          document.getElementById('pCategory').value = item.category || 'Teeth Whitening';
+          document.getElementById('pExcerpt').value = item.excerpt || '';
+          document.getElementById('pContent').value = item.content || '';
+        }
+      } else {
+        document.getElementById('postModalTitle').textContent = "Create Blog Post";
+        document.getElementById('editPostId').value = "";
+      }
+
+      modal.classList.add('active');
+    };
+
+    window.closePostModal = function() {
+      document.getElementById('postModal').classList.remove('active');
+    };
+
+    window.deletePost = async function(postId) {
+      if (!confirm("Are you sure you want to delete this article?")) return;
+      try {
+        await deleteDoc(doc(db, "posts", postId));
+        loadPosts();
+      } catch (err) {
+        console.error("Delete error:", err);
+        alert("Failed to delete article.");
+      }
+    };
+
+    document.getElementById('postForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btnSavePost');
+      btn.textContent = 'Publishing...';
+      btn.disabled = true;
+
+      try {
+        const id = document.getElementById('editPostId').value;
+        const title = document.getElementById('pTitle').value.trim();
+        const category = document.getElementById('pCategory').value;
+        const excerpt = document.getElementById('pExcerpt').value.trim();
+        const content = document.getElementById('pContent').value.trim();
+        const wantSocialDraft = document.getElementById('generateSocialDraft').checked;
+
+        const payload = {
+          title,
+          category,
+          excerpt,
+          content,
+          updatedAt: serverTimestamp()
+        };
+
+        if (id) {
+          await updateDoc(doc(db, "posts", id), payload);
+        } else {
+          payload.createdAt = serverTimestamp();
+          await addDoc(collection(db, "posts"), payload);
+
+          // If AI draft generation selected, create draft in social_drafts
+          if (wantSocialDraft) {
+            await addDoc(collection(db, "social_drafts"), {
+              platform: "Instagram & Facebook",
+              text: `✨ Exciting new insights on ${category}! ✨\n\n${excerpt}\n\n📍 Book your treatment in Newcastle under Lyme at No.1 Bright Smile and Skin Solutions.\n\n#NewcastleUnderLyme #BrightSmile #${category.replace(/\s+/g, '')} #AestheticsStaffordshire`,
+              postTitle: title,
+              status: "Draft",
+              createdAt: serverTimestamp()
+            });
+          }
+        }
+
+        closePostModal();
+        loadPosts();
+      } catch (err) {
+        console.error("Save post error:", err);
+        alert("Failed to publish post.");
+      } finally {
+        btn.textContent = 'Publish Article';
+        btn.disabled = false;
+      }
     });
 
-    // DOM Elements
-    const postList = document.getElementById('postList');
-    const postModal = document.getElementById('postModal');
-    const postForm = document.getElementById('postForm');
-    const newPostBtn = document.getElementById('newPostBtn');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const modalTitle = document.getElementById('modalTitle');
-
-    // UI state
-    let posts = [];
-
-    // Open modal for new
-    newPostBtn.addEventListener('click', () => {
-      postForm.reset();
-      document.getElementById('postId').value = '';
-      modalTitle.textContent = 'Create Post';
-      postModal.classList.add('active');
-    });
-
-    // Close modal
-    cancelBtn.addEventListener('click', () => {
-      postModal.classList.remove('active');
-    });
-
-    // Fetch and render posts
     async function loadPosts() {
-      postList.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--bs-text-muted);">Loading posts...</div>';
+      const container = document.getElementById('postsListContainer');
       try {
         const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        posts = [];
-        querySnapshot.forEach((doc) => {
-          posts.push({ id: doc.id, ...doc.data() });
+        const snapshot = await getDocs(q);
+        loadedPosts = [];
+
+        snapshot.forEach(d => {
+          loadedPosts.push({ id: d.id, ...d.data() });
         });
-        renderPosts();
-      } catch (e) {
-        console.error("Error loading posts:", e);
-        postList.innerHTML = '<div style="color: #f87171; text-align: center; padding: 2rem;">Error loading posts. Ensure Firestore is configured.</div>';
-      }
-    }
 
-    function renderPosts() {
-      if (posts.length === 0) {
-        postList.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--bs-text-muted);">No posts found. Create one!</div>';
-        return;
-      }
-      
-      postList.innerHTML = '';
-      posts.forEach(post => {
-        const date = post.createdAt ? new Date(post.createdAt.toDate()).toLocaleDateString('en-GB') : 'Just now';
-        
-        const el = document.createElement('div');
-        el.className = 'post-item';
-        el.innerHTML = `
-          <div>
-            <h3 class="post-title">${escapeHtml(post.title)}</h3>
-            <div class="post-meta">
-              <span style="color: var(--bs-primary); margin-right: 8px;">${escapeHtml(post.category)}</span>
-              ${date}
+        document.getElementById('postCount').textContent = loadedPosts.length;
+
+        if (loadedPosts.length === 0) {
+          container.innerHTML = '<p style="text-align:center; padding:20px; color:var(--color-text-light);">No custom blog posts published yet.</p>';
+          return;
+        }
+
+        container.innerHTML = '';
+        loadedPosts.forEach(p => {
+          const row = document.createElement('div');
+          row.className = 'item-row';
+          row.innerHTML = `
+            <div>
+              <strong style="font-size: 1.05rem;">${p.title}</strong>
+              <div style="font-size: 0.88rem; color: var(--color-text-light); margin-top: 4px;">
+                <span class="price-pill" style="padding: 2px 8px; font-size: 0.78rem;">${p.category}</span>
+                ${p.excerpt ? p.excerpt.substring(0, 90) + '...' : ''}
+              </div>
             </div>
-          </div>
-          <div class="post-actions">
-            <button class="edit-btn" data-id="${post.id}"><span class="material-symbols-outlined">edit</span></button>
-            <button class="delete-btn" data-id="${post.id}"><span class="material-symbols-outlined">delete</span></button>
-          </div>
-        `;
-        postList.appendChild(el);
-      });
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn--outline btn--small" onclick="openPostModal('${p.id}')">
+                <span class="material-symbols-rounded">edit</span>
+              </button>
+              <button class="btn btn--outline btn--small" style="color: #dc2626; border-color: rgba(220,38,38,0.3);" onclick="deletePost('${p.id}')">
+                <span class="material-symbols-rounded">delete</span>
+              </button>
+            </div>
+          `;
+          container.appendChild(row);
+        });
 
-      // Bind events
-      document.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => editPost(e.currentTarget.dataset.id));
-      });
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => deletePost(e.currentTarget.dataset.id));
-      });
-    }
-
-    // Save post
-    postForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const saveBtn = document.getElementById('saveBtn');
-      saveBtn.disabled = true;
-      saveBtn.textContent = 'Saving...';
-
-      const id = document.getElementById('postId').value;
-      const data = {
-        title: document.getElementById('postTitle').value,
-        category: document.getElementById('postCategory').value,
-        excerpt: document.getElementById('postExcerpt').value,
-        content: document.getElementById('postContent').value,
-      };
-
-      try {
-        if (id) {
-          // Update
-          await updateDoc(doc(db, "posts", id), data);
-        } else {
-          // Create
-          data.createdAt = serverTimestamp();
-          await addDoc(collection(db, "posts"), data);
-        }
-        postModal.classList.remove('active');
-        await loadPosts();
       } catch (err) {
-        console.error("Error saving post", err);
-        alert("Failed to save post");
-      } finally {
-        saveBtn.disabled = false;
-        saveBtn.textContent = 'Save Post';
-      }
-    });
-
-    function editPost(id) {
-      const post = posts.find(p => p.id === id);
-      if (!post) return;
-      
-      document.getElementById('postId').value = post.id;
-      document.getElementById('postTitle').value = post.title || '';
-      document.getElementById('postCategory').value = post.category || '';
-      document.getElementById('postExcerpt').value = post.excerpt || '';
-      document.getElementById('postContent').value = post.content || '';
-      
-      modalTitle.textContent = 'Edit Post';
-      postModal.classList.add('active');
-    }
-
-    async function deletePost(id) {
-      if (confirm('Are you sure you want to delete this post?')) {
-        try {
-          await deleteDoc(doc(db, "posts", id));
-          await loadPosts();
-        } catch(e) {
-          console.error("Error deleting", e);
-        }
+        console.error("Load posts error:", err);
+        container.innerHTML = '<p style="color:red; text-align:center;">Failed to load posts.</p>';
       }
     }
 
-    function escapeHtml(unsafe) {
-      if(!unsafe) return '';
-      return unsafe
-           .replace(/&/g, "&amp;")
-           .replace(/</g, "&lt;")
-           .replace(/>/g, "&gt;")
-           .replace(/"/g, "&quot;")
-           .replace(/'/g, "&#039;");
-    }
-
-    // Worzl Agent Logic
-    document.getElementById('generateSocialBtn').addEventListener('click', async () => {
-      const title = document.getElementById('postTitle').value;
-      const excerpt = document.getElementById('postExcerpt').value;
-      if(!title || !excerpt) {
-        alert("Please enter a title and excerpt first so Worzl has context to draft a post.");
-        return;
-      }
-      
-      const btn = document.getElementById('generateSocialBtn');
-      const originalText = btn.innerHTML;
-      btn.innerHTML = '<span class="material-symbols-outlined" style="animation: spin 1s linear infinite;">autorenew</span> Generating...';
-      
-      // Simulate Agent API Call (To be integrated with real Worzl backend)
-      setTimeout(() => {
-        const draft = `🌟 Exciting news from Bright Smile! 🌟\n\nWe've just published a new guide: "${title}".\n\n${excerpt}\n\nRead the full article on our website! Link in bio. ✨\n\n#BrightSmileAndSkin #NewcastleUnderLyme #StaffordshireAesthetics #BeautyTreatments`;
-        alert("Worzl drafted this for you:\n\n" + draft + "\n\n(Note: In Phase 2, this will save to your Social Approval Dashboard!)");
-        btn.innerHTML = originalText;
-      }, 1500);
-    });
-
-    // Add spin animation dynamically
-    const style = document.createElement('style');
-    style.innerHTML = `@keyframes spin { 100% { transform: rotate(360deg); } }`;
-    document.head.appendChild(style);
+    // Initialize
+    loadServices();
+    loadPosts();
   </script>
 </body>
 </html>

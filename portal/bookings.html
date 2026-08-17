@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Calendar — Bright Smile &amp; Skin Solutions</title>
+  <meta name="theme-color" content="#0b1225">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="header__logo">
+        <div class="header__logo-icon">✦</div>
+        Bright Smile
+        <span class="header__logo-sub">Client Portal</span>
+      </a>
+      <nav class="header__nav">
+        <div class="header__links">
+          <a href="index.html" class="header__link">Overview</a>
+          <a href="bookings.html" class="header__link header__link--active">Calendar</a>
+          <a href="social.html" class="header__link">Social</a>
+          <a href="cms.html" class="header__link">Content</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container">
+      <div class="glass-panel" style="padding: 40px; border-radius: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+          <div>
+            <h1 class="section-title" style="margin-bottom: 8px;">Clinic Scheduling & Availability</h1>
+            <p class="section-desc" style="text-align: left; margin: 0;">Manage upcoming client bookings, weekly working hours, and treatment timeslots.</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn--primary btn--small" id="tabBtnAppts" onclick="switchAdminTab('appts')">
+              <span class="material-symbols-outlined" style="font-size: 1.1rem; vertical-align: middle;">calendar_month</span> Appointments
+            </button>
+            <button class="btn btn--outline btn--small" id="tabBtnSchedule" onclick="switchAdminTab('schedule')">
+              <span class="material-symbols-outlined" style="font-size: 1.1rem; vertical-align: middle;">tune</span> Working Hours & Treatment Rules
+            </button>
+          </div>
+        </div>
+        
+        <!-- TAB 1: APPOINTMENTS & CALENDAR -->
+        <div id="adminTabAppts">
+          <div class="grid grid--2" style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+            <div class="card" style="padding: 24px;">
+              <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+                <span class="material-symbols-outlined">calendar_month</span> 
+                Upcoming Appointments
+              </h3>
+              <ul id="appointmentList" style="list-style: none; padding: 0; margin: 0;">
+                <!-- Rendered by JS -->
+              </ul>
+            </div>
+            
+            <div class="card" style="padding: 24px;">
+              <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+                <span class="material-symbols-outlined">group</span> 
+                Waitlist
+              </h3>
+              <ul id="waitlistList" style="list-style: none; padding: 0; margin: 0;">
+                <!-- Rendered by JS -->
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: WORKING HOURS & TREATMENT RULES -->
+        <div id="adminTabSchedule" style="display: none;">
+          <form id="scheduleForm">
+            <div class="grid grid--2" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;">
+              
+              <!-- 7-Day Weekly Hours -->
+              <div class="card" style="padding: 24px;">
+                <h3 style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                  <span class="material-symbols-outlined">schedule</span> 
+                  7-Day Working Hours
+                </h3>
+                <p class="bs-text-muted" style="margin-bottom: 20px; font-size: 0.9rem;">Set your standard opening and closing times for each day of the week, or mark days closed.</p>
+                
+                <div id="daysContainer" style="display: flex; flex-direction: column; gap: 12px;">
+                  <!-- Dynamically rendered day rows -->
+                </div>
+              </div>
+
+              <!-- Treatment Durations & Buffer Rules -->
+              <div class="card" style="padding: 24px;">
+                <h3 style="margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                  <span class="material-symbols-outlined">hourglass_top</span> 
+                  Treatment Durations & Buffer
+                </h3>
+                <p class="bs-text-muted" style="margin-bottom: 20px; font-size: 0.9rem;">Configure slot lengths and sterilisation/wrap-up buffers per treatment.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                  
+                  <div style="background: rgba(0,0,0,0.02); padding: 12px; border-radius: 8px; border: 1px solid var(--color-border);">
+                    <strong>🦷 Teeth Whitening</strong>
+                    <div style="display: flex; gap: 10px; margin-top: 8px;">
+                      <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: var(--color-text-light);">Duration (mins)</label>
+                        <input type="number" id="dur_teeth_whitening" class="form__input" value="90" min="15" step="15">
+                      </div>
+                      <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: var(--color-text-light);">Buffer (mins)</label>
+                        <input type="number" id="buf_teeth_whitening" class="form__input" value="15" min="0" step="5">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="background: rgba(0,0,0,0.02); padding: 12px; border-radius: 8px; border: 1px solid var(--color-border);">
+                    <strong>💧 Fat Dissolving</strong>
+                    <div style="display: flex; gap: 10px; margin-top: 8px;">
+                      <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: var(--color-text-light);">Duration (mins)</label>
+                        <input type="number" id="dur_fat_dissolving" class="form__input" value="45" min="15" step="15">
+                      </div>
+                      <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: var(--color-text-light);">Buffer (mins)</label>
+                        <input type="number" id="buf_fat_dissolving" class="form__input" value="15" min="0" step="5">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="background: rgba(0,0,0,0.02); padding: 12px; border-radius: 8px; border: 1px solid var(--color-border);">
+                    <strong>✨ Advanced Facials</strong>
+                    <div style="display: flex; gap: 10px; margin-top: 8px;">
+                      <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: var(--color-text-light);">Duration (mins)</label>
+                        <input type="number" id="dur_facial" class="form__input" value="60" min="15" step="15">
+                      </div>
+                      <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: var(--color-text-light);">Buffer (mins)</label>
+                        <input type="number" id="buf_facial" class="form__input" value="15" min="0" step="5">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="background: rgba(0,0,0,0.02); padding: 12px; border-radius: 8px; border: 1px solid var(--color-border);">
+                    <strong>💉 Vitamin Therapy</strong>
+                    <div style="display: flex; gap: 10px; margin-top: 8px;">
+                      <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: var(--color-text-light);">Duration (mins)</label>
+                        <input type="number" id="dur_vitamin" class="form__input" value="30" min="10" step="5">
+                      </div>
+                      <div style="flex: 1;">
+                        <label style="font-size: 0.8rem; color: var(--color-text-light);">Buffer (mins)</label>
+                        <input type="number" id="buf_vitamin" class="form__input" value="10" min="0" step="5">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div style="margin-top: 24px;">
+                  <button type="submit" class="btn btn--primary" id="btnSaveSchedule" style="width: 100%;">
+                    <span class="material-symbols-outlined">save</span> Save Schedule & Slot Rules
+                  </button>
+                  <p id="saveStatusMsg" style="margin-top: 10px; font-size: 0.88rem; color: #10b981; display: none; text-align: center; font-weight: 600;">
+                    ✓ Settings saved! Public booking engine updated.
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { db, collection, getDocs, getDoc, setDoc, doc, query, orderBy, where } from './firebase-init.js';
+
+    window.switchAdminTab = function(tabName) {
+      if (tabName === 'appts') {
+        document.getElementById('adminTabAppts').style.display = 'block';
+        document.getElementById('adminTabSchedule').style.display = 'none';
+        document.getElementById('tabBtnAppts').className = 'btn btn--primary btn--small';
+        document.getElementById('tabBtnSchedule').className = 'btn btn--outline btn--small';
+      } else {
+        document.getElementById('adminTabAppts').style.display = 'none';
+        document.getElementById('adminTabSchedule').style.display = 'block';
+        document.getElementById('tabBtnAppts').className = 'btn btn--outline btn--small';
+        document.getElementById('tabBtnSchedule').className = 'btn btn--primary btn--small';
+      }
+    };
+
+    const apptList = document.getElementById('appointmentList');
+    const waitListEl = document.getElementById('waitlistList');
+
+    async function loadBookings() {
+      apptList.innerHTML = '<li style="padding: 16px 0; text-align: center;">Loading appointments...</li>';
+      waitListEl.innerHTML = '<li style="padding: 16px 0; text-align: center;">Loading waitlist...</li>';
+      
+      try {
+        const q = query(collection(db, "bookings"), orderBy("date", "asc"));
+        const snapshot = await getDocs(q);
+        
+        apptList.innerHTML = '';
+        waitListEl.innerHTML = '';
+        
+        let apptCount = 0;
+        
+        snapshot.forEach(doc => {
+          const appt = { id: doc.id, ...doc.data() };
+          
+          if (appt.status === 'Waitlist') {
+            const li = document.createElement('li');
+            li.style.padding = '16px 0';
+            li.style.borderBottom = '1px solid rgba(232,168,124,0.10)';
+            li.innerHTML = `
+              <strong style="color: var(--bs-primary);">Requested: ${appt.date || 'Any Date'}</strong>
+              <div style="margin-top: 4px; color: var(--bs-on-surface-variant);">${appt.name} (${appt.service})</div>
+            `;
+            waitListEl.appendChild(li);
+          } else {
+            apptCount++;
+            const li = document.createElement('li');
+            li.style.padding = '18px 0';
+            li.style.borderBottom = '1px solid rgba(0,0,0,0.08)';
+            
+            let badgeClass = 'status-badge--pending';
+            if (appt.status === 'Complete') badgeClass = 'status-badge--complete';
+
+            const hasDeclaration = appt.medicalDeclaration ? true : false;
+            const declBadge = hasDeclaration 
+              ? '<span class="status-badge status-badge--complete" style="font-size:0.75rem; padding: 3px 8px;">✓ Medical Form Signed</span>' 
+              : '<span class="status-badge status-badge--pending" style="font-size:0.75rem; padding: 3px 8px; background: #fef3c7; color: #92400e; border: 1px solid #fde68a;">⏳ Medical Form Pending</span>';
+
+            const photoHtml = appt.photoPreviewUrl 
+              ? `<div style="margin-top: 10px;"><img src="${appt.photoPreviewUrl}" alt="Consultation Photo" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid var(--color-border);"></div>` 
+              : '';
+
+            const concernsHtml = appt.clientConcerns 
+              ? `<div style="margin-top: 8px; font-size: 0.88rem; background: rgba(0,0,0,0.03); padding: 8px 12px; border-radius: 6px;"><strong>Patient Goals:</strong> "${appt.clientConcerns}"</div>` 
+              : '';
+
+            li.innerHTML = `
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                <div style="flex: 1;">
+                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <strong style="color: var(--color-primary-dark); font-size: 1.15rem;">${appt.time} - ${appt.date}</strong>
+                    ${declBadge}
+                  </div>
+                  <div style="margin-top: 4px; font-weight: 600; font-size: 1rem;">${appt.name} <span style="font-weight: 400; color: var(--color-text-light);">(${appt.service})</span></div>
+                  <div style="margin-top: 2px; font-size: 0.88rem; color: var(--color-text-light);">📞 ${appt.phone}</div>
+                  ${concernsHtml}
+                  ${photoHtml}
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                  <span class="status-badge ${badgeClass}">${appt.status}</span>
+                  <a href="../my-appointment.html?id=${appt.id}" target="_blank" class="btn btn--outline btn--small" style="font-size: 0.8rem; padding: 4px 10px;">
+                    View Patient Hub ↗
+                  </a>
+                </div>
+              </div>
+            `;
+            apptList.appendChild(li);
+          }
+        });
+        
+        if (apptCount === 0) {
+           apptList.innerHTML = '<li style="padding: 16px 0; text-align: center; color: var(--bs-text-muted);">No upcoming appointments.</li>';
+        }
+        if (waitListEl.children.length === 0) {
+           waitListEl.innerHTML = '<li style="padding: 16px 0; text-align: center; color: var(--bs-text-muted);">Waitlist is empty.</li>';
+        }
+        
+      } catch (err) {
+        console.error("Error loading bookings:", err);
+        apptList.innerHTML = '<li style="padding: 16px 0; text-align: center; color: #ff5252;">Failed to load appointments.</li>';
+        waitListEl.innerHTML = '<li style="padding: 16px 0; text-align: center; color: #ff5252;">Failed to load waitlist.</li>';
+      }
+    }
+
+    // 7-day schedule defaults
+    const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const defaultSchedule = {
+      weekly: {
+        monday: { open: true, start: "09:00", end: "17:30" },
+        tuesday: { open: true, start: "09:00", end: "17:30" },
+        wednesday: { open: true, start: "09:00", end: "17:30" },
+        thursday: { open: true, start: "09:00", end: "19:00" },
+        friday: { open: true, start: "09:00", end: "17:30" },
+        saturday: { open: true, start: "09:30", end: "16:00" },
+        sunday: { open: false, start: "10:00", end: "15:00" }
+      },
+      durations: {
+        teeth_whitening: { duration: 90, buffer: 15 },
+        fat_dissolving: { duration: 45, buffer: 15 },
+        facial: { duration: 60, buffer: 15 },
+        vitamin: { duration: 30, buffer: 10 }
+      }
+    };
+
+    function renderDaysEditor(weeklyData) {
+      const container = document.getElementById('daysContainer');
+      container.innerHTML = '';
+
+      dayNames.forEach(day => {
+        const key = day.toLowerCase();
+        const cfg = weeklyData[key] || { open: true, start: "09:00", end: "17:30" };
+        
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.alignItems = 'center';
+        row.style.justifyContent = 'space-between';
+        row.style.gap = '12px';
+        row.style.padding = '10px 14px';
+        row.style.background = 'rgba(0,0,0,0.02)';
+        row.style.borderRadius = '8px';
+        row.style.border = '1px solid var(--color-border)';
+
+        row.innerHTML = `
+          <div style="width: 110px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="open_${key}" ${cfg.open ? 'checked' : ''} style="width: 18px; height: 18px;">
+            <label for="open_${key}" style="cursor: pointer;">${day}</label>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <input type="time" id="start_${key}" value="${cfg.start}" class="form__input" style="padding: 6px 8px; font-size: 0.9rem;" ${!cfg.open ? 'disabled' : ''}>
+            <span style="color: var(--color-text-light);">to</span>
+            <input type="time" id="end_${key}" value="${cfg.end}" class="form__input" style="padding: 6px 8px; font-size: 0.9rem;" ${!cfg.open ? 'disabled' : ''}>
+          </div>
+        `;
+
+        const chk = row.querySelector(`#open_${key}`);
+        const startInp = row.querySelector(`#start_${key}`);
+        const endInp = row.querySelector(`#end_${key}`);
+        chk.addEventListener('change', () => {
+          startInp.disabled = !chk.checked;
+          endInp.disabled = !chk.checked;
+          row.style.opacity = chk.checked ? '1' : '0.6';
+        });
+        if (!cfg.open) row.style.opacity = '0.6';
+
+        container.appendChild(row);
+      });
+    }
+
+    async function loadScheduleSettings() {
+      try {
+        const docRef = doc(db, "settings", "schedule");
+        const docSnap = await getDoc(docRef);
+        let scheduleData = defaultSchedule;
+        if (docSnap.exists()) {
+          scheduleData = { ...defaultSchedule, ...docSnap.data() };
+        }
+        
+        renderDaysEditor(scheduleData.weekly || defaultSchedule.weekly);
+
+        // Fill durations
+        const durs = scheduleData.durations || defaultSchedule.durations;
+        if (durs.teeth_whitening) {
+          document.getElementById('dur_teeth_whitening').value = durs.teeth_whitening.duration || 90;
+          document.getElementById('buf_teeth_whitening').value = durs.teeth_whitening.buffer || 15;
+        }
+        if (durs.fat_dissolving) {
+          document.getElementById('dur_fat_dissolving').value = durs.fat_dissolving.duration || 45;
+          document.getElementById('buf_fat_dissolving').value = durs.fat_dissolving.buffer || 15;
+        }
+        if (durs.facial) {
+          document.getElementById('dur_facial').value = durs.facial.duration || 60;
+          document.getElementById('buf_facial').value = durs.facial.buffer || 15;
+        }
+        if (durs.vitamin) {
+          document.getElementById('dur_vitamin').value = durs.vitamin.duration || 30;
+          document.getElementById('buf_vitamin').value = durs.vitamin.buffer || 10;
+        }
+
+      } catch (err) {
+        console.error("Error loading schedule settings:", err);
+        renderDaysEditor(defaultSchedule.weekly);
+      }
+    }
+
+    document.getElementById('scheduleForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btnSaveSchedule');
+      btn.textContent = 'Saving Settings...';
+      btn.disabled = true;
+
+      try {
+        const weekly = {};
+        dayNames.forEach(day => {
+          const key = day.toLowerCase();
+          weekly[key] = {
+            open: document.getElementById(`open_${key}`).checked,
+            start: document.getElementById(`start_${key}`).value,
+            end: document.getElementById(`end_${key}`).value
+          };
+        });
+
+        const durations = {
+          teeth_whitening: {
+            duration: parseInt(document.getElementById('dur_teeth_whitening').value) || 90,
+            buffer: parseInt(document.getElementById('buf_teeth_whitening').value) || 15
+          },
+          fat_dissolving: {
+            duration: parseInt(document.getElementById('dur_fat_dissolving').value) || 45,
+            buffer: parseInt(document.getElementById('buf_fat_dissolving').value) || 15
+          },
+          facial: {
+            duration: parseInt(document.getElementById('dur_facial').value) || 60,
+            buffer: parseInt(document.getElementById('buf_facial').value) || 15
+          },
+          vitamin: {
+            duration: parseInt(document.getElementById('dur_vitamin').value) || 30,
+            buffer: parseInt(document.getElementById('buf_vitamin').value) || 10
+          }
+        };
+
+        const docRef = doc(db, "settings", "schedule");
+        await setDoc(docRef, { weekly, durations, updatedAt: new Date().toISOString() });
+
+        const statusMsg = document.getElementById('saveStatusMsg');
+        statusMsg.style.display = 'block';
+        setTimeout(() => { statusMsg.style.display = 'none'; }, 4000);
+      } catch (err) {
+        console.error("Error saving schedule:", err);
+        alert("Failed to save schedule settings. Please try again.");
+      } finally {
+        btn.textContent = 'Save Schedule & Slot Rules';
+        btn.disabled = false;
+      }
+    });
+
+    loadBookings();
+    loadScheduleSettings();
+  </script>
+</body>
+</html>

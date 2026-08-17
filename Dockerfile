@@ -10,6 +10,8 @@ COPY about.html /usr/share/nginx/html/
 COPY blog.html /usr/share/nginx/html/
 COPY contact.html /usr/share/nginx/html/
 COPY services.html /usr/share/nginx/html/
+COPY booking.html /usr/share/nginx/html/
+COPY my-appointment.html /usr/share/nginx/html/
 COPY css/ /usr/share/nginx/html/css/
 COPY js/ /usr/share/nginx/html/js/
 COPY images/ /usr/share/nginx/html/images/
