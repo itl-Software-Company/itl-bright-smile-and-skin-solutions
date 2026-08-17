@@ -9,6 +9,70 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 24px;
+    }
+    .appts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+    .day-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(0,0,0,0.02);
+      border-radius: 8px;
+      border: 1px solid var(--color-border);
+    }
+    .day-times {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    @media (max-width: 768px) {
+      .schedule-grid, .appts-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+      .glass-panel {
+        padding: 20px 14px !important;
+      }
+      .day-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .day-row > div:first-child {
+        width: 100% !important;
+      }
+      .day-times {
+        width: 100%;
+      }
+      .day-times input {
+        flex: 1;
+        font-size: 16px !important;
+      }
+      .top-banner {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+      .top-banner > div:last-child {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      .top-banner .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
 <body>
   
@@ -34,13 +98,13 @@
 
   <main>
     <section class="section container">
-      <div class="glass-panel" style="padding: 40px; border-radius: 16px;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+      <div class="glass-panel">
+        <div class="top-banner" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
           <div>
             <h1 class="section-title" style="margin-bottom: 8px;">Clinic Scheduling & Availability</h1>
             <p class="section-desc" style="text-align: left; margin: 0;">Manage upcoming client bookings, weekly working hours, and treatment timeslots.</p>
           </div>
-          <div style="display: flex; gap: 8px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button class="btn btn--primary btn--small" id="tabBtnAppts" onclick="switchAdminTab('appts')">
               <span class="material-symbols-outlined" style="font-size: 1.1rem; vertical-align: middle;">calendar_month</span> Appointments
             </button>
@@ -52,7 +116,7 @@
         
         <!-- TAB 1: APPOINTMENTS & CALENDAR -->
         <div id="adminTabAppts">
-          <div class="grid grid--2" style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
+          <div class="appts-grid">
             <div class="card" style="padding: 24px;">
               <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
                 <span class="material-symbols-outlined">calendar_month</span> 
@@ -78,7 +142,7 @@
         <!-- TAB 2: WORKING HOURS & TREATMENT RULES -->
         <div id="adminTabSchedule" style="display: none;">
           <form id="scheduleForm">
-            <div class="grid grid--2" style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;">
+            <div class="schedule-grid">
               
               <!-- 7-Day Weekly Hours -->
               <div class="card" style="padding: 24px;">
@@ -313,21 +377,14 @@
         const cfg = weeklyData[key] || { open: true, start: "09:00", end: "17:30" };
         
         const row = document.createElement('div');
-        row.style.display = 'flex';
-        row.style.alignItems = 'center';
-        row.style.justifyContent = 'space-between';
-        row.style.gap = '12px';
-        row.style.padding = '10px 14px';
-        row.style.background = 'rgba(0,0,0,0.02)';
-        row.style.borderRadius = '8px';
-        row.style.border = '1px solid var(--color-border)';
+        row.className = 'day-row';
 
         row.innerHTML = `
-          <div style="width: 110px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+          <div style="width: 130px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
             <input type="checkbox" id="open_${key}" ${cfg.open ? 'checked' : ''} style="width: 18px; height: 18px;">
             <label for="open_${key}" style="cursor: pointer;">${day}</label>
           </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
+          <div class="day-times">
             <input type="time" id="start_${key}" value="${cfg.start}" class="form__input" style="padding: 6px 8px; font-size: 0.9rem;" ${!cfg.open ? 'disabled' : ''}>
             <span style="color: var(--color-text-light);">to</span>
             <input type="time" id="end_${key}" value="${cfg.end}" class="form__input" style="padding: 6px 8px; font-size: 0.9rem;" ${!cfg.open ? 'disabled' : ''}>

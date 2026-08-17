@@ -147,6 +147,74 @@
       border-color: var(--color-primary-dark);
       box-shadow: 0 0 0 3px rgba(19, 236, 200, 0.2);
     }
+
+    /* Mobile Responsive CMS */
+    @media (max-width: 640px) {
+      .cms-container {
+        padding: 0 12px 60px;
+      }
+      .cms-card {
+        padding: 16px 14px;
+      }
+      .top-actions-wrapper {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+      }
+      .top-actions-wrapper > div {
+        width: 100% !important;
+        flex-direction: column !important;
+      }
+      .top-actions-wrapper .btn {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+      .item-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        padding: 14px;
+      }
+      .item-row > div:first-child {
+        width: 100%;
+      }
+      .item-row > div:last-child {
+        display: flex;
+        width: 100%;
+        gap: 8px;
+      }
+      .item-row > div:last-child .btn {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 0;
+        font-size: 0.9rem;
+      }
+      .nav-tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 6px;
+        margin: 0 -4px 16px;
+      }
+      .nav-tabs::-webkit-scrollbar {
+        display: none;
+      }
+      .nav-tab-btn {
+        flex-shrink: 0;
+        font-size: 0.84rem;
+        padding: 8px 12px;
+        white-space: nowrap;
+      }
+      .modal-box {
+        padding: 20px 16px;
+        max-height: 94vh;
+      }
+      .modal-row {
+        flex-direction: column !important;
+        gap: 0 !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -176,13 +244,13 @@
     <div class="cms-container">
       
       <!-- Top Title & Stats Banner -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+      <div class="top-actions-wrapper" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
         <div>
           <span class="section-label">Management Hub</span>
           <h1 class="section-title" style="margin-bottom: 6px;">Services, Pricing &amp; Content</h1>
           <p class="section-desc" style="text-align: left; margin: 0;">Add new treatments, manage pricing, publish blog articles, and generate AI social drafts.</p>
         </div>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <button id="btnSyncAll" class="btn btn--outline" onclick="syncAllServices()" style="display: flex; align-items: center; gap: 6px;">
             <span class="material-symbols-rounded">sync</span> Sync All 22 Menu Services
           </button>
@@ -229,7 +297,7 @@
               <h2 style="margin: 0 0 4px; font-size: 1.35rem;">Blog Articles &amp; Advice Guides</h2>
               <p class="bs-text-muted" style="margin: 0; font-size: 0.9rem;">Articles published here automatically appear on your website blog and trigger AI social draft creation.</p>
             </div>
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
               <button class="btn btn--outline btn--small" onclick="syncAllPosts()" title="Force sync the 4 official website articles to database">
                 <span class="material-symbols-rounded">sync</span> Sync 4 Website Blog Articles
               </button>
@@ -252,7 +320,7 @@
   <div class="modal-backdrop" id="serviceModal">
     <div class="modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2 id="serviceModalTitle" style="margin: 0;">Add New Treatment / Product</h2>
+        <h2 id="serviceModalTitle" style="margin: 0; font-size: 1.25rem;">Add New Treatment / Product</h2>
         <button type="button" onclick="closeServiceModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--color-text-light);">&times;</button>
       </div>
 
@@ -262,7 +330,7 @@
         <label class="form__label">Treatment / Product Name</label>
         <input type="text" id="sTitle" class="form__input" placeholder="e.g. Microneedling & Skin Booster" required>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="grid grid--2 modal-row" style="gap: 16px;">
           <div>
             <label class="form__label">Category</label>
             <select id="sCategory" class="form__select" required>
@@ -279,7 +347,7 @@
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="grid grid--2 modal-row" style="gap: 16px;">
           <div>
             <label class="form__label">Duration (Minutes)</label>
             <input type="number" id="sDuration" class="form__input" value="60" min="15" step="15" required>

@@ -113,10 +113,45 @@
       border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
       margin: 20px 0;
     }
+
+    @media (max-width: 640px) {
+      .hub-container {
+        padding: 0 12px 60px !important;
+      }
+      .lookup-card {
+        padding: 24px 16px !important;
+        margin: 20px auto;
+      }
+      .tab-nav {
+        gap: 6px;
+        margin: 0 -4px 18px;
+        padding-bottom: 6px;
+      }
+      .tab-btn {
+        padding: 8px 12px;
+        font-size: 0.84rem;
+      }
+      .card {
+        padding: 18px 14px !important;
+      }
+      .checklist-item {
+        padding: 12px 10px;
+        gap: 10px;
+      }
+      .checklist-item input[type="checkbox"] {
+        width: 22px !important;
+        height: 22px !important;
+      }
+      .photo-preview-box {
+        height: 180px;
+      }
+      .form__input, .form__select, .form__textarea {
+        font-size: 16px !important;
+      }
+    }
   </style>
 </head>
-<body>
-  <!-- Header -->
+<body style="background: var(--color-bg-soft);">
   <!-- Header -->
   <header class="header header--scrolled" id="header">
     <div class="container header__inner">
