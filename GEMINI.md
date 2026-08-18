@@ -20,9 +20,16 @@ Project changelog and known-good state log for the Bright Smile & Skin Solutions
 
 ## Changelog
 
-### 2026-08-17 — Patient Hub, Services CMS, 4-Tier Portal Architecture & Client Launch Delivery (Session 8)
+### 2026-08-17 / 2026-08-18 — Patient Hub, Services CMS, Mobile Overhaul & Launch Delivery (Session 8)
 
-**itl-bright-smile-and-skin-solutions commits:** `9b140e8`, `1a99c6b`, `245732a`, `fdaf5ac`, `8191024`, `2d5bf31`
+**itl-bright-smile-and-skin-solutions commits:** `91131db`, `9ad9627`, `9b140e8`, `1a99c6b`, `245732a`, `fdaf5ac`, `8191024`, `2d5bf31`
+
+#### Mobile Viewport & Responsiveness Overhaul
+- **Mobile Touch Sub-Navigation (`portal/styles.css`):** Replaced disappearing header links on mobile screens with a dedicated horizontal-scrolling pill bar across all portal pages (`📅 Calendar`, `💎 CMS`, `✨ Social`, `📋 Proposal`, `🌐 Live Site`).
+- **CMS Item Card Stacking (`portal/cms.html`):** Overhauled 22 service rows and blog post rows to stack into touch-friendly cards on mobile with 44px tap targets for Edit/Delete buttons.
+- **Admin Calendar & Hours (`portal/bookings.html`):** Converted 2-column desktop grid to responsive 1-column layout and created stacked 7-day operating hours cards with touch-friendly time pickers.
+- **Public Booking Engine (`booking.html`):** Configured 3-column responsive timeslot grid, fixed missing `<body>` tag, and prevented iOS auto-zoom on inputs (`16px` font-size).
+- **Patient Appointment Hub (`my-appointment.html`):** Mobile-optimized tab navigation with smooth horizontal momentum scrolling, full-width declaration checklists, and responsive photo preview box.
 
 #### 4-Tier Portal Architecture Harmonization
 - **Harmonized 4 Dedicated Portals:** Formally restructured the entire application into 4 distinct portals: (1) Public Clinic Website, (2) Patient Appointment Hub, (3) Clinic Admin Manager, and (4) ITL Proposal & Launch Portal.
@@ -46,10 +53,10 @@ Project changelog and known-good state log for the Bright Smile & Skin Solutions
 | Item | Status |
 |---|---|
 | Public Website & Visibility | ✅ Live & verified |
-| AI Scheduling Engine (`booking.html`) | ✅ Live & verified |
-| Patient Appointment Hub (`my-appointment.html`) | ✅ Live & verified |
-| Services & Pricing Catalog (`portal/cms.html`) | ✅ Live (Instant 0ms render & sync) |
-| Admin Calendar & Availability (`portal/bookings.html`) | ✅ Live & verified |
+| AI Scheduling Engine (`booking.html`) | ✅ Live & verified (Mobile optimized) |
+| Patient Appointment Hub (`my-appointment.html`) | ✅ Live & verified (Mobile optimized) |
+| Services & Pricing Catalog (`portal/cms.html`) | ✅ Live (Instant 0ms render & sync, Mobile optimized) |
+| Admin Calendar & Availability (`portal/bookings.html`) | ✅ Live & verified (Mobile optimized) |
 | ITL Launch Proposal Portal (`portal/index.html`) | ✅ Live & updated |
 | Firestore Rules & Database Sync (`itl-bright-smile-web`) | ✅ Deployed & verified |
 
